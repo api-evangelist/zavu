@@ -1,0 +1,649 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Sub-Accounts API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Sub-Accounts
+paths:
+  /v1/sub-accounts:
+    post:
+      summary: Create sub-account
+      description: Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response. Requires a parent project API key; sub-account API keys receive HTTP 403.
+      operationId: createSubAccount
+      tags:
+      - Sub-Accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubAccountCreateRequest'
+            examples:
+              basic:
+                summary: Basic sub-account
+                value:
+                  name: Client ABC
+              with_limit:
+                summary: Sub-account with spending cap
+                value:
+                  name: Client ABC
+                  externalId: client_123
+                  creditLimit: 100000
+      responses:
+        '201':
+          description: Sub-account created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccountResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    get:
+      summary: List sub-accounts
+      description: List sub-accounts for this team. Requires a parent project API key; sub-account API keys receive HTTP 403.
+      operationId: listSubAccounts
+      tags:
+      - Sub-Accounts
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of sub-accounts.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubAccount'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/sub-accounts/{id}:
+    get:
+      summary: Get sub-account
+      operationId: getSubAccount
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      responses:
+        '200':
+          description: Sub-account details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccountResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      description: Get sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
+    patch:
+      summary: Update sub-account
+      operationId: updateSubAccount
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubAccountUpdateRequest'
+      responses:
+        '200':
+          description: Sub-account updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccountResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      description: Update sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
+    delete:
+      summary: Deactivate sub-account
+      description: Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked. Requires a parent project API key; sub-account API keys receive HTTP 403.
+      operationId: deactivateSubAccount
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      responses:
+        '200':
+          description: Sub-account deactivated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                - keysRevoked
+                properties:
+                  message:
+                    type: string
+                    example: Sub-account deactivated
+                  keysRevoked:
+                    type: integer
+                    description: Number of API keys revoked.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/sub-accounts/{id}/balance:
+    get:
+      summary: Get sub-account spending
+      description: Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap). Requires a parent project API key; sub-account API keys receive HTTP 403.
+      operationId: getSubAccountBalance
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      responses:
+        '200':
+          description: Sub-account balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/sub-accounts/{id}/api-keys:
+    get:
+      summary: List sub-account API keys
+      operationId: listSubAccountApiKeys
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      responses:
+        '200':
+          description: List of API keys.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubAccountApiKey'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      description: List sub-account API keys. Requires a parent project API key; sub-account API keys receive HTTP 403.
+    post:
+      summary: Create sub-account API key
+      operationId: createSubAccountApiKey
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubAccountApiKeyCreateRequest'
+            example:
+              name: Production Key
+              environment: live
+      responses:
+        '201':
+          description: API key created. The full key is only returned once.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - apiKey
+                properties:
+                  apiKey:
+                    type: object
+                    required:
+                    - id
+                    - key
+                    - name
+                    - environment
+                    properties:
+                      id:
+                        type: string
+                      key:
+                        type: string
+                      name:
+                        type: string
+                      environment:
+                        type: string
+                        enum:
+                        - live
+                        - test
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      description: Create sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
+  /v1/sub-accounts/{id}/api-keys/{keyId}:
+    delete:
+      summary: Revoke sub-account API key
+      operationId: revokeSubAccountApiKey
+      tags:
+      - Sub-Accounts
+      parameters:
+      - $ref: '#/components/parameters/SubAccountIdParam'
+      - $ref: '#/components/parameters/SubAccountApiKeyIdParam'
+      responses:
+        '204':
+          description: API key revoked.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Sub-account API keys cannot manage sub-accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sub-account or API key not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      description: Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
+components:
+  schemas:
+    SubAccountApiKeyCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+          default: live
+        permissions:
+          type: array
+          items:
+            type: string
+    SubAccountCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          description: Name of the sub-account.
+          example: Client ABC
+        externalId:
+          type: string
+          description: External reference ID for your own tracking.
+        creditLimit:
+          type: integer
+          minimum: 0
+          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
+        metadata:
+          type: object
+          additionalProperties: true
+    SubAccountApiKey:
+      type: object
+      required:
+      - id
+      - name
+      - keyPrefix
+      - environment
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        key:
+          type: string
+          description: Full API key. Only returned on creation.
+        keyPrefix:
+          type: string
+          description: First characters of the key for identification.
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+        permissions:
+          type: array
+          items:
+            type: string
+        lastUsedAt:
+          type: number
+          nullable: true
+        revokedAt:
+          type: number
+          nullable: true
+        createdAt:
+          type: number
+    SubAccountResponse:
+      type: object
+      required:
+      - subAccount
+      properties:
+        subAccount:
+          $ref: '#/components/schemas/SubAccount'
+    BalanceResponse:
+      type: object
+      required:
+      - balance
+      - currency
+      properties:
+        balance:
+          type: integer
+          description: Team balance in cents. All charges are billed to the parent team.
+        currency:
+          type: string
+          example: usd
+        creditLimit:
+          type: integer
+          nullable: true
+          description: Spending cap in cents (only for sub-accounts).
+        totalSpent:
+          type: integer
+          nullable: true
+          description: Total amount spent by this sub-account in cents (only for sub-accounts).
+        isSubAccount:
+          type: boolean
+          description: Whether this API key belongs to a sub-account.
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    SubAccountUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        externalId:
+          type: string
+        creditLimit:
+          type: integer
+          nullable: true
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties: true
+        status:
+          $ref: '#/components/schemas/SubAccountStatus'
+    SubAccount:
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - totalSpent
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: Client ABC
+        externalId:
+          type: string
+          nullable: true
+          description: External reference ID set by the parent account.
+        status:
+          $ref: '#/components/schemas/SubAccountStatus'
+        totalSpent:
+          type: integer
+          description: Total amount spent by this sub-account in cents.
+        creditLimit:
+          type: integer
+          nullable: true
+          description: Spending cap in cents. When reached, messages from this sub-account will be blocked.
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+        apiKey:
+          type: string
+          description: API key for the sub-account. Only returned on creation.
+        createdAt:
+          type: string
+          format: date-time
+    SubAccountStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+  parameters:
+    SubAccountApiKeyIdParam:
+      name: keyId
+      in: path
+      required: true
+      description: API key ID.
+      schema:
+        type: string
+    SubAccountIdParam:
+      name: id
+      in: path
+      required: true
+      description: Sub-account ID.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

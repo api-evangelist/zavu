@@ -1,0 +1,590 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Agent Knowledge Bases API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Agent Knowledge Bases
+paths:
+  /v1/senders/{senderId}/agent/knowledge-bases:
+    get:
+      summary: List knowledge bases
+      description: List knowledge bases for an agent.
+      operationId: listAgentKnowledgeBases
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of knowledge bases.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentKnowledgeBase'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create knowledge base
+      description: Create a new knowledge base for an agent.
+      operationId: createAgentKnowledgeBase
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeBaseCreateRequest'
+            example:
+              name: Product FAQ
+              description: Frequently asked questions about our products
+      responses:
+        '201':
+          description: Knowledge base created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBaseResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/knowledge-bases/{kbId}:
+    get:
+      summary: Get knowledge base
+      description: Get a specific knowledge base.
+      operationId: getAgentKnowledgeBase
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      responses:
+        '200':
+          description: Knowledge base details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBaseResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Knowledge base not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update knowledge base
+      description: Update a knowledge base.
+      operationId: updateAgentKnowledgeBase
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeBaseUpdateRequest'
+      responses:
+        '200':
+          description: Knowledge base updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBaseResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Knowledge base not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete knowledge base
+      description: Delete a knowledge base and all its documents.
+      operationId: deleteAgentKnowledgeBase
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      responses:
+        '204':
+          description: Knowledge base deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Knowledge base not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/knowledge-bases/{kbId}/documents:
+    get:
+      summary: List documents
+      description: List documents in a knowledge base.
+      operationId: listAgentDocuments
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of documents.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentDocument'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Knowledge base not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create document
+      description: Add a document to a knowledge base. The document will be automatically processed for RAG.
+      operationId: createAgentDocument
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentCreateRequest'
+            example:
+              title: Return Policy
+              content: Our return policy allows returns within 30 days of purchase...
+      responses:
+        '201':
+          description: Document created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Knowledge base not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/knowledge-bases/{kbId}/documents/{docId}:
+    get:
+      summary: Get document
+      description: Get a single document from a knowledge base.
+      operationId: getAgentDocument
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      - $ref: '#/components/parameters/DocumentIdParam'
+      responses:
+        '200':
+          description: Document details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Document not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update document
+      description: Update a document's title or content. Updating content reprocesses the document for RAG.
+      operationId: updateAgentDocument
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      - $ref: '#/components/parameters/DocumentIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentUpdateRequest'
+      responses:
+        '200':
+          description: Document updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Document not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete document
+      description: Delete a document from a knowledge base.
+      operationId: deleteAgentDocument
+      tags:
+      - Agent Knowledge Bases
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/KnowledgeBaseIdParam'
+      - $ref: '#/components/parameters/DocumentIdParam'
+      responses:
+        '204':
+          description: Document deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Document not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    KnowledgeBaseResponse:
+      type: object
+      required:
+      - knowledgeBase
+      properties:
+        knowledgeBase:
+          $ref: '#/components/schemas/AgentKnowledgeBase'
+    KnowledgeBaseCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+    KnowledgeBaseUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+    AgentDocument:
+      type: object
+      required:
+      - id
+      - knowledgeBaseId
+      - title
+      - contentLength
+      - chunkCount
+      - isProcessed
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        knowledgeBaseId:
+          type: string
+        title:
+          type: string
+        contentLength:
+          type: integer
+          description: Length of the document content in characters.
+        chunkCount:
+          type: integer
+          description: Number of chunks created from this document.
+        isProcessed:
+          type: boolean
+          description: Whether the document has been processed for RAG.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    DocumentCreateRequest:
+      type: object
+      required:
+      - title
+      - content
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 100000
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    DocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/AgentDocument'
+    AgentKnowledgeBase:
+      type: object
+      required:
+      - id
+      - agentId
+      - name
+      - documentCount
+      - totalChunks
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        documentCount:
+          type: integer
+        totalChunks:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    DocumentUpdateRequest:
+      type: object
+      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 500000
+  parameters:
+    KnowledgeBaseIdParam:
+      name: kbId
+      in: path
+      required: true
+      schema:
+        type: string
+    DocumentIdParam:
+      name: docId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Introspect API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Introspect
+paths:
+  /v1/introspect/phone:
+    post:
+      summary: Introspect phone number
+      description: Validate a phone number and check if a WhatsApp conversation window is open.
+      operationId: introspectPhone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneIntrospectionRequest'
+      responses:
+        '200':
+          description: Phone number introspection result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneIntrospectionResponse'
+        '400':
+          description: Invalid phone number.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Introspect
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    Carrier:
+      type: object
+      description: Carrier information for the phone number.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: Carrier name.
+          example: Verizon Wireless
+        type:
+          $ref: '#/components/schemas/LineType'
+    PhoneIntrospectionRequest:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          example: '+56912345678'
+    LineType:
+      type: string
+      description: Type of phone line.
+      enum:
+      - mobile
+      - landline
+      - voip
+      - toll_free
+      - unknown
+    PhoneIntrospectionResponse:
+      type: object
+      required:
+      - phoneNumber
+      - countryCode
+      - validNumber
+      properties:
+        phoneNumber:
+          type: string
+        countryCode:
+          type: string
+          example: CL
+        validNumber:
+          type: boolean
+        nationalFormat:
+          type: string
+          description: Phone number in national format.
+          example: (312) 945-7420
+        lineType:
+          $ref: '#/components/schemas/LineType'
+        carrier:
+          $ref: '#/components/schemas/Carrier'
+        availableChannels:
+          type: array
+          items:
+            type: string
+          description: List of available messaging channels for this phone number.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

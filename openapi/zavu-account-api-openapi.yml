@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Account API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Account
+paths:
+  /v1/me:
+    get:
+      summary: Get current API key context
+      description: Returns the project, team, and API key metadata bound to the current Bearer token. Used by CLIs and SDKs to confirm which project they will operate on.
+      operationId: getMe
+      tags:
+      - Account
+      responses:
+        '200':
+          description: Context for the API key.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - project
+                - team
+                - apiKey
+                - isTestMode
+                properties:
+                  project:
+                    type: object
+                    required:
+                    - id
+                    - name
+                    - isSubAccount
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                        nullable: true
+                      isSubAccount:
+                        type: boolean
+                  team:
+                    type: object
+                    required:
+                    - id
+                    - name
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                        nullable: true
+                  apiKey:
+                    type: object
+                    required:
+                    - id
+                    properties:
+                      id:
+                        type: string
+                  isTestMode:
+                    type: boolean
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,566 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Regulatory API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Regulatory
+paths:
+  /v1/addresses:
+    post:
+      summary: Create address
+      description: Create a regulatory address for phone number purchases. Some countries require a verified address before phone numbers can be activated.
+      operationId: createAddress
+      tags:
+      - Regulatory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressCreateRequest'
+            example:
+              firstName: John
+              lastName: Doe
+              streetAddress: 123 Main St
+              locality: Berlin
+              postalCode: '10115'
+              countryCode: DE
+      responses:
+        '201':
+          description: Address created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    get:
+      summary: List addresses
+      description: List regulatory addresses for this project.
+      operationId: listAddresses
+      tags:
+      - Regulatory
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of addresses.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Address'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/addresses/{addressId}:
+    get:
+      summary: Get address
+      description: Get a specific regulatory address.
+      operationId: getAddress
+      tags:
+      - Regulatory
+      parameters:
+      - $ref: '#/components/parameters/AddressIdParam'
+      responses:
+        '200':
+          description: Address details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Address not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete address
+      description: Delete a regulatory address. Cannot delete addresses that are in use.
+      operationId: deleteAddress
+      tags:
+      - Regulatory
+      parameters:
+      - $ref: '#/components/parameters/AddressIdParam'
+      responses:
+        '204':
+          description: Address deleted.
+        '400':
+          description: Cannot delete address that is in use.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Address not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/documents:
+    post:
+      summary: Create document
+      description: Create a regulatory document record after uploading the file. Use the upload-url endpoint first to get an upload URL.
+      operationId: createRegulatoryDocument
+      tags:
+      - Regulatory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegulatoryDocumentCreateRequest'
+            example:
+              name: Passport Scan
+              documentType: passport
+              storageId: kg2abc123...
+              mimeType: image/jpeg
+              fileSize: 102400
+      responses:
+        '201':
+          description: Document created and uploaded to verification provider.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegulatoryDocumentResponse'
+        '400':
+          description: Invalid request or upload failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    get:
+      summary: List documents
+      description: List regulatory documents for this project.
+      operationId: listRegulatoryDocuments
+      tags:
+      - Regulatory
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of documents.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RegulatoryDocument'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/documents/upload-url:
+    post:
+      summary: Get document upload URL
+      description: Get a presigned URL to upload a document file. After uploading, use the storageId to create the document record.
+      operationId: getRegulatoryDocumentUploadUrl
+      tags:
+      - Regulatory
+      responses:
+        '200':
+          description: Upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/documents/{documentId}:
+    get:
+      summary: Get document
+      description: Get a specific regulatory document.
+      operationId: getRegulatoryDocument
+      tags:
+      - Regulatory
+      parameters:
+      - $ref: '#/components/parameters/RegulatoryDocumentIdParam'
+      responses:
+        '200':
+          description: Document details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegulatoryDocumentResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Document not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete document
+      description: Delete a regulatory document. Cannot delete verified documents.
+      operationId: deleteRegulatoryDocument
+      tags:
+      - Regulatory
+      parameters:
+      - $ref: '#/components/parameters/RegulatoryDocumentIdParam'
+      responses:
+        '204':
+          description: Document deleted.
+        '400':
+          description: Cannot delete a verified document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Document not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    AddressResponse:
+      type: object
+      required:
+      - address
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+    RegulatoryDocument:
+      type: object
+      description: A regulatory document for phone number requirements.
+      required:
+      - id
+      - name
+      - documentType
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+        status:
+          $ref: '#/components/schemas/RegulatoryDocumentStatus'
+        rejectionReason:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegulatoryDocumentCreateRequest:
+      type: object
+      required:
+      - name
+      - documentType
+      - storageId
+      - mimeType
+      - fileSize
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        storageId:
+          type: string
+          description: Storage ID from the upload-url endpoint.
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+    AddressStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+      - rejected
+    RegulatoryDocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/RegulatoryDocument'
+    Address:
+      type: object
+      description: A regulatory address for phone number requirements.
+      required:
+      - id
+      - streetAddress
+      - locality
+      - postalCode
+      - countryCode
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        businessName:
+          type: string
+          nullable: true
+        streetAddress:
+          type: string
+        extendedAddress:
+          type: string
+          nullable: true
+        locality:
+          type: string
+        administrativeArea:
+          type: string
+          nullable: true
+        postalCode:
+          type: string
+        countryCode:
+          type: string
+          example: DE
+        status:
+          $ref: '#/components/schemas/AddressStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegulatoryDocumentStatus:
+      type: string
+      enum:
+      - pending
+      - uploaded
+      - verified
+      - rejected
+    RegulatoryDocumentType:
+      type: string
+      enum:
+      - passport
+      - national_id
+      - drivers_license
+      - utility_bill
+      - tax_id
+      - business_registration
+      - proof_of_address
+      - other
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    UploadUrlResponse:
+      type: object
+      required:
+      - uploadUrl
+      properties:
+        uploadUrl:
+          type: string
+          format: uri
+          description: Pre-signed URL for uploading the file.
+    AddressCreateRequest:
+      type: object
+      required:
+      - streetAddress
+      - locality
+      - postalCode
+      - countryCode
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        businessName:
+          type: string
+          maxLength: 200
+        streetAddress:
+          type: string
+          maxLength: 200
+        extendedAddress:
+          type: string
+          maxLength: 100
+        locality:
+          type: string
+          maxLength: 100
+        administrativeArea:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 20
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: DE
+  parameters:
+    AddressIdParam:
+      name: addressId
+      in: path
+      required: true
+      schema:
+        type: string
+    RegulatoryDocumentIdParam:
+      name: documentId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

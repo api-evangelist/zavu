@@ -1,0 +1,1137 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Broadcasts API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Broadcasts
+paths:
+  /v1/broadcasts:
+    post:
+      summary: Create broadcast
+      description: Create a new broadcast campaign. Add contacts after creation, then send.
+      operationId: createBroadcast
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastCreateRequest'
+            examples:
+              sms:
+                summary: SMS broadcast
+                value:
+                  name: Black Friday Sale
+                  channel: sms
+                  text: Hi {{name}}, check out our Black Friday deals! Use code FRIDAY20 for 20% off.
+              whatsapp_template:
+                summary: WhatsApp template broadcast
+                value:
+                  name: Order Confirmation Campaign
+                  channel: whatsapp
+                  messageType: template
+                  content:
+                    templateId: tmpl_abc123
+              telegram:
+                summary: Telegram broadcast
+                value:
+                  name: Product Announcement
+                  channel: telegram
+                  text: Hi {{name}}, check out our new product launch!
+              email:
+                summary: Email broadcast
+                value:
+                  name: Newsletter
+                  channel: email
+                  emailSubject: Your Weekly Update
+                  text: Hi {{name}}, here's what's new this week...
+      responses:
+        '201':
+          description: Broadcast created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Idempotency conflict (broadcast already exists).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+    get:
+      summary: List broadcasts
+      description: List broadcasts for this project.
+      operationId: listBroadcasts
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/BroadcastStatus'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of broadcasts.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Broadcast'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}:
+    get:
+      summary: Get broadcast
+      operationId: getBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '200':
+          description: Broadcast details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+    patch:
+      summary: Update broadcast
+      description: Update a broadcast in draft status.
+      operationId: updateBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastUpdateRequest'
+      responses:
+        '200':
+          description: Broadcast updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Invalid request or broadcast not in draft status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+    delete:
+      summary: Delete broadcast
+      description: Delete a broadcast in draft status.
+      operationId: deleteBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '204':
+          description: Broadcast deleted.
+        '400':
+          description: Broadcast not in draft status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/contacts:
+    post:
+      summary: Add contacts to broadcast
+      description: Add contacts to a broadcast in batch. Maximum 1000 contacts per request.
+      operationId: addBroadcastContacts
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastContactsAddRequest'
+            example:
+              contacts:
+              - recipient: '+14155551234'
+                templateVariables:
+                  name: John
+                  order_id: ORD-001
+              - recipient: '+14155555678'
+                templateVariables:
+                  name: Jane
+                  order_id: ORD-002
+      responses:
+        '201':
+          description: Contacts added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastContactsAddResponse'
+        '400':
+          description: Invalid request or broadcast not in draft status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+    get:
+      summary: List broadcast contacts
+      description: List contacts in a broadcast with optional status filter.
+      operationId: listBroadcastContacts
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/BroadcastContactStatus'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of broadcast contacts.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BroadcastContact'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/contacts/{contactId}:
+    delete:
+      summary: Remove contact from broadcast
+      description: Remove a contact from a broadcast in draft status.
+      operationId: removeBroadcastContact
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      - $ref: '#/components/parameters/BroadcastContactIdParam'
+      responses:
+        '204':
+          description: Contact removed.
+        '400':
+          description: Broadcast not in draft status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast or contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/send:
+    post:
+      summary: Send broadcast
+      description: Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance.
+      operationId: sendBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastSendRequest'
+            examples:
+              immediate:
+                summary: Send immediately
+                value: {}
+              scheduled:
+                summary: Schedule for later
+                value:
+                  scheduledAt: '2024-01-15T10:00:00Z'
+      responses:
+        '202':
+          description: Broadcast started or scheduled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Invalid request, no contacts, or broadcast not in valid status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: insufficient_balance
+                message: 'Insufficient balance. Available: $50.00'
+                details:
+                  totalBalance: 50
+                  reservedBalance: 25
+                  availableBalance: 25
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/schedule:
+    patch:
+      summary: Reschedule broadcast
+      description: Update the scheduled time for a broadcast. The broadcast must be in scheduled status.
+      operationId: rescheduleBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastRescheduleRequest'
+            example:
+              scheduledAt: '2024-01-15T14:00:00Z'
+      responses:
+        '200':
+          description: Broadcast rescheduled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Invalid request or broadcast not in scheduled status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/cancel:
+    post:
+      summary: Cancel broadcast
+      description: Cancel a broadcast. Pending contacts will be skipped, but already queued messages may still be delivered.
+      operationId: cancelBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '200':
+          description: Broadcast cancelled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Broadcast cannot be cancelled in current status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/retry-review:
+    post:
+      summary: Retry broadcast review
+      description: Resubmit a rejected broadcast for AI review after editing content. Maximum 3 review attempts allowed per broadcast.
+      operationId: retryBroadcastReview
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '200':
+          description: Review resubmitted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Broadcast not in rejected status or max attempts reached.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                not_rejected:
+                  summary: Broadcast not rejected
+                  value:
+                    code: invalid_request
+                    message: Only rejected broadcasts can retry review
+                max_attempts:
+                  summary: Max attempts reached
+                  value:
+                    code: invalid_request
+                    message: Maximum review attempts reached. Request manual review instead.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/escalate:
+    post:
+      summary: Escalate to manual review
+      description: Request manual review by the Zavu team for a rejected broadcast. Use this after automated review rejection if you believe the content is legitimate.
+      operationId: escalateBroadcast
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '200':
+          description: Escalation submitted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastResponse'
+        '400':
+          description: Broadcast not in rejected status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: invalid_request
+                message: Only rejected broadcasts can be escalated
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+  /v1/broadcasts/{broadcastId}/progress:
+    get:
+      summary: Get broadcast progress
+      description: Get real-time progress of a broadcast including delivery counts and estimated completion time.
+      operationId: getBroadcastProgress
+      parameters:
+      - $ref: '#/components/parameters/BroadcastIdParam'
+      responses:
+        '200':
+          description: Broadcast progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastProgress'
+              example:
+                broadcastId: brd_abc123
+                status: sending
+                total: 5000
+                pending: 2500
+                sending: 100
+                delivered: 2350
+                failed: 50
+                skipped: 0
+                percentComplete: 48
+                estimatedCost: 75
+                reservedAmount: 75
+                actualCost: 35.25
+                startedAt: '2024-01-15T10:30:00.000Z'
+                estimatedCompletionAt: '2024-01-15T10:45:00.000Z'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Broadcast not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Broadcasts
+components:
+  schemas:
+    BroadcastContactsAddRequest:
+      type: object
+      required:
+      - contacts
+      properties:
+        contacts:
+          type: array
+          description: List of contacts to add (max 1000 per request).
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/BroadcastContactInput'
+    BroadcastChannel:
+      type: string
+      description: Broadcast delivery channel. Use 'smart' for per-contact intelligent routing.
+      enum:
+      - smart
+      - sms
+      - sms_oneway
+      - whatsapp
+      - telegram
+      - email
+    BroadcastRescheduleRequest:
+      type: object
+      required:
+      - scheduledAt
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: New scheduled time for the broadcast.
+    BroadcastSendRequest:
+      type: object
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: Schedule for future delivery. Omit to send immediately.
+    BroadcastProgress:
+      type: object
+      required:
+      - broadcastId
+      - status
+      - total
+      - pending
+      - sending
+      - delivered
+      - failed
+      - skipped
+      - percentComplete
+      properties:
+        broadcastId:
+          type: string
+        status:
+          $ref: '#/components/schemas/BroadcastStatus'
+        total:
+          type: integer
+          description: Total contacts in broadcast.
+        pending:
+          type: integer
+          description: Not yet queued for sending.
+        sending:
+          type: integer
+          description: Currently being sent.
+        delivered:
+          type: integer
+          description: Successfully delivered.
+        failed:
+          type: integer
+          description: Failed to deliver.
+        skipped:
+          type: integer
+          description: Skipped (broadcast cancelled).
+        percentComplete:
+          type: number
+          description: Percentage complete (0-100).
+        estimatedCost:
+          type: number
+          nullable: true
+          description: Estimated total cost in USD.
+        reservedAmount:
+          type: number
+          nullable: true
+          description: Amount reserved from balance in USD.
+        actualCost:
+          type: number
+          nullable: true
+          description: Actual cost so far in USD.
+        startedAt:
+          type: string
+          format: date-time
+        estimatedCompletionAt:
+          type: string
+          format: date-time
+    BroadcastContactStatus:
+      type: string
+      description: Status of a contact within a broadcast.
+      enum:
+      - pending
+      - queued
+      - sending
+      - delivered
+      - failed
+      - skipped
+    Broadcast:
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - channel
+      - messageType
+      - totalContacts
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: brd_abc123
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/BroadcastStatus'
+        channel:
+          $ref: '#/components/schemas/BroadcastChannel'
+        messageType:
+          $ref: '#/components/schemas/BroadcastMessageType'
+        text:
+          type: string
+        content:
+          $ref: '#/components/schemas/BroadcastContent'
+        senderId:
+          type: string
+        emailSubject:
+          type: string
+        totalContacts:
+          type: integer
+          description: Total number of contacts in the broadcast.
+        pendingCount:
+          type: integer
+        sendingCount:
+          type: integer
+        deliveredCount:
+          type: integer
+        failedCount:
+          type: integer
+        estimatedCost:
+          type: number
+          nullable: true
+          description: Estimated total cost in USD.
+        reservedAmount:
+          type: number
+          nullable: true
+          description: Amount reserved from balance in USD.
+        actualCost:
+          type: number
+          nullable: true
+          description: Actual cost so far in USD.
+        scheduledAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reviewResult:
+          type: object
+          nullable: true
+          description: AI content review result.
+          properties:
+            score:
+              type: number
+              description: Content safety score from 0.0 to 1.0, where 1.0 is completely safe.
+            categories:
+              type: array
+              items:
+                type: string
+              description: Policy categories violated, if any.
+            reasoning:
+              type: string
+              description: Explanation of the review decision.
+            reviewedAt:
+              type: string
+              format: date-time
+            flaggedContent:
+              type: array
+              items:
+                type: string
+              nullable: true
+              description: Problematic text fragments, if any.
+        reviewAttempts:
+          type: integer
+          nullable: true
+          description: Number of review attempts (max 3).
+    BroadcastMessageType:
+      type: string
+      description: Type of message for broadcast.
+      enum:
+      - text
+      - image
+      - video
+      - audio
+      - document
+      - template
+    BroadcastContact:
+      type: object
+      required:
+      - id
+      - recipient
+      - recipientType
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        recipient:
+          type: string
+        recipientType:
+          type: string
+          enum:
+          - phone
+          - email
+        status:
+          $ref: '#/components/schemas/BroadcastContactStatus'
+        templateVariables:
+          type: object
+          additionalProperties:
+            type: string
+        templateButtonVariables:
+          type: object
+          additionalProperties:
+            type: string
+        templateHeaderVariables:
+          type: object
+          additionalProperties:
+            type: string
+        messageId:
+          type: string
+          description: Associated message ID after processing.
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        cost:
+          type: number
+          nullable: true
+        processedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+    BroadcastCreateRequest:
+      type: object
+      required:
+      - name
+      - channel
+      properties:
+        name:
+          type: string
+          description: Name of the broadcast campaign.
+          example: Black Friday Sale
+        channel:
+          $ref: '#/components/schemas/BroadcastChannel'
+        messageType:
+          $ref: '#/components/schemas/BroadcastMessageType'
+          default: text
+        text:
+          type: string
+          description: 'Text content or caption. Supports template variables: {{name}}, {{1}}, etc.'
+          example: Hi {{name}}, check out our Black Friday deals!
+        content:
+          $ref: '#/components/schemas/BroadcastContent'
+        senderId:
+          type: string
+          description: Sender profile ID. Uses default sender if omitted.
+        emailSubject:
+          type: string
+          description: Email subject line. Required for email broadcasts.
+        emailHtmlBody:
+          type: string
+          description: HTML body for email broadcasts.
+        scheduledAt:
+          type: string
+          format: date-time
+          description: Schedule the broadcast for future delivery.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        idempotencyKey:
+          type: string
+          description: Idempotency key to prevent duplicate broadcasts.
+    BroadcastContent:
+      type: object
+      description: Content for non-text broadcast message types.
+      properties:
+        mediaUrl:
+          type: string
+          description: URL of the media file.
+        mediaId:
+          type: string
+          description: Media ID if already uploaded.
+        mimeType:
+          type: string
+          description: MIME type of the media.
+        filename:
+          type: string
+          description: Filename for documents.
+        templateId:
+          type: string
+          description: Template ID for template messages.
+        templateVariables:
+          type: object
+          description: 'Default body variables (can be overridden per contact). Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template''s format and sends the correct payload to Meta. Do not mix positional and named keys.'
+          additionalProperties:
+            type: string
+        templateButtonVariables:
+          type: object
+          description: Default button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2). Per-contact values override these.
+          additionalProperties:
+            type: string
+        templateHeaderVariables:
+          type: object
+          description: Default value for a text-header variable, keyed by `1` (can be overridden per contact). If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+          additionalProperties:
+            type: string
+    BroadcastStatus:
+      type: string
+      description: Current status of the broadcast.
+      enum:
+      - draft
+      - pending_review
+      - approved
+      - rejected
+      - escalated
+      - rejected_final
+      - scheduled
+      - sending
+      - paused
+      - completed
+      - cancelled
+      - failed
+    BroadcastUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        text:
+          type: string
+        content:
+          $ref: '#/components/schemas/BroadcastContent'
+        emailSubject:
+          type: string
+        emailHtmlBody:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    BroadcastContactInput:
+      type: object
+      required:
+      - recipient
+      properties:
+        recipient:
+          type: string
+          description: Phone number (E.164) or email address.
+          example: '+14155551234'
+        templateVariables:
+          type: object
+          description: 'Per-contact body variables. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template''s format and sends the correct payload to Meta. Do not mix positional and named keys.'
+          additionalProperties:
+            type: string
+          example:
+            '1': John
+            '2': ORD-12345
+        templateButtonVariables:
+          type: object
+          description: Per-contact button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2).
+          additionalProperties:
+            type: string
+          example:
+            '0': abc-report-token
+        templateHeaderVariables:
+          type: object
+          description: Per-contact value for a text-header variable, keyed by `1`. If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+          additionalProperties:
+            type: string
+          example:
+            '1': Jorge y Laura
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    BroadcastContactsAddResponse:
+      type: object
+      required:
+      - added
+      - duplicates
+      - invalid
+      properties:
+        added:
+          type: integer
+          description: Number of contacts successfully added.
+        duplicates:
+          type: integer
+          description: Number of duplicate contacts skipped.
+        invalid:
+          type: integer
+          description: Number of invalid contacts rejected.
+        errors:
+          type: array
+          description: Details about invalid contacts.
+          items:
+            type: object
+            properties:
+              recipient:
+                type: string
+              reason:
+                type: string
+    BroadcastResponse:
+      type: object
+      required:
+      - broadcast
+      properties:
+        broadcast:
+          $ref: '#/components/schemas/Broadcast'
+  parameters:
+    BroadcastIdParam:
+      name: broadcastId
+      in: path
+      required: true
+      schema:
+        type: string
+    BroadcastContactIdParam:
+      name: contactId
+      in: path
+      required: true
+      description: Broadcast contact ID (not the global contact ID)
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

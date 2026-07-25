@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Agent Flows API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Agent Flows
+paths:
+  /v1/senders/{senderId}/agent/flows:
+    get:
+      summary: List flows
+      description: List flows for an agent.
+      operationId: listAgentFlows
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - name: enabled
+        in: query
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of flows.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentFlow'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create flow
+      description: Create a new flow for an agent.
+      operationId: createAgentFlow
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlowCreateRequest'
+            example:
+              name: Lead Capture
+              description: Capture lead information
+              trigger:
+                type: keyword
+                keywords:
+                - info
+                - pricing
+                - demo
+              steps:
+              - id: welcome
+                type: message
+                config:
+                  text: Thanks for your interest! Let me get some info.
+                nextStepId: ask_name
+              - id: ask_name
+                type: collect
+                config:
+                  variable: name
+                  prompt: What's your name?
+      responses:
+        '201':
+          description: Flow created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/flows/{flowId}:
+    get:
+      summary: Get flow
+      description: Get a specific flow.
+      operationId: getAgentFlow
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/FlowIdParam'
+      responses:
+        '200':
+          description: Flow details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Flow not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update flow
+      description: Update a flow.
+      operationId: updateAgentFlow
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/FlowIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlowUpdateRequest'
+      responses:
+        '200':
+          description: Flow updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Flow not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete flow
+      description: Delete a flow. Cannot delete flows with active sessions.
+      operationId: deleteAgentFlow
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/FlowIdParam'
+      responses:
+        '204':
+          description: Flow deleted.
+        '400':
+          description: Cannot delete flow with active sessions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Flow not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/flows/{flowId}/duplicate:
+    post:
+      summary: Duplicate flow
+      description: Create a copy of an existing flow with a new name.
+      operationId: duplicateAgentFlow
+      tags:
+      - Agent Flows
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/FlowIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlowDuplicateRequest'
+            example:
+              newName: Lead Capture (Copy)
+      responses:
+        '201':
+          description: Flow duplicated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Flow not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    FlowStep:
+      type: object
+      required:
+      - id
+      - type
+      - config
+      properties:
+        id:
+          type: string
+          description: Unique step identifier.
+        type:
+          $ref: '#/components/schemas/FlowStepType'
+        config:
+          type: object
+          description: Step configuration (varies by type).
+          additionalProperties: true
+        nextStepId:
+          type: string
+          description: ID of the next step to execute.
+          nullable: true
+    FlowTriggerType:
+      type: string
+      description: Type of trigger for a flow.
+      enum:
+      - keyword
+      - intent
+      - always
+      - manual
+    FlowStepType:
+      type: string
+      description: Type of flow step.
+      enum:
+      - message
+      - collect
+      - condition
+      - tool
+      - llm
+      - transfer
+    FlowTrigger:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/FlowTriggerType'
+        keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords that trigger the flow (for keyword type).
+        intent:
+          type: string
+          description: Intent that triggers the flow (for intent type).
+    FlowResponse:
+      type: object
+      required:
+      - flow
+      properties:
+        flow:
+          $ref: '#/components/schemas/AgentFlow'
+    AgentFlow:
+      type: object
+      required:
+      - id
+      - agentId
+      - name
+      - trigger
+      - steps
+      - enabled
+      - priority
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+        enabled:
+          type: boolean
+        priority:
+          type: integer
+          description: Priority when multiple flows match (higher = more priority).
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FlowDuplicateRequest:
+      type: object
+      required:
+      - newName
+      properties:
+        newName:
+          type: string
+          maxLength: 100
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    FlowCreateRequest:
+      type: object
+      required:
+      - name
+      - trigger
+      - steps
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+          default: false
+        priority:
+          type: integer
+          default: 0
+    FlowUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+        priority:
+          type: integer
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+    FlowIdParam:
+      name: flowId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

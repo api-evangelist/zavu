@@ -1,0 +1,349 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC URL Verification API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: URL Verification
+paths:
+  /v1/urls/{urlId}/escalate:
+    post:
+      summary: Escalate a rejected URL
+      description: Request manual review of a rejected URL. Only URLs in 'rejected' status can be escalated; the status then moves to 'escalated'.
+      operationId: escalateUrl
+      tags:
+      - URL Verification
+      parameters:
+      - $ref: '#/components/parameters/UrlIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  minLength: 10
+                  maxLength: 1000
+                  description: Why the URL should be reviewed manually.
+            example:
+              reason: This is our official landing page and was rejected in error.
+      responses:
+        '200':
+          description: URL escalated for manual review.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - url
+                - message
+                properties:
+                  url:
+                    $ref: '#/components/schemas/VerifiedUrl'
+                  message:
+                    type: string
+        '400':
+          description: Only rejected URLs can be escalated, or the URL is already escalated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: URL not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/urls:
+    post:
+      summary: Submit URL for verification
+      description: 'Submit a URL for verification. URLs are automatically checked against Google Web Risk API. Safe URLs are auto-approved, malicious URLs are blocked. URL shorteners (bit.ly, t.co, etc.) are always blocked.
+
+
+        **Important:** All SMS and Email messages containing URLs require those URLs to be verified before the message can be sent. This endpoint allows pre-verification of URLs.'
+      operationId: submitUrl
+      tags:
+      - URL Verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifiedUrlSubmitRequest'
+            example:
+              url: https://example.com/page
+      responses:
+        '200':
+          description: URL already verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedUrlResponse'
+        '201':
+          description: URL verified and approved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedUrlResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: URL blocked (malicious, rejected, or shortener).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                malicious:
+                  summary: Malicious URL
+                  value:
+                    code: url_malicious
+                    message: URL has been flagged as potentially harmful by security systems. This incident has been logged.
+                    details:
+                      urls:
+                      - https://malicious-site.com
+                      threatTypes:
+                      - MALWARE
+                      - SOCIAL_ENGINEERING
+                      warning: fraud_prevention
+                shortener:
+                  summary: URL shortener blocked
+                  value:
+                    code: url_shortener_blocked
+                    message: URL shorteners are not allowed. Please use the full destination URL.
+                    details:
+                      urls:
+                      - https://bit.ly/abc123
+                      reason: url_shorteners_hidden_destination
+                rejected:
+                  summary: URL rejected
+                  value:
+                    code: url_rejected
+                    message: URL has been rejected by our security team.
+                    details:
+                      urls:
+                      - https://rejected-site.com
+                      warning: fraud_prevention
+      security:
+      - bearerAuth: []
+    get:
+      summary: List verified URLs
+      description: List URLs that have been verified for this project.
+      operationId: listUrls
+      tags:
+      - URL Verification
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/VerifiedUrlStatus'
+        description: Filter by verification status.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of verified URLs.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VerifiedUrl'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/urls/{urlId}:
+    get:
+      summary: Get URL details
+      description: Get details of a specific verified URL.
+      operationId: getUrl
+      tags:
+      - URL Verification
+      parameters:
+      - $ref: '#/components/parameters/UrlIdParam'
+      responses:
+        '200':
+          description: URL details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedUrlResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: URL not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    VerifiedUrlResponse:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          $ref: '#/components/schemas/VerifiedUrl'
+    VerifiedUrlSubmitRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: The URL to submit for verification.
+          example: https://example.com/page
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    VerifiedUrlApprovalType:
+      type: string
+      description: How the URL was approved or rejected.
+      enum:
+      - manual
+      - auto_web_risk
+    VerifiedUrlStatus:
+      type: string
+      description: Status of a verified URL.
+      enum:
+      - pending
+      - approved
+      - rejected
+      - escalated
+      - malicious
+    VerifiedUrl:
+      type: object
+      required:
+      - id
+      - url
+      - domain
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: url_abc123
+        url:
+          type: string
+          description: The verified URL.
+          example: https://example.com/page
+        domain:
+          type: string
+          description: Domain extracted from the URL.
+          example: example.com
+        status:
+          $ref: '#/components/schemas/VerifiedUrlStatus'
+        approvalType:
+          $ref: '#/components/schemas/VerifiedUrlApprovalType'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  parameters:
+    UrlIdParam:
+      name: urlId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

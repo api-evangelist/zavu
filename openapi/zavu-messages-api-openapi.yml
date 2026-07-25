@@ -1,0 +1,952 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Messages API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Messages
+paths:
+  /v1/messages:
+    post:
+      summary: Send a message
+      description: 'Send a message to a recipient via SMS or WhatsApp.
+
+
+        **Channel selection:**
+
+        - If `channel` is omitted and `messageType` is `text`, defaults to SMS
+
+        - If `messageType` is anything other than `text`, WhatsApp is used automatically
+
+
+        **WhatsApp 24-hour window:**
+
+        - Free-form messages (non-template) require an open 24h window
+
+        - Window opens when the user messages you first
+
+        - Use template messages to initiate conversations outside the window
+
+
+        **Daily limits:**
+
+        - Unverified accounts: 200 messages per channel per day
+
+        - Complete KYC verification to increase limits to 10,000/day'
+      operationId: sendMessage
+      parameters:
+      - $ref: '#/components/parameters/SenderHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+            examples:
+              sms:
+                summary: Simple SMS
+                value:
+                  to: '+56912345678'
+                  text: Your verification code is 123456
+              whatsapp_text:
+                summary: WhatsApp text message
+                value:
+                  to: '+56912345678'
+                  channel: whatsapp
+                  text: Hello from Zavu!
+              whatsapp_image:
+                summary: WhatsApp image
+                value:
+                  to: '+56912345678'
+                  messageType: image
+                  text: Check out this product!
+                  content:
+                    mediaUrl: https://example.com/product.jpg
+              whatsapp_buttons:
+                summary: WhatsApp interactive buttons
+                value:
+                  to: '+56912345678'
+                  messageType: buttons
+                  text: How would you rate your experience?
+                  content:
+                    buttons:
+                    - id: great
+                      title: Great!
+                    - id: okay
+                      title: It was okay
+                    - id: poor
+                      title: Not good
+              whatsapp_template:
+                summary: WhatsApp template message
+                value:
+                  to: '+56912345678'
+                  messageType: template
+                  content:
+                    templateId: tmpl_abc123
+                    templateVariables:
+                      '1': John
+                      '2': ORD-12345
+              whatsapp_template_with_url_button:
+                summary: WhatsApp template with dynamic URL button
+                value:
+                  to: '+56912345678'
+                  messageType: template
+                  content:
+                    templateId: tmpl_abc123
+                    templateVariables:
+                      '1': ORDAZ BRAVO MARCO
+                      '2': 'REPORTE: Conducta inadecuada'
+                    templateButtonVariables:
+                      '0': abc-report-token
+              whatsapp_cta_url:
+                summary: WhatsApp CTA URL button
+                value:
+                  to: '+56912345678'
+                  channel: whatsapp
+                  messageType: cta_url
+                  text: Tap the button below to see available dates.
+                  content:
+                    ctaDisplayText: See Dates
+                    ctaUrl: https://example.com/schedule?ref=zavu
+                    ctaHeaderType: image
+                    ctaHeaderMediaUrl: https://example.com/banner.png
+                    footerText: Dates subject to change.
+              telegram_text:
+                summary: Telegram text message
+                value:
+                  to: '123456789'
+                  channel: telegram
+                  text: Hello from Zavu via Telegram!
+              telegram_template:
+                summary: Telegram template message
+                value:
+                  to: '123456789'
+                  channel: telegram
+                  messageType: template
+                  content:
+                    templateId: tmpl_abc123
+                    templateVariables:
+                      '1': John
+                      '2': ORD-12345
+              sms_template:
+                summary: SMS template message
+                value:
+                  to: '+56912345678'
+                  channel: sms
+                  messageType: template
+                  content:
+                    templateId: tmpl_abc123
+                    templateVariables:
+                      '1': John
+                      '2': ORD-12345
+              instagram_text:
+                summary: Instagram text message
+                value:
+                  to: '17841400000000000'
+                  channel: instagram
+                  text: Hello from Zavu via Instagram!
+              messenger_text:
+                summary: Messenger text message (Facebook Page / Marketplace chat)
+                value:
+                  to: '24025631120151183'
+                  channel: messenger
+                  text: Hello from Zavu via Messenger!
+              voice_tts:
+                summary: Voice text-to-speech message
+                value:
+                  to: '+56912345678'
+                  channel: voice
+                  text: Your verification code is 1 2 3 4 5 6
+              voice_tts_spanish:
+                summary: Voice TTS in Spanish
+                value:
+                  to: '+56912345678'
+                  channel: voice
+                  text: Su codigo de verificacion es 1 2 3 4 5 6
+                  voiceLanguage: es-ES
+              email_simple:
+                summary: Simple email
+                value:
+                  to: user@example.com
+                  channel: email
+                  subject: Your order has shipped
+                  text: 'Hi John, your order #12345 has shipped and will arrive in 2-3 business days.'
+              email_html:
+                summary: Email with HTML body
+                value:
+                  to: user@example.com
+                  channel: email
+                  subject: Welcome to Zavu
+                  text: Welcome to Zavu! We're excited to have you.
+                  htmlBody: <h1>Welcome to Zavu!</h1><p>We're excited to have you on board.</p>
+                  replyTo: support@example.com
+              email_attachment:
+                summary: Email with attachments
+                value:
+                  to: user@example.com
+                  channel: email
+                  subject: Your invoice
+                  text: Please find your invoice attached.
+                  attachments:
+                  - filename: invoice.pdf
+                    content: JVBERi0xLjQK...
+                    content_type: application/pdf
+              email_inline_image:
+                summary: Email with inline image
+                value:
+                  to: user@example.com
+                  channel: email
+                  subject: Your report
+                  text: See your report below.
+                  htmlBody: <h1>Report</h1><img src="cid:chart"><p>Details above.</p>
+                  attachments:
+                  - filename: chart.png
+                    path: https://example.com/chart.png
+                    content_type: image/png
+                    content_id: chart
+      responses:
+        '202':
+          description: Message accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request or WhatsApp 24h window not open.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                window_closed:
+                  summary: WhatsApp window closed
+                  value:
+                    code: whatsapp_window_closed
+                    message: WhatsApp 24-hour window is not open. Use a template message or wait for user to message first.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Message blocked due to URL restrictions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                url_not_verified:
+                  summary: URL not verified
+                  value:
+                    code: url_not_verified
+                    message: 'Message blocked: Contains unverified URLs. Submit URLs for verification via the /v1/urls endpoint.'
+                    details:
+                      urls:
+                      - https://example.com
+                      submissionEndpoint: /v1/urls
+                url_shortener_blocked:
+                  summary: URL shortener blocked
+                  value:
+                    code: url_shortener_blocked
+                    message: 'Message blocked: URL shorteners are not allowed. Please use the full destination URL.'
+                    details:
+                      blockedUrls:
+                      - https://bit.ly/abc123
+                      reason: url_shorteners_hidden_destination
+        '404':
+          description: Template or sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Idempotency conflict (message already sent).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Messages
+    get:
+      summary: List messages
+      description: List messages previously sent by this project.
+      operationId: listMessages
+      parameters:
+      - name: status
+        in: query
+        description: Filter by status. Not all stored statuses are filterable.
+        schema:
+          type: string
+          enum:
+          - queued
+          - sending
+          - sent
+          - delivered
+          - failed
+          - received
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: channel
+        in: query
+        description: Filter by delivery channel.
+        schema:
+          type: string
+          enum:
+          - sms
+          - sms_oneway
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of messages.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Messages
+  /v1/messages/{messageId}:
+    get:
+      summary: Get message by ID
+      operationId: getMessage
+      parameters:
+      - $ref: '#/components/parameters/MessageIdParam'
+      responses:
+        '200':
+          description: Message details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Message not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Messages
+  /v1/messages/{messageId}/reactions:
+    post:
+      summary: Send reaction to message
+      description: Send an emoji reaction to an existing WhatsApp message. Reactions are only supported for WhatsApp messages.
+      operationId: sendReaction
+      parameters:
+      - $ref: '#/components/parameters/MessageIdParam'
+      - $ref: '#/components/parameters/SenderHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReactionRequest'
+            example:
+              emoji: 👍
+      responses:
+        '202':
+          description: Reaction accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request or message is not from WhatsApp.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                not_whatsapp:
+                  summary: Not a WhatsApp message
+                  value:
+                    code: bad_request
+                    message: Reactions are only supported for WhatsApp messages
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Message not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Messages
+  /v1/messages/{messageId}/typing:
+    post:
+      summary: Show typing indicator
+      description: Mark an inbound WhatsApp message as read and display a typing indicator to the user while you prepare a response. The indicator is automatically dismissed when you send a reply, or after 25 seconds — whichever comes first. Only valid for inbound WhatsApp messages. Use this when a reply will take more than a couple of seconds (LLM agent, tool call, lookup) to improve the recipient's experience.
+      operationId: showTypingIndicator
+      parameters:
+      - $ref: '#/components/parameters/MessageIdParam'
+      - $ref: '#/components/parameters/SenderHeader'
+      responses:
+        '202':
+          description: Typing indicator displayed and message marked as read.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - success
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid request — message is not WhatsApp, not inbound, or has no provider message ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                not_whatsapp:
+                  summary: Not a WhatsApp message
+                  value:
+                    code: bad_request
+                    message: Typing indicators are only supported for WhatsApp messages
+                not_inbound:
+                  summary: Message is not inbound
+                  value:
+                    code: bad_request
+                    message: Typing indicators can only be sent in response to inbound messages
+                no_provider_id:
+                  summary: Missing provider message ID
+                  value:
+                    code: bad_request
+                    message: 'Cannot send typing indicator: no provider message ID available'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Message not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Messages
+components:
+  schemas:
+    Message:
+      type: object
+      required:
+      - id
+      - to
+      - status
+      - channel
+      - messageType
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: jd7x2k3m4n5p6q7r8s9t0
+        to:
+          type: string
+          example: '+56912345678'
+        from:
+          type: string
+          example: '+13125551212'
+        senderId:
+          type: string
+          example: sender_12345
+        channel:
+          $ref: '#/components/schemas/Channel'
+        messageType:
+          $ref: '#/components/schemas/MessageType'
+        status:
+          $ref: '#/components/schemas/MessageStatus'
+        text:
+          type: string
+          description: Text content or caption.
+        content:
+          $ref: '#/components/schemas/MessageContent'
+        providerMessageId:
+          type: string
+          description: Message ID from the delivery provider.
+        errorCode:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+        cost:
+          type: number
+          nullable: true
+          description: Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
+        costProvider:
+          type: number
+          nullable: true
+          description: Carrier and delivery cost in USD.
+        costTotal:
+          type: number
+          nullable: true
+          description: Total cost in USD (platform charge + delivery cost).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    MessageContent:
+      type: object
+      description: Content for non-text message types (WhatsApp and Telegram).
+      properties:
+        mediaUrl:
+          type: string
+          description: URL of the media file (for image, video, audio, document, sticker).
+          example: https://example.com/image.jpg
+        mediaId:
+          type: string
+          description: WhatsApp media ID if already uploaded.
+        mimeType:
+          type: string
+          description: MIME type of the media.
+          example: image/jpeg
+        filename:
+          type: string
+          description: Filename for documents.
+          example: invoice.pdf
+        latitude:
+          type: number
+          description: Latitude for location messages.
+        longitude:
+          type: number
+          description: Longitude for location messages.
+        locationName:
+          type: string
+          description: Name of the location.
+        locationAddress:
+          type: string
+          description: Address of the location.
+        contacts:
+          type: array
+          description: Contact cards for contact messages.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              phones:
+                type: array
+                items:
+                  type: string
+        buttons:
+          type: array
+          description: Interactive buttons (max 3).
+          maxItems: 3
+          items:
+            type: object
+            required:
+            - id
+            - title
+            properties:
+              id:
+                type: string
+                maxLength: 256
+              title:
+                type: string
+                maxLength: 20
+        listButton:
+          type: string
+          description: Button text for list messages.
+          maxLength: 20
+        sections:
+          type: array
+          description: Sections for list messages.
+          items:
+            type: object
+            required:
+            - title
+            - rows
+            properties:
+              title:
+                type: string
+              rows:
+                type: array
+                maxItems: 10
+                items:
+                  type: object
+                  required:
+                  - id
+                  - title
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                      maxLength: 24
+                    description:
+                      type: string
+                      maxLength: 72
+        ctaDisplayText:
+          type: string
+          description: Button label for cta_url messages.
+          maxLength: 20
+          example: See Dates
+        ctaUrl:
+          type: string
+          format: uri
+          description: Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url. WhatsApp requires HTTPS in production.
+          example: https://example.com/schedule
+        ctaHeaderType:
+          type: string
+          description: Optional header type for cta_url messages.
+          enum:
+          - text
+          - image
+          - video
+          - document
+        ctaHeaderText:
+          type: string
+          description: Header text when ctaHeaderType is 'text'.
+          maxLength: 60
+        ctaHeaderMediaUrl:
+          type: string
+          format: uri
+          description: Public HTTPS URL of the header media when ctaHeaderType is 'image', 'video', or 'document'. WhatsApp fetches this URL — it must be publicly reachable and return the declared content type.
+        footerText:
+          type: string
+          description: Optional footer text for cta_url messages.
+          maxLength: 60
+          example: Dates subject to change.
+        emoji:
+          type: string
+          description: Emoji for reaction messages.
+        reactToMessageId:
+          type: string
+          description: Message ID to react to.
+        replyToMessageId:
+          type: string
+          description: Zavu message ID of the quoted message this message replies to. Present on inbound messages that quote an earlier message. Omitted when the quoted message is not found in Zavu (e.g. an old or unknown message) — use replyToProviderMessageId in that case.
+        replyToProviderMessageId:
+          type: string
+          description: Provider message ID (WhatsApp WAMID) of the quoted message. Present whenever an inbound message is a reply, even if the quoted message is not stored in Zavu.
+        replyToFrom:
+          type: string
+          description: Sender of the quoted message (phone number in E.164 format).
+        replyToText:
+          type: string
+          description: Truncated snippet of the quoted message's text, for display. Empty when the quoted message has no text (e.g. media).
+        replyToMessageType:
+          type: string
+          description: Type of the quoted message (text, image, video, etc.).
+        templateId:
+          type: string
+          description: Template ID for template messages.
+        templateVariables:
+          type: object
+          description: 'Variables for body placeholders. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template''s format and sends the correct payload to Meta. Named keys also resolve a named text-header variable. Do not mix positional and named keys in the same request.'
+          additionalProperties:
+            type: string
+          example:
+            '1': John
+            '2': ORD-12345
+        templateButtonVariables:
+          type: object
+          description: 'Variables for dynamic button placeholders (URL buttons and OTP buttons). Keys are the button index (0, 1, 2) in the template''s `buttons` array — not the placeholder name. Values substitute the `{{1}}` placeholder inside that button''s URL.
+
+
+            **WhatsApp constraints:**
+
+            - URL buttons only accept `{{1}}` — positional, numeric, no whitespace, no name. Named placeholders like `{{token}}` are stored as literal URL text by Meta and cannot be substituted.
+
+            - At most one placeholder per URL button.
+
+            - A template may have at most three buttons.
+
+            - Static URL buttons (no placeholder) and `quick_reply` buttons are not included here.'
+          additionalProperties:
+            type: string
+          example:
+            '0': abc-report-token
+        templateHeaderVariables:
+          type: object
+          description: Value for a text-header variable, keyed by `1` (WhatsApp text headers allow at most one variable). Optional override. If omitted, Zavu resolves the header from `templateVariables` using the header placeholder's name (e.g. `novios`). Static text headers need no value.
+          additionalProperties:
+            type: string
+          example:
+            '1': Jorge y Laura
+    Channel:
+      type: string
+      description: Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+      enum:
+      - auto
+      - sms
+      - sms_oneway
+      - whatsapp
+      - whatsapp_alt
+      - telegram
+      - email
+      - instagram
+      - messenger
+      - voice
+    ReactionRequest:
+      type: object
+      required:
+      - emoji
+      properties:
+        emoji:
+          type: string
+          description: Single emoji character to react with.
+          example: 👍
+    MessageStatus:
+      type: string
+      enum:
+      - queued
+      - sending
+      - sent
+      - delivered
+      - read
+      - failed
+      - received
+      - pending_url_verification
+    EmailAttachmentInput:
+      type: object
+      description: Email attachment. Provide either `content` (base64) or `path` (URL), not both.
+      required:
+      - filename
+      properties:
+        filename:
+          type: string
+          description: Name of the attached file.
+          maxLength: 255
+          example: invoice.pdf
+        content:
+          type: string
+          description: Content of the attached file as a Base64-encoded string.
+        path:
+          type: string
+          format: uri
+          description: URL where the attachment file is hosted. The server will fetch the file.
+        content_type:
+          type: string
+          description: MIME type of the attachment. If not set, will be derived from the filename.
+          example: application/pdf
+        content_id:
+          type: string
+          description: Content ID for inline images. Reference in HTML as `<img src="cid:your_content_id">`.
+          maxLength: 100
+          example: logo
+    MessageType:
+      type: string
+      description: Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
+      enum:
+      - text
+      - image
+      - video
+      - audio
+      - document
+      - sticker
+      - location
+      - contact
+      - buttons
+      - list
+      - cta_url
+      - reaction
+      - template
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    MessageResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          $ref: '#/components/schemas/Message'
+    MessageRequest:
+      type: object
+      description: Request body to send a message.
+      required:
+      - to
+      properties:
+        to:
+          type: string
+          description: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), WhatsApp group JID (`<id>@g.us`, e.g. `120363000000000000@g.us`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden. A group JID is only valid on the `whatsapp_alt` channel and supports text and media (image, video, audio, document, sticker, location, contact).
+          example: '+56912345678'
+        channel:
+          $ref: '#/components/schemas/Channel'
+          description: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
+          default: auto
+        messageType:
+          $ref: '#/components/schemas/MessageType'
+          description: Type of message. Defaults to 'text'.
+          default: text
+        text:
+          type: string
+          description: Text body for text messages or caption for media messages.
+          example: Your verification code is 123456.
+        content:
+          $ref: '#/components/schemas/MessageContent'
+          description: Additional content for non-text message types.
+        subject:
+          type: string
+          description: Email subject line. Required when channel is 'email' or recipient is an email address.
+          maxLength: 998
+          example: Your order confirmation
+        htmlBody:
+          type: string
+          description: HTML body for email messages. If provided, email will be sent as multipart with both text and HTML.
+        replyTo:
+          type: string
+          format: email
+          description: Reply-To email address for email messages.
+          example: support@example.com
+        idempotencyKey:
+          type: string
+          description: Optional idempotency key to avoid duplicate sends.
+          example: msg_01HZY4ZP7VQY2J3BRW7Z6G0QGE
+        metadata:
+          type: object
+          description: Arbitrary metadata to associate with the message.
+          additionalProperties:
+            type: string
+        fallbackEnabled:
+          type: boolean
+          description: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
+          default: true
+        voiceLanguage:
+          type: string
+          description: Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
+          example: es-ES
+        attachments:
+          type: array
+          description: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/EmailAttachmentInput'
+  parameters:
+    MessageIdParam:
+      name: messageId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderHeader:
+      name: Zavu-Sender
+      in: header
+      required: false
+      description: Optional sender profile ID. If omitted, the project's default sender will be used.
+      schema:
+        type: string
+        example: sender_12345
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

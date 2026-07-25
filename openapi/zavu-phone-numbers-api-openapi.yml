@@ -1,0 +1,619 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Phone Numbers API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Phone Numbers
+paths:
+  /v1/phone-numbers/requirements:
+    get:
+      summary: Get regulatory requirements
+      description: Get regulatory requirements for purchasing phone numbers in a specific country. Some countries require additional documentation (addresses, identity documents) before phone numbers can be activated.
+      operationId: getPhoneNumberRequirements
+      parameters:
+      - name: countryCode
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 2
+        example: DE
+        description: Two-letter ISO country code.
+      - name: type
+        in: query
+        schema:
+          $ref: '#/components/schemas/PhoneNumberType'
+        description: Type of phone number (local, mobile, tollFree).
+      responses:
+        '200':
+          description: List of requirements for the country/type combination.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Requirement'
+              example:
+                items:
+                - id: req_123
+                  countryCode: DE
+                  phoneNumberType: local
+                  action: ordering
+                  requirementTypes:
+                  - id: address_proof
+                    name: Proof of Address
+                    description: A document proving your address in Germany
+                    type: document
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+  /v1/phone-numbers/available:
+    get:
+      summary: Search available phone numbers
+      description: Search for available phone numbers to purchase by country and type.
+      operationId: searchAvailablePhoneNumbers
+      parameters:
+      - name: countryCode
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 2
+        example: US
+        description: Two-letter ISO country code.
+      - name: type
+        in: query
+        schema:
+          $ref: '#/components/schemas/PhoneNumberType'
+        description: Type of phone number to search for.
+      - name: contains
+        in: query
+        schema:
+          type: string
+          maxLength: 20
+        description: Search for numbers containing this string.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+        description: Maximum number of results to return.
+      responses:
+        '200':
+          description: List of available phone numbers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AvailablePhoneNumber'
+        '400':
+          description: Invalid query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+  /v1/phone-numbers:
+    post:
+      summary: Purchase a phone number
+      description: Purchase an available phone number. The first US phone number is free for each team.
+      operationId: purchasePhoneNumber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberPurchaseRequest'
+            example:
+              phoneNumber: '+15551234567'
+              name: Primary Line
+      responses:
+        '201':
+          description: Phone number purchased successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '400':
+          description: Invalid request or phone number no longer available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: insufficient_balance
+                message: 'Insufficient balance. Required: $1.25. Please add funds to continue.'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+    get:
+      summary: List phone numbers
+      description: List all phone numbers owned by this project.
+      operationId: listPhoneNumbers
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/PhoneNumberStatus'
+        description: Filter by phone number status.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor.
+      responses:
+        '200':
+          description: List of phone numbers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OwnedPhoneNumber'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+  /v1/phone-numbers/{phoneNumberId}:
+    get:
+      summary: Get phone number
+      description: Get details of a specific phone number.
+      operationId: getPhoneNumber
+      parameters:
+      - $ref: '#/components/parameters/PhoneNumberIdParam'
+      responses:
+        '200':
+          description: Phone number details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Phone number not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+    patch:
+      summary: Update phone number
+      description: Update a phone number's name or sender assignment.
+      operationId: updatePhoneNumber
+      parameters:
+      - $ref: '#/components/parameters/PhoneNumberIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberUpdateRequest'
+            examples:
+              rename:
+                summary: Rename phone number
+                value:
+                  name: Support Line
+              assign:
+                summary: Assign to sender
+                value:
+                  senderId: sender_abc123
+              unassign:
+                summary: Unassign from sender
+                value:
+                  senderId: null
+      responses:
+        '200':
+          description: Phone number updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Phone number or sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+    delete:
+      summary: Release phone number
+      description: Release a phone number. The phone number must not be assigned to a sender.
+      operationId: releasePhoneNumber
+      parameters:
+      - $ref: '#/components/parameters/PhoneNumberIdParam'
+      responses:
+        '204':
+          description: Phone number released.
+        '400':
+          description: Cannot release phone number assigned to a sender.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Phone number not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Phone Numbers
+components:
+  schemas:
+    AvailablePhoneNumber:
+      type: object
+      required:
+      - phoneNumber
+      - capabilities
+      - pricing
+      properties:
+        phoneNumber:
+          type: string
+          example: '+15551234567'
+        friendlyName:
+          type: string
+          example: (555) 123-4567
+        locality:
+          type: string
+          example: San Francisco
+        region:
+          type: string
+          example: CA
+        capabilities:
+          $ref: '#/components/schemas/PhoneNumberCapabilities'
+        pricing:
+          $ref: '#/components/schemas/PhoneNumberPricing'
+    PhoneNumberUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          nullable: true
+          description: Custom name for the phone number. Set to null to clear.
+        senderId:
+          type: string
+          nullable: true
+          description: Sender ID to assign the phone number to. Set to null to unassign.
+    PhoneNumberStatus:
+      type: string
+      enum:
+      - active
+      - suspended
+      - pending
+    OwnedPhoneNumberPricing:
+      type: object
+      properties:
+        monthlyPrice:
+          type: number
+          description: Monthly price in USD.
+        upfrontCost:
+          type: number
+          description: One-time purchase cost in cents.
+        monthlyCost:
+          type: number
+          description: Monthly cost in cents.
+        isFreeNumber:
+          type: boolean
+          description: Whether this is a free number.
+    RequirementType:
+      type: object
+      description: A specific requirement type within a requirement group.
+      required:
+      - id
+      - name
+      - description
+      - type
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/RequirementFieldType'
+        example:
+          type: string
+          nullable: true
+        acceptanceCriteria:
+          $ref: '#/components/schemas/RequirementAcceptanceCriteria'
+    RequirementAcceptanceCriteria:
+      type: object
+      description: Acceptance criteria for a requirement.
+      properties:
+        minLength:
+          type: integer
+          nullable: true
+        maxLength:
+          type: integer
+          nullable: true
+        allowedValues:
+          type: array
+          items:
+            type: string
+          nullable: true
+        regexPattern:
+          type: string
+          nullable: true
+    PhoneNumberType:
+      type: string
+      enum:
+      - local
+      - national
+      - tollFree
+    PhoneNumberPricing:
+      type: object
+      properties:
+        monthlyPrice:
+          type: number
+          description: Monthly price in USD.
+        upfrontPrice:
+          type: number
+          description: One-time purchase price in USD.
+        isFreeEligible:
+          type: boolean
+          description: Whether this number qualifies for the free first US number offer.
+    Requirement:
+      type: object
+      description: A group of requirements for a specific country/phone type combination.
+      required:
+      - id
+      - countryCode
+      - phoneNumberType
+      - action
+      - requirementTypes
+      properties:
+        id:
+          type: string
+        countryCode:
+          type: string
+          example: DE
+        phoneNumberType:
+          type: string
+          example: local
+        action:
+          type: string
+          example: ordering
+        requirementTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequirementType'
+    PhoneNumberCapabilities:
+      type: object
+      properties:
+        sms:
+          type: boolean
+        voice:
+          type: boolean
+        mms:
+          type: boolean
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    OwnedPhoneNumber:
+      type: object
+      required:
+      - id
+      - phoneNumber
+      - capabilities
+      - status
+      - pricing
+      - createdAt
+      properties:
+        id:
+          type: string
+        phoneNumber:
+          type: string
+          example: '+15551234567'
+        name:
+          type: string
+          description: Optional custom name for the phone number.
+        capabilities:
+          type: array
+          items:
+            type: string
+          example:
+          - sms
+          - voice
+        status:
+          $ref: '#/components/schemas/PhoneNumberStatus'
+        senderId:
+          type: string
+          description: Sender ID if the phone number is assigned to a sender.
+        pricing:
+          $ref: '#/components/schemas/OwnedPhoneNumberPricing'
+        nextRenewalDate:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PhoneNumberResponse:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/OwnedPhoneNumber'
+    RequirementFieldType:
+      type: string
+      description: Type of requirement field.
+      enum:
+      - textual
+      - address
+      - document
+      - action
+    PhoneNumberPurchaseRequest:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format.
+          example: '+15551234567'
+        name:
+          type: string
+          maxLength: 100
+          description: Optional custom name for the phone number.
+  parameters:
+    PhoneNumberIdParam:
+      name: phoneNumberId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

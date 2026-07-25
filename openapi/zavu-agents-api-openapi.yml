@@ -1,0 +1,597 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Agents API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Agents
+paths:
+  /v1/senders/{senderId}/agent:
+    get:
+      summary: Get agent
+      description: Get the AI agent configuration for a sender.
+      operationId: getAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '200':
+          description: Agent configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender or agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create agent
+      description: Create an AI agent for a sender. Each sender can have at most one agent.
+      operationId: createAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreateRequest'
+            example:
+              name: Customer Support
+              provider: openai
+              model: gpt-4o-mini
+              systemPrompt: You are a helpful customer support agent. Be friendly and concise.
+              apiKey: sk-...
+      responses:
+        '201':
+          description: Agent created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+        '400':
+          description: Invalid request or agent already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update agent
+      description: Update an AI agent's configuration.
+      operationId: updateAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentUpdateRequest'
+      responses:
+        '200':
+          description: Agent updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender or agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete agent
+      description: Delete an AI agent.
+      operationId: deleteAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '204':
+          description: Agent deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender or agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/stats:
+    get:
+      summary: Get agent statistics
+      description: Get statistics for an AI agent including invocations, tokens, and costs.
+      operationId: getAgentStats
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '200':
+          description: Agent statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStats'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/executions:
+    get:
+      summary: List agent executions
+      description: List recent agent executions with pagination.
+      operationId: listAgentExecutions
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/AgentExecutionStatus'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of executions.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentExecution'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/executions/{executionId}:
+    get:
+      summary: Get a single agent execution
+      description: Fetch full details for one execution — including `errorMessage`, `errorCode`, and `responseText`. Use this to debug failures surfaced by the list endpoint.
+      operationId: getAgentExecution
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - name: executionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Execution details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - execution
+                properties:
+                  execution:
+                    $ref: '#/components/schemas/AgentExecution'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent or execution not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Agent:
+      type: object
+      description: AI Agent configuration for a sender.
+      required:
+      - id
+      - senderId
+      - name
+      - enabled
+      - provider
+      - model
+      - systemPrompt
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: agent_abc123
+        senderId:
+          type: string
+          example: sender_12345
+        name:
+          type: string
+          example: Customer Support Agent
+        enabled:
+          type: boolean
+          description: Whether the agent is active.
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+          description: Model ID (e.g., gpt-4o-mini, claude-3-5-sonnet).
+          example: gpt-4o-mini
+        systemPrompt:
+          type: string
+          description: System prompt for the agent.
+        contextWindowMessages:
+          type: integer
+          description: Number of previous messages to include as context.
+          default: 10
+        includeContactMetadata:
+          type: boolean
+          description: Whether to include contact metadata in context.
+          default: true
+        maxTokens:
+          type: integer
+          description: Maximum tokens for LLM response.
+          nullable: true
+        temperature:
+          type: number
+          description: LLM temperature (0-2).
+          nullable: true
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+          description: Channels that trigger the agent.
+          example:
+          - sms
+          - whatsapp
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
+          description: Message types that trigger the agent.
+          example:
+          - text
+        stats:
+          type: object
+          properties:
+            totalInvocations:
+              type: integer
+            totalTokensUsed:
+              type: integer
+            totalCost:
+              type: number
+              description: Total cost in USD.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    AgentExecution:
+      type: object
+      required:
+      - id
+      - agentId
+      - status
+      - inputTokens
+      - outputTokens
+      - latencyMs
+      - cost
+      - createdAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        inboundMessageId:
+          type: string
+        responseMessageId:
+          type: string
+          nullable: true
+        responseText:
+          type: string
+          nullable: true
+        status:
+          $ref: '#/components/schemas/AgentExecutionStatus'
+        errorMessage:
+          type: string
+          nullable: true
+        inputTokens:
+          type: integer
+        outputTokens:
+          type: integer
+        latencyMs:
+          type: integer
+        cost:
+          type: number
+          description: Cost in USD.
+        createdAt:
+          type: string
+          format: date-time
+    AgentCreateRequest:
+      type: object
+      required:
+      - name
+      - provider
+      - model
+      - systemPrompt
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+        systemPrompt:
+          type: string
+          maxLength: 10000
+        apiKey:
+          type: string
+          description: API key for the LLM provider. Required unless provider is 'zavu'.
+        contextWindowMessages:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 10
+        includeContactMetadata:
+          type: boolean
+          default: true
+        maxTokens:
+          type: integer
+          minimum: 1
+          maximum: 4096
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+          default:
+          - '*'
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
+          default:
+          - text
+    AgentExecutionStatus:
+      type: string
+      description: Status of an agent execution.
+      enum:
+      - success
+      - error
+      - filtered
+      - rate_limited
+      - balance_insufficient
+    AgentResponse:
+      type: object
+      required:
+      - agent
+      properties:
+        agent:
+          $ref: '#/components/schemas/Agent'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    AgentStats:
+      type: object
+      required:
+      - totalInvocations
+      - totalTokensUsed
+      - totalCost
+      - successCount
+      - errorCount
+      properties:
+        totalInvocations:
+          type: integer
+        totalTokensUsed:
+          type: integer
+        totalCost:
+          type: number
+          description: Total cost in USD.
+        successCount:
+          type: integer
+        errorCount:
+          type: integer
+        avgLatencyMs:
+          type: number
+          nullable: true
+    AgentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        enabled:
+          type: boolean
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+        systemPrompt:
+          type: string
+          maxLength: 10000
+        apiKey:
+          type: string
+        contextWindowMessages:
+          type: integer
+          minimum: 1
+          maximum: 50
+        includeContactMetadata:
+          type: boolean
+        maxTokens:
+          type: integer
+          minimum: 1
+          maximum: 4096
+          nullable: true
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+          nullable: true
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
+    AgentProvider:
+      type: string
+      description: LLM provider for the AI agent.
+      enum:
+      - openai
+      - anthropic
+      - google
+      - mistral
+      - zavu
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

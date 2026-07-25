@@ -1,0 +1,1107 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Functions API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Functions
+paths:
+  /v1/functions/event-types:
+    get:
+      summary: List function event types
+      description: List the event types a function trigger can subscribe to.
+      operationId: listFunctionEventTypes
+      tags:
+      - Functions
+      responses:
+        '200':
+          description: Supported event types.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - events
+                properties:
+                  events:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - message.inbound
+                    - message.delivered
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/triggers:
+    get:
+      summary: List function triggers
+      operationId: listFunctionTriggers
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      responses:
+        '200':
+          description: Triggers for the function.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - triggers
+                properties:
+                  triggers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FunctionTrigger'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create function triggers
+      description: Subscribe a function to one or more event types, optionally scoped to specific senders. Provide eventTypes and senderIds (use null in senderIds for all senders); a trigger is created for each event type and sender combination.
+      operationId: createFunctionTriggers
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - eventTypes
+              - senderIds
+              properties:
+                eventTypes:
+                  type: array
+                  items:
+                    type: string
+                  description: Event types to subscribe to.
+                senderIds:
+                  type: array
+                  items:
+                    type: string
+                    nullable: true
+                  description: Senders to scope the triggers to. Use null for all senders.
+            example:
+              eventTypes:
+              - message.inbound
+              senderIds:
+              - null
+      responses:
+        '201':
+          description: Triggers created.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - added
+                - skipped
+                - triggers
+                properties:
+                  added:
+                    type: integer
+                  skipped:
+                    type: integer
+                    description: Number of triggers that already existed.
+                  triggers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FunctionTrigger'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/triggers/{triggerId}:
+    patch:
+      summary: Enable or disable a trigger
+      operationId: updateFunctionTrigger
+      tags:
+      - Functions
+      parameters:
+      - name: triggerId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - active
+              properties:
+                active:
+                  type: boolean
+      responses:
+        '200':
+          description: Trigger updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - ok
+                - active
+                properties:
+                  ok:
+                    type: boolean
+                  active:
+                    type: boolean
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Trigger not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete a trigger
+      operationId: deleteFunctionTrigger
+      tags:
+      - Functions
+      parameters:
+      - name: triggerId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Trigger deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Trigger not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/deployments:
+    get:
+      summary: List function deployments
+      description: List a function's deployment history, newest first. Source code is omitted; fetch a single deployment via GET /v1/functions/deployments/{deploymentId} for full details.
+      operationId: listFunctionDeployments
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 20
+          maximum: 100
+      responses:
+        '200':
+          description: Deployment history.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deployments
+                properties:
+                  deployments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        version:
+                          type: integer
+                        status:
+                          $ref: '#/components/schemas/FunctionDeploymentStatus'
+                        bundleSizeBytes:
+                          type: integer
+                          nullable: true
+                        errorMessage:
+                          type: string
+                          nullable: true
+                        isActive:
+                          type: boolean
+                        deployedAt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        createdAt:
+                          type: string
+                          format: date-time
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/rollback:
+    post:
+      summary: Roll back to a previous deployment
+      description: Re-deploy a previous version by copying its source, dependencies, and runtime pin onto the function's draft, then deploying. Returns immediately with a deployment ID — poll GET /v1/functions/deployments/{deploymentId} until status is active or failed. Secrets are not rolled back.
+      operationId: rollbackFunction
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - deploymentId
+              properties:
+                deploymentId:
+                  type: string
+                  description: ID of the deployment to roll back to.
+            example:
+              deploymentId: fnd_abc123
+      responses:
+        '202':
+          description: Rollback deployment queued.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deployment
+                properties:
+                  deployment:
+                    $ref: '#/components/schemas/FunctionDeployment'
+                  rolledBackToVersion:
+                    type: integer
+                  previousDraft:
+                    type: object
+                    nullable: true
+                    description: The draft that was replaced, so a UI can offer to restore it.
+        '400':
+          description: Invalid request or function in a non-deployable state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function or deployment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions:
+    post:
+      summary: Create function
+      description: 'Create a new Zavu Function. The function starts in `draft` status. A dedicated API key is auto-provisioned and injected as the `ZAVU_API_KEY` secret so the function can call back into the Zavu API without manual setup.
+
+
+        Provide `sourceCode` to seed the draft. Call `POST /v1/functions/{functionId}/deploy` afterwards to publish.'
+      operationId: createFunction
+      tags:
+      - Functions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionCreateRequest'
+            example:
+              slug: order-bot
+              name: Order Bot
+              description: Replies to order status questions on WhatsApp.
+              sourceCode: "import { defineFunction } from '@zavu/functions';\n\nexport default defineFunction(async (event, ctx) => {\n  ctx.log('received', event.type);\n});\n"
+              dependencies:
+                openai: ^4.20.0
+      responses:
+        '201':
+          description: Function created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZavuFunctionResponse'
+        '400':
+          description: Invalid request (e.g. duplicate slug, invalid dependencies).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}:
+    get:
+      summary: Get function
+      operationId: getFunction
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      responses:
+        '200':
+          description: Function details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZavuFunctionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update function draft
+      description: Update the draft source code and/or dependency map without triggering a build. Visible in the dashboard immediately, but the live (deployed) function does not change until `POST /v1/functions/{functionId}/deploy` runs.
+      operationId: updateFunctionDraft
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionDeployRequest'
+      responses:
+        '200':
+          description: Draft updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZavuFunctionResponse'
+        '400':
+          description: No fields provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete function
+      description: 'Permanently delete a function and cascade: triggers, secrets, deployment history, managed agents+tools, and revoke the auto-provisioned API key. The AWS Lambda + log group are torn down asynchronously.'
+      operationId: deleteFunction
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      responses:
+        '200':
+          description: Function deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deleted
+                properties:
+                  deleted:
+                    type: boolean
+                  name:
+                    type: string
+                  slug:
+                    type: string
+        '400':
+          description: Cannot delete while a deployment is in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/deploy:
+    post:
+      summary: Deploy function
+      description: Publish the function. If `sourceCode` or `dependencies` are provided in the body, they replace the current draft before deployment. Returns immediately with a deployment ID — poll `GET /v1/functions/deployments/{deploymentId}` until status is `active` or `failed`.
+      operationId: deployFunction
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionDeployRequest'
+      responses:
+        '202':
+          description: Deployment queued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionDeploymentResponse'
+        '400':
+          description: Invalid request or function in a non-deployable state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/deployments/{deploymentId}:
+    get:
+      summary: Get deployment
+      description: Fetch a deployment to poll its status during a deploy.
+      operationId: getFunctionDeployment
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionDeploymentIdParam'
+      responses:
+        '200':
+          description: Deployment details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionDeploymentResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Deployment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/secrets:
+    get:
+      summary: List function secrets
+      description: Lists every secret key set on the function. Plaintext is NEVER returned — only the last 4 characters of each value, for visual confirmation.
+      operationId: listFunctionSecrets
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      responses:
+        '200':
+          description: Secrets list.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - secrets
+                properties:
+                  secrets:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - id
+                      - key
+                      - valueLast4
+                      properties:
+                        id:
+                          type: string
+                        key:
+                          type: string
+                        valueLast4:
+                          type: string
+                        syncedToAws:
+                          type: boolean
+                        createdAt:
+                          type: number
+                        updatedAt:
+                          type: number
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/secrets/{key}:
+    put:
+      summary: Set function secret
+      description: Create or update a secret on a function. Marks the function out-of-sync; the next `POST /deploy` re-publishes the Lambda with the new env. Keys must match `[A-Z_][A-Z0-9_]*` (uppercase env-var style) and cannot start with reserved prefixes (AWS_, LAMBDA_, etc).
+      operationId: setFunctionSecret
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - value
+              properties:
+                value:
+                  type: string
+      responses:
+        '200':
+          description: Secret updated.
+          content:
+            application/json:
+              schema:
+                type: object
+        '201':
+          description: Secret created.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid key or value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Unset function secret
+      description: Remove a secret from a function. Doesn't take effect on the running Lambda until the next deploy.
+      operationId: unsetFunctionSecret
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Secret removed.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Secret not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/functions/{functionId}/logs:
+    get:
+      summary: Tail function logs
+      description: Fetch invocation logs for a function. Logs are paginated via `nextToken`. Pass `startTime` / `endTime` (Unix epoch milliseconds) to bound the window, or `filterPattern` to filter messages.
+      operationId: tailFunctionLogs
+      tags:
+      - Functions
+      parameters:
+      - $ref: '#/components/parameters/FunctionIdParam'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 100
+          minimum: 1
+          maximum: 1000
+      - name: nextToken
+        in: query
+        schema:
+          type: string
+      - name: startTime
+        in: query
+        description: Start of the log window in Unix epoch milliseconds.
+        schema:
+          type: integer
+          format: int64
+      - name: endTime
+        in: query
+        description: End of the log window in Unix epoch milliseconds.
+        schema:
+          type: integer
+          format: int64
+      - name: filterPattern
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Log events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionLogsResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    FunctionCreateRequest:
+      type: object
+      required:
+      - slug
+      - name
+      properties:
+        slug:
+          type: string
+          description: URL-safe identifier (lowercase, digits, hyphens). Must be unique per project.
+          minLength: 1
+          maxLength: 50
+          example: order-bot
+        name:
+          type: string
+          maxLength: 80
+          example: Order Bot
+        description:
+          type: string
+          maxLength: 280
+        runtime:
+          $ref: '#/components/schemas/ZavuFunctionRuntime'
+        timeoutSec:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 10
+        memoryMb:
+          type: integer
+          enum:
+          - 128
+          - 256
+          - 512
+          - 1024
+          default: 256
+        httpEnabled:
+          type: boolean
+          default: false
+          description: Whether to expose a public HTTPS URL for this function.
+        sourceCode:
+          type: string
+          description: TypeScript source code for the function entry point (max ~900KB).
+          maxLength: 900000
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+          description: npm dependencies. Keys are package names, values are semver ranges.
+          example:
+            openai: ^4.20.0
+    ZavuFunction:
+      type: object
+      description: A Zavu Function — user-supplied TypeScript that runs in Zavu Cloud and reacts to messaging events or HTTP requests.
+      required:
+      - id
+      - slug
+      - name
+      - runtime
+      - status
+      - timeoutSec
+      - memoryMb
+      - httpEnabled
+      - dependencies
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: fn_abc123
+        slug:
+          type: string
+          description: URL-safe identifier, unique per project.
+          example: order-bot
+        name:
+          type: string
+          example: Order Bot
+        description:
+          type: string
+          nullable: true
+        runtime:
+          $ref: '#/components/schemas/ZavuFunctionRuntime'
+        status:
+          $ref: '#/components/schemas/ZavuFunctionStatus'
+        timeoutSec:
+          type: integer
+          description: Per-invocation timeout in seconds.
+          example: 10
+        memoryMb:
+          type: integer
+          description: Memory allocation in MB.
+          example: 256
+        httpEnabled:
+          type: boolean
+          description: Whether the function can be invoked over HTTPS via its public URL.
+        publicUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: HTTPS endpoint when httpEnabled is true.
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+          description: npm dependencies installed in the function bundle. Keys are package names, values are semver ranges.
+          example:
+            openai: ^4.20.0
+        activeDeploymentId:
+          type: string
+          nullable: true
+          description: ID of the deployment currently serving traffic.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ZavuFunctionRuntime:
+      type: string
+      description: Runtime the function is deployed on.
+      enum:
+      - nodejs24
+    FunctionDeploymentResponse:
+      type: object
+      required:
+      - deployment
+      properties:
+        deployment:
+          $ref: '#/components/schemas/FunctionDeployment'
+    ZavuFunctionResponse:
+      type: object
+      required:
+      - function
+      properties:
+        function:
+          $ref: '#/components/schemas/ZavuFunction'
+    FunctionDeploymentStatus:
+      type: string
+      description: Stage of a function deployment.
+      enum:
+      - pending
+      - bundling
+      - uploading
+      - publishing
+      - active
+      - failed
+      - superseded
+    FunctionDeployment:
+      type: object
+      required:
+      - id
+      - functionId
+      - version
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: fnd_abc123
+        functionId:
+          type: string
+        version:
+          type: integer
+          description: Monotonically increasing deployment version, starting at 1.
+        status:
+          $ref: '#/components/schemas/FunctionDeploymentStatus'
+        sourceCodeBytes:
+          type: integer
+          nullable: true
+        bundleBytes:
+          type: integer
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+          description: Failure reason when status is 'failed'.
+        deployedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    ZavuFunctionStatus:
+      type: string
+      description: Lifecycle status of a Zavu Function.
+      enum:
+      - draft
+      - bundling
+      - deploying
+      - active
+      - failed
+      - disabled
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    FunctionLogsResponse:
+      type: object
+      required:
+      - events
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/FunctionLogEvent'
+        nextToken:
+          type: string
+          nullable: true
+          description: Pass to the next request to fetch the following page of logs.
+    FunctionLogEvent:
+      type: object
+      required:
+      - timestamp
+      - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+    FunctionTrigger:
+      type: object
+      description: A subscription that runs a Zavu Function when a messaging event fires.
+      required:
+      - id
+      - functionId
+      - eventType
+      - active
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        functionId:
+          type: string
+        eventType:
+          type: string
+          description: Event type that fires the function. See GET /v1/functions/event-types for the supported list.
+        senderId:
+          type: string
+          nullable: true
+          description: Restrict the trigger to a single sender. Null means all senders in the project.
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FunctionDeployRequest:
+      type: object
+      description: Optional source/dependencies update applied before deploying. Omit both fields to redeploy the current draft as-is.
+      properties:
+        sourceCode:
+          type: string
+          description: New source code to publish (replaces the draft).
+          maxLength: 900000
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+          description: New dependency map (replaces existing dependencies).
+  parameters:
+    FunctionIdParam:
+      name: functionId
+      in: path
+      required: true
+      description: Zavu Function ID.
+      schema:
+        type: string
+    FunctionDeploymentIdParam:
+      name: deploymentId
+      in: path
+      required: true
+      description: Function deployment ID.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

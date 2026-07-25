@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Balance API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Balance
+paths:
+  /v1/balance:
+    get:
+      summary: Get balance
+      description: Get balance for the API key's team. If the API key belongs to a sub-account, also includes the sub-account's total spending and credit limit.
+      operationId: getBalance
+      tags:
+      - Balance
+      responses:
+        '200':
+          description: Balance details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+              example:
+                balance: 150000
+                currency: usd
+                creditLimit: 100000
+                totalSpent: 35000
+                isSubAccount: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    BalanceResponse:
+      type: object
+      required:
+      - balance
+      - currency
+      properties:
+        balance:
+          type: integer
+          description: Team balance in cents. All charges are billed to the parent team.
+        currency:
+          type: string
+          example: usd
+        creditLimit:
+          type: integer
+          nullable: true
+          description: Spending cap in cents (only for sub-accounts).
+        totalSpent:
+          type: integer
+          nullable: true
+          description: Total amount spent by this sub-account in cents (only for sub-accounts).
+        isSubAccount:
+          type: boolean
+          description: Whether this API key belongs to a sub-account.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

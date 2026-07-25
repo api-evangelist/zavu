@@ -1,0 +1,845 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Contacts API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Contacts
+paths:
+  /v1/contacts:
+    get:
+      summary: List contacts
+      description: List contacts with their communication channels.
+      operationId: listContacts
+      parameters:
+      - name: phoneNumber
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of contacts.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+    post:
+      summary: Create contact
+      description: Create a new contact with one or more communication channels.
+      operationId: createContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreateRequest'
+            examples:
+              phone_only:
+                summary: Contact with phone only
+                value:
+                  displayName: John Doe
+                  channels:
+                  - channel: sms
+                    identifier: '+14155551234'
+                    isPrimary: true
+              multi_channel:
+                summary: Contact with multiple channels
+                value:
+                  displayName: John Doe
+                  channels:
+                  - channel: sms
+                    identifier: '+14155551234'
+                    isPrimary: true
+                  - channel: whatsapp
+                    identifier: '+14155551234'
+                    isPrimary: true
+                  - channel: email
+                    identifier: john@example.com
+                    isPrimary: true
+                  metadata:
+                    source: import
+              email_only:
+                summary: Contact with email only
+                value:
+                  displayName: Jane Smith
+                  channels:
+                  - channel: email
+                    identifier: jane@example.com
+                    isPrimary: true
+      responses:
+        '201':
+          description: Contact created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                duplicate_identifier:
+                  summary: Duplicate identifier
+                  value:
+                    code: bad_request
+                    message: This sms identifier is already associated with another contact
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}:
+    get:
+      summary: Get contact
+      operationId: getContact
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      responses:
+        '200':
+          description: Contact details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+    patch:
+      summary: Update contact
+      operationId: updateContact
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactUpdateRequest'
+      responses:
+        '200':
+          description: Contact updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          description: Invalid update.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+    delete:
+      summary: Delete contact
+      description: Permanently delete a contact and its communication channels. Implements right-to-erasure obligations under GDPR Art. 17, Ley 19.628 (Chile) Art. 12, CCPA § 1798.105, and LGPD Art. 18.VI. The contact, its channels, and any associated agent flow sessions and conversation threads are removed. Past message records and broadcast delivery logs are retained for billing/audit but no longer reference the deleted contact.
+      operationId: deleteContact
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      responses:
+        '204':
+          description: Contact deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/phone/{phoneNumber}:
+    get:
+      summary: Get contact by phone number
+      operationId: getContactByPhone
+      parameters:
+      - name: phoneNumber
+        in: path
+        required: true
+        schema:
+          type: string
+        description: E.164 phone number.
+      responses:
+        '200':
+          description: Contact details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}/channels:
+    post:
+      summary: Add channel to contact
+      description: Add a new communication channel to an existing contact.
+      operationId: addContactChannel
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddChannelRequest'
+            example:
+              channel: email
+              identifier: john.work@company.com
+              label: work
+      responses:
+        '201':
+          description: Channel added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactChannelResponse'
+        '400':
+          description: Invalid request or duplicate identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}/channels/{channelId}:
+    patch:
+      summary: Update channel
+      description: Update a contact's channel properties.
+      operationId: updateContactChannel
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      - name: channelId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Channel ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelRequest'
+      responses:
+        '200':
+          description: Channel updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactChannelResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or channel not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+    delete:
+      summary: Remove channel from contact
+      description: Remove a communication channel from a contact. Cannot remove the last channel.
+      operationId: removeContactChannel
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      - name: channelId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Channel ID.
+      responses:
+        '204':
+          description: Channel removed.
+        '400':
+          description: Cannot remove the last channel.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or channel not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}/channels/{channelId}/primary:
+    post:
+      summary: Set channel as primary
+      description: Set a channel as the primary channel for its type.
+      operationId: setPrimaryChannel
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      - name: channelId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Channel ID.
+      responses:
+        '200':
+          description: Channel set as primary.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactChannelResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or channel not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}/merge:
+    post:
+      summary: Merge contacts
+      description: Merge a source contact into this contact. All channels from the source contact will be moved to the target contact, and the source contact will be marked as merged.
+      operationId: mergeContacts
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeContactsRequest'
+            example:
+              sourceContactId: jx7xyz789
+      responses:
+        '200':
+          description: Contacts merged. Returns the updated target contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          description: Invalid request (e.g., cannot merge contact with itself).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Target or source contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+  /v1/contacts/{contactId}/merge-suggestion:
+    delete:
+      summary: Dismiss merge suggestion
+      description: Dismiss the merge suggestion for a contact.
+      operationId: dismissMergeSuggestion
+      parameters:
+      - $ref: '#/components/parameters/ContactIdParam'
+      responses:
+        '204':
+          description: Merge suggestion dismissed.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Contacts
+components:
+  schemas:
+    UpdateChannelRequest:
+      type: object
+      description: Request body to update a channel.
+      properties:
+        label:
+          type: string
+          maxLength: 50
+          nullable: true
+          description: Optional label for the channel. Set to null to clear.
+        verified:
+          type: boolean
+          description: Whether the channel is verified.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ContactChannelInput:
+      type: object
+      description: Input for creating a contact channel.
+      required:
+      - channel
+      - identifier
+      properties:
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+          description: Channel type.
+        identifier:
+          type: string
+          description: Channel identifier (phone number in E.164 format or email address).
+          example: '+14155551234'
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO country code for phone numbers.
+          example: US
+        label:
+          type: string
+          maxLength: 50
+          description: Optional label for the channel.
+          example: work
+        isPrimary:
+          type: boolean
+          description: Whether this should be the primary channel for its type.
+          default: false
+    ContactChannelResponse:
+      type: object
+      required:
+      - channel
+      properties:
+        channel:
+          $ref: '#/components/schemas/ContactChannel'
+    MergeContactsRequest:
+      type: object
+      description: Request body to merge contacts.
+      required:
+      - sourceContactId
+      properties:
+        sourceContactId:
+          type: string
+          description: ID of the contact to merge into the target contact. The source contact will be marked as merged.
+    ContactUpdateRequest:
+      type: object
+      properties:
+        defaultChannel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - telegram
+          - email
+          - instagram
+          - messenger
+          - voice
+          nullable: true
+          description: Preferred channel for this contact. Set to null to clear.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ContactChannel:
+      type: object
+      description: A communication channel for a contact.
+      required:
+      - id
+      - channel
+      - identifier
+      - isPrimary
+      - verified
+      - createdAt
+      properties:
+        id:
+          type: string
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+          description: Channel type.
+        identifier:
+          type: string
+          description: Channel identifier (phone number or email address).
+          example: '+14155551234'
+        countryCode:
+          type: string
+          description: ISO country code for phone numbers.
+          example: US
+        label:
+          type: string
+          description: Optional label for the channel.
+          example: work
+        isPrimary:
+          type: boolean
+          description: Whether this is the primary channel for its type.
+        verified:
+          type: boolean
+          description: Whether this channel has been verified.
+        metrics:
+          type: object
+          description: Delivery metrics for this channel.
+          properties:
+            successCount:
+              type: integer
+            failureCount:
+              type: integer
+            totalAttempts:
+              type: integer
+            avgDeliveryTimeMs:
+              type: number
+            lastSuccessAt:
+              type: string
+              format: date-time
+        lastInboundAt:
+          type: string
+          format: date-time
+          description: Last time a message was received on this channel.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Contact:
+      type: object
+      required:
+      - id
+      - availableChannels
+      - verified
+      - metadata
+      - createdAt
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+          description: Display name for the contact.
+          example: John Doe
+        phoneNumber:
+          type: string
+          description: 'DEPRECATED: Use primaryPhone instead. Primary phone number in E.164 format.'
+          example: '+56912345678'
+        primaryPhone:
+          type: string
+          description: Primary phone number in E.164 format.
+          example: '+56912345678'
+        primaryEmail:
+          type: string
+          format: email
+          description: Primary email address.
+          example: john@example.com
+        countryCode:
+          type: string
+          example: CL
+        profileName:
+          type: string
+          nullable: true
+          description: Contact's WhatsApp profile name. Only available for WhatsApp contacts.
+          example: John Doe
+        availableChannels:
+          type: array
+          items:
+            type: string
+          description: List of available messaging channels for this contact.
+        defaultChannel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - telegram
+          - email
+          - instagram
+          - messenger
+          - voice
+          description: Preferred channel for this contact.
+        verified:
+          type: boolean
+          description: Whether this contact has been verified.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactChannel'
+          description: All communication channels for this contact.
+        suggestedMergeWith:
+          type: string
+          description: ID of a contact suggested for merging.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    ContactCreateRequest:
+      type: object
+      description: Request body to create a contact with channels.
+      required:
+      - channels
+      properties:
+        displayName:
+          type: string
+          maxLength: 200
+          description: Display name for the contact.
+          example: John Doe
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactChannelInput'
+          minItems: 1
+          maxItems: 20
+          description: Communication channels for the contact.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Arbitrary metadata to associate with the contact.
+    AddChannelRequest:
+      type: object
+      description: Request body to add a channel to a contact.
+      required:
+      - channel
+      - identifier
+      properties:
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+          description: Channel type.
+        identifier:
+          type: string
+          description: Channel identifier (phone number in E.164 format or email address).
+          example: '+14155551234'
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO country code for phone numbers.
+          example: US
+        label:
+          type: string
+          maxLength: 50
+          description: Optional label for the channel.
+          example: work
+        isPrimary:
+          type: boolean
+          description: Whether this should be the primary channel for its type.
+          default: false
+  parameters:
+    ContactIdParam:
+      name: contactId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

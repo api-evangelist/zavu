@@ -1,0 +1,490 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Templates API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Templates
+paths:
+  /v1/templates:
+    get:
+      summary: List templates
+      description: List WhatsApp message templates for this project.
+      operationId: listTemplates
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Template'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Templates
+    post:
+      summary: Create template
+      description: 'Create a WhatsApp message template. Note: Templates must be approved by Meta before use.'
+      operationId: createTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreateRequest'
+            example:
+              name: order_confirmation
+              language: en
+              body: Hi {{1}}, your order {{2}} has been confirmed and will ship within 24 hours.
+              whatsappCategory: UTILITY
+              variables:
+              - customer_name
+              - order_id
+      responses:
+        '201':
+          description: Template created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '400':
+          description: Invalid template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Templates
+  /v1/templates/{templateId}:
+    get:
+      summary: Get template
+      operationId: getTemplate
+      parameters:
+      - $ref: '#/components/parameters/TemplateIdParam'
+      responses:
+        '200':
+          description: Template details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Template not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Templates
+    delete:
+      summary: Delete template
+      operationId: deleteTemplate
+      parameters:
+      - $ref: '#/components/parameters/TemplateIdParam'
+      responses:
+        '204':
+          description: Template deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Template not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Templates
+  /v1/templates/{templateId}/submit:
+    post:
+      summary: Submit template for approval
+      description: Submit a WhatsApp template to Meta for approval. The template must be in draft status and associated with a sender that has a WhatsApp Business Account configured.
+      operationId: submitTemplate
+      parameters:
+      - $ref: '#/components/parameters/TemplateIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - senderId
+              properties:
+                senderId:
+                  type: string
+                  description: The sender ID with the WhatsApp Business Account to submit the template to.
+                category:
+                  $ref: '#/components/schemas/WhatsAppCategory'
+                  description: Template category. If not provided, uses the category set on the template.
+            example:
+              senderId: sender_abc123
+              category: UTILITY
+      responses:
+        '202':
+          description: Template submitted for approval.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '400':
+          description: Invalid request or template not in draft status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                not_draft:
+                  summary: Template not in draft status
+                  value:
+                    code: bad_request
+                    message: Template is already pending approval or approved
+                no_waba:
+                  summary: Sender has no WABA
+                  value:
+                    code: bad_request
+                    message: Sender does not have a WhatsApp Business Account configured
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Template or sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Templates
+components:
+  schemas:
+    Template:
+      type: object
+      required:
+      - id
+      - name
+      - language
+      - body
+      - category
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Template name. For WhatsApp, must match the approved template name in Meta.
+          example: order_confirmation
+        language:
+          type: string
+          description: Language code.
+          example: en
+        body:
+          type: string
+          description: 'Default template body with variables: positional ({{1}}, {{2}}) or named ({{customer_name}}, {{contact.first_name}}). Templates created in Zavu are submitted to Meta as positional; templates imported from a WhatsApp Business Account keep their original format (named or positional). Used when no channel-specific body is set.'
+          example: Hi {{1}}, your order {{2}} has shipped.
+        smsBody:
+          type: string
+          description: Channel-specific body for SMS messages. Falls back to `body` if not set.
+        telegramBody:
+          type: string
+          description: Channel-specific body for Telegram messages. Falls back to `body` if not set.
+        instagramBody:
+          type: string
+          description: Channel-specific body for Instagram messages. Falls back to `body` if not set.
+        category:
+          $ref: '#/components/schemas/WhatsAppCategory'
+        status:
+          type: string
+          enum:
+          - draft
+          - pending
+          - approved
+          - rejected
+          default: draft
+        variables:
+          type: array
+          items:
+            type: string
+          description: List of variable names for documentation.
+        headerType:
+          type: string
+          description: Type of header (text, image, video, document).
+        headerContent:
+          type: string
+          description: Header content (text or media URL).
+        footer:
+          type: string
+          description: Footer text for the template.
+        buttons:
+          type: array
+          description: Template buttons.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - quick_reply
+                - url
+                - phone
+                - otp
+              text:
+                type: string
+              url:
+                type: string
+              example:
+                type: string
+                description: Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.
+              phoneNumber:
+                type: string
+              otpType:
+                type: string
+                enum:
+                - COPY_CODE
+                - ONE_TAP
+                description: OTP button type. Required when type is 'otp'.
+              packageName:
+                type: string
+                description: Android package name. Required for ONE_TAP buttons.
+              signatureHash:
+                type: string
+                description: Android app signature hash. Required for ONE_TAP buttons.
+        addSecurityRecommendation:
+          type: boolean
+          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+        codeExpirationMinutes:
+          type: integer
+          minimum: 1
+          maximum: 90
+          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
+        whatsapp:
+          type: object
+          description: WhatsApp-specific template information.
+          properties:
+            templateName:
+              type: string
+              description: WhatsApp template name.
+            namespace:
+              type: string
+              description: WhatsApp Business Account namespace.
+            status:
+              type: string
+              description: WhatsApp approval status.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WhatsAppCategory:
+      type: string
+      description: WhatsApp template category.
+      enum:
+      - UTILITY
+      - MARKETING
+      - AUTHENTICATION
+    TemplateCreateRequest:
+      type: object
+      required:
+      - name
+      - language
+      - body
+      properties:
+        name:
+          type: string
+        language:
+          type: string
+          default: en
+        body:
+          type: string
+          description: Default template body. Used when no channel-specific body is set.
+        smsBody:
+          type: string
+          description: Channel-specific body for SMS. Falls back to `body` if not set.
+        telegramBody:
+          type: string
+          description: Channel-specific body for Telegram. Falls back to `body` if not set.
+        instagramBody:
+          type: string
+          description: Channel-specific body for Instagram. Falls back to `body` if not set.
+        whatsappCategory:
+          $ref: '#/components/schemas/WhatsAppCategory'
+        headerType:
+          type: string
+          description: Type of header for the template.
+          enum:
+          - text
+          - image
+          - video
+          - document
+        headerContent:
+          type: string
+          description: Header content (text string or media URL).
+        footer:
+          type: string
+          description: Footer text for the template.
+          maxLength: 60
+        variables:
+          type: array
+          items:
+            type: string
+        buttons:
+          type: array
+          description: Template buttons (max 3).
+          maxItems: 3
+          items:
+            type: object
+            required:
+            - type
+            - text
+            properties:
+              type:
+                type: string
+                enum:
+                - quick_reply
+                - url
+                - phone
+                - otp
+              text:
+                type: string
+                maxLength: 25
+              url:
+                type: string
+                format: uri
+                description: Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
+              example:
+                type: string
+                description: Sample value Meta uses to review templates with a dynamic URL button. Substituted into `{{1}}` of the URL when the template is submitted to Meta. Only meaningful when `url` contains `{{1}}`; ignored for static URLs.
+                example: ORD-12345
+              phoneNumber:
+                type: string
+              otpType:
+                type: string
+                enum:
+                - COPY_CODE
+                - ONE_TAP
+                description: Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
+              packageName:
+                type: string
+                description: Android package name. Required for ONE_TAP buttons.
+              signatureHash:
+                type: string
+                description: Android app signature hash. Required for ONE_TAP buttons.
+        addSecurityRecommendation:
+          type: boolean
+          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+        codeExpirationMinutes:
+          type: integer
+          minimum: 1
+          maximum: 90
+          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+  parameters:
+    TemplateIdParam:
+      name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,381 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC WhatsApp Sync API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: WhatsApp Sync
+paths:
+  /v1/senders/{senderId}/whatsapp-sync:
+    get:
+      summary: Get WhatsApp sync status
+      description: Get the current sync status for a sender's WhatsApp coexistence account. Only available for senders connected in coexistence mode (WhatsApp Business App + Cloud API).
+      operationId: getWhatsAppSyncStatus
+      tags:
+      - WhatsApp Sync
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '200':
+          description: Sync status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppSyncStatusResponse'
+              example:
+                sync:
+                  isCoexistence: true
+                  status: active
+                  history:
+                    status: completed
+                    canSync: false
+                    requestedAt: '2024-01-15T10:00:00Z'
+                    completedAt: '2024-01-15T10:05:00Z'
+                  contacts:
+                    status: not_requested
+                    canSync: true
+                    requestedAt: null
+        '400':
+          description: Sender does not have a WhatsApp Business Account connected or is not in coexistence mode.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                no_waba:
+                  summary: No WABA connected
+                  value:
+                    code: bad_request
+                    message: Sender does not have a WhatsApp Business Account connected
+                not_coexistence:
+                  summary: Not coexistence mode
+                  value:
+                    code: bad_request
+                    message: Sync is only available for coexistence accounts
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/whatsapp-sync/history:
+    post:
+      summary: Start history sync
+      description: Initiate message history sync from the WhatsApp Business App. This sends a request to the account owner to approve sharing their conversation history. Only available for coexistence accounts with active status.
+      operationId: startWhatsAppHistorySync
+      tags:
+      - WhatsApp Sync
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '202':
+          description: History sync initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppSyncStartResponse'
+              example:
+                message: History sync initiated
+                sync:
+                  isCoexistence: true
+                  status: active
+                  history:
+                    status: pending
+                    canSync: false
+                    requestedAt: '2024-01-15T10:00:00Z'
+                    completedAt: null
+                  contacts:
+                    status: not_requested
+                    canSync: true
+                    requestedAt: null
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                no_waba:
+                  summary: No WABA connected
+                  value:
+                    code: bad_request
+                    message: Sender does not have a WhatsApp Business Account connected
+                not_coexistence:
+                  summary: Not coexistence mode
+                  value:
+                    code: bad_request
+                    message: History sync is only available for coexistence accounts
+                not_active:
+                  summary: Account not active
+                  value:
+                    code: bad_request
+                    message: WhatsApp account is not active
+                in_progress:
+                  summary: Sync in progress
+                  value:
+                    code: bad_request
+                    message: History sync is already in progress
+                rate_limit:
+                  summary: Rate limit
+                  value:
+                    code: bad_request
+                    message: Sync limit reached. Please wait 24 hours before trying again.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/whatsapp-sync/contacts:
+    post:
+      summary: Start contacts sync
+      description: Initiate contact names sync from the WhatsApp Business App. This imports contact names stored in the app to Zavu. Only available for coexistence accounts with active status.
+      operationId: startWhatsAppContactsSync
+      tags:
+      - WhatsApp Sync
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      responses:
+        '202':
+          description: Contacts sync initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppSyncStartResponse'
+              example:
+                message: Contacts sync initiated
+                sync:
+                  isCoexistence: true
+                  status: active
+                  history:
+                    status: completed
+                    canSync: false
+                    requestedAt: '2024-01-15T10:00:00Z'
+                    completedAt: '2024-01-15T10:05:00Z'
+                  contacts:
+                    status: pending
+                    canSync: false
+                    requestedAt: '2024-01-15T11:00:00Z'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                no_waba:
+                  summary: No WABA connected
+                  value:
+                    code: bad_request
+                    message: Sender does not have a WhatsApp Business Account connected
+                not_coexistence:
+                  summary: Not coexistence mode
+                  value:
+                    code: bad_request
+                    message: Contacts sync is only available for coexistence accounts
+                not_active:
+                  summary: Account not active
+                  value:
+                    code: bad_request
+                    message: WhatsApp account is not active
+                in_progress:
+                  summary: Sync in progress
+                  value:
+                    code: bad_request
+                    message: Contacts sync is already in progress
+                rate_limit:
+                  summary: Rate limit
+                  value:
+                    code: bad_request
+                    message: Sync limit reached. Please wait 24 hours before trying again.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    WhatsAppSyncStatus:
+      type: object
+      description: WhatsApp coexistence sync status.
+      required:
+      - isCoexistence
+      - status
+      - history
+      - contacts
+      properties:
+        isCoexistence:
+          type: boolean
+          description: Whether the account is in coexistence mode.
+        status:
+          type: string
+          description: WhatsApp account status.
+          enum:
+          - pending_verification
+          - pending_registration
+          - active
+          - disconnected
+          - error
+        history:
+          $ref: '#/components/schemas/WhatsAppSyncHistory'
+        contacts:
+          $ref: '#/components/schemas/WhatsAppSyncContacts'
+    WhatsAppSyncContacts:
+      type: object
+      description: Contacts sync status details.
+      required:
+      - status
+      - canSync
+      properties:
+        status:
+          $ref: '#/components/schemas/WhatsAppSyncContactsStatus'
+        canSync:
+          type: boolean
+          description: Whether contacts sync can be initiated.
+        requestedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the sync was last requested.
+    WhatsAppSyncContactsStatus:
+      type: string
+      description: Status of WhatsApp contacts sync.
+      enum:
+      - not_requested
+      - pending
+      - syncing
+      - completed
+    WhatsAppSyncStartResponse:
+      type: object
+      required:
+      - message
+      - sync
+      properties:
+        message:
+          type: string
+          description: Success message.
+          example: History sync initiated
+        sync:
+          $ref: '#/components/schemas/WhatsAppSyncStatus'
+    WhatsAppSyncStatusResponse:
+      type: object
+      required:
+      - sync
+      properties:
+        sync:
+          $ref: '#/components/schemas/WhatsAppSyncStatus'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    WhatsAppSyncHistory:
+      type: object
+      description: History sync status details.
+      required:
+      - status
+      - canSync
+      properties:
+        status:
+          $ref: '#/components/schemas/WhatsAppSyncHistoryStatus'
+        canSync:
+          type: boolean
+          description: Whether history sync can be initiated.
+        requestedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the sync was last requested.
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the sync was completed.
+    WhatsAppSyncHistoryStatus:
+      type: string
+      description: Status of WhatsApp message history sync.
+      enum:
+      - not_requested
+      - pending
+      - syncing
+      - completed
+      - rejected
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,451 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Agent Tools API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Agent Tools
+paths:
+  /v1/senders/{senderId}/agent/tools:
+    get:
+      summary: List tools
+      description: List tools for an agent.
+      operationId: listAgentTools
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - name: enabled
+        in: query
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of tools.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentTool'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create tool
+      description: Create a new tool for an agent. Tools allow the agent to call external webhooks.
+      operationId: createAgentTool
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolCreateRequest'
+            example:
+              name: get_order_status
+              description: Get the status of a customer order
+              webhookUrl: https://api.example.com/webhooks/order-status
+              webhookSecret: whsec_...
+              parameters:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    description: The order ID to look up
+                required:
+                - order_id
+      responses:
+        '201':
+          description: Tool created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/tools/{toolId}:
+    get:
+      summary: Get tool
+      description: Get a specific tool.
+      operationId: getAgentTool
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/ToolIdParam'
+      responses:
+        '200':
+          description: Tool details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tool not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      summary: Update tool
+      description: Update a tool.
+      operationId: updateAgentTool
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/ToolIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolUpdateRequest'
+      responses:
+        '200':
+          description: Tool updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tool not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete tool
+      description: Delete a tool.
+      operationId: deleteAgentTool
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/ToolIdParam'
+      responses:
+        '204':
+          description: Tool deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tool not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/senders/{senderId}/agent/tools/{toolId}/test:
+    post:
+      summary: Test tool
+      description: Test a tool by triggering its webhook with test parameters.
+      operationId: testAgentTool
+      tags:
+      - Agent Tools
+      parameters:
+      - $ref: '#/components/parameters/SenderIdParam'
+      - $ref: '#/components/parameters/ToolIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolTestRequest'
+            example:
+              testParams:
+                order_id: ORD-12345
+      responses:
+        '202':
+          description: Test scheduled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolTestResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tool not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    AgentTool:
+      type: object
+      required:
+      - id
+      - agentId
+      - name
+      - description
+      - parameters
+      - webhookUrl
+      - enabled
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        name:
+          type: string
+          example: get_order_status
+        description:
+          type: string
+          description: Description for the LLM to understand when to use this tool.
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+          description: HTTPS URL to call when the tool is executed.
+        enabled:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ToolCreateRequest:
+      type: object
+      required:
+      - name
+      - description
+      - parameters
+      - webhookUrl
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+          description: Must be HTTPS.
+        webhookSecret:
+          type: string
+          description: Optional secret for webhook signature verification.
+        enabled:
+          type: boolean
+          default: true
+    ToolTestResponse:
+      type: object
+      required:
+      - scheduled
+      properties:
+        scheduled:
+          type: boolean
+    ToolParameters:
+      type: object
+      required:
+      - type
+      - properties
+      - required
+      properties:
+        type:
+          type: string
+          enum:
+          - object
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              type:
+                type: string
+              description:
+                type: string
+        required:
+          type: array
+          items:
+            type: string
+    ToolTestRequest:
+      type: object
+      required:
+      - testParams
+      properties:
+        testParams:
+          type: object
+          description: Parameters to pass to the tool for testing.
+          additionalProperties: true
+    ToolUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+        webhookSecret:
+          type: string
+          nullable: true
+        enabled:
+          type: boolean
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    ToolResponse:
+      type: object
+      required:
+      - tool
+      properties:
+        tool:
+          $ref: '#/components/schemas/AgentTool'
+  parameters:
+    ToolIdParam:
+      name: toolId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,873 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC WhatsApp Alternative API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: WhatsApp Alternative
+paths:
+  /v1/whatsapp-alt/sessions:
+    get:
+      summary: List WhatsApp Alternative sessions
+      description: List the project's WhatsApp Alternative sessions (unofficial WhatsApp Web channel).
+      operationId: listWhatsAppAltSessions
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of sessions.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsAppAltSession'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create WhatsApp Alternative session
+      description: 'Create a session and start the bridge. The QR is generated asynchronously: poll `GET /v1/whatsapp-alt/sessions/{sessionId}` until `status` is `qr_ready` and `qrCode` is present, then scan it from the phone (WhatsApp → Linked devices → Link a device).
+
+
+        The session routes through an egress from the first QR. It defaults to the managed Zavu proxy (`egress.kind = external`); pass `egress` to override. Direct (server IP) egress is not supported. Not available with test-mode API keys.'
+      operationId: createWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppAltSessionCreateRequest'
+            examples:
+              default:
+                summary: Default (managed Zavu proxy)
+                value:
+                  displayName: Support line
+              android:
+                summary: Route through a customer Android device
+                value:
+                  displayName: Support line
+                  egress:
+                    kind: android
+                    nodeId: nd_abc123
+                    country: cl
+      responses:
+        '201':
+          description: Session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '400':
+          description: Invalid request, or whatsapp_alt is not available in test mode.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}:
+    get:
+      summary: Get WhatsApp Alternative session
+      description: Get a session including its live `status` and, while linking, the `qrCode` to scan.
+      operationId: getWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Session details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete WhatsApp Alternative session
+      description: Delete the session, unlink its senders, and log the device out of WhatsApp (it disappears from the phone's Linked devices). Not available with test-mode API keys.
+      operationId: deleteWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Session deleted.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}/egress:
+    post:
+      summary: Set session egress
+      description: 'Change how the session reaches WhatsApp: the managed Zavu proxy (`external`) or a customer Android device (`android`, requires `nodeId`). Takes effect on the next connect/reconnect. Not available with test-mode API keys.'
+      operationId: setWhatsAppAltSessionEgress
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppAltSetEgressRequest'
+            example:
+              egress:
+                kind: android
+                nodeId: nd_abc123
+      responses:
+        '200':
+          description: Egress updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '400':
+          description: Invalid request (e.g. android without nodeId, or the node belongs to another sender).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}/reconnect:
+    post:
+      summary: Reconnect session
+      description: Re-initialize the session on the bridge (e.g. after `failed` or `disconnected`). If credentials are still valid it reconnects; otherwise it returns to `qr_ready`. Not available with test-mode API keys.
+      operationId: reconnectWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Reconnect initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}/logout:
+    post:
+      summary: Log out session
+      description: Log the device out of WhatsApp (clears credentials; the device disappears from the phone's Linked devices). The session row is kept — reconnect to link again with a fresh QR. Not available with test-mode API keys.
+      operationId: logoutWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Logout initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}/link:
+    post:
+      summary: Link session to a sender
+      description: Attach the session to a sender so the sender's outbound WhatsApp messages route through this session and inbound messages are attributed to it. Not available with test-mode API keys.
+      operationId: linkWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppAltLinkSenderRequest'
+            example:
+              senderId: sender_12345
+      responses:
+        '200':
+          description: Session linked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '400':
+          description: Invalid request or test-mode key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session or sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/sessions/{sessionId}/unlink:
+    post:
+      summary: Unlink session from senders
+      description: Detach every sender currently pointing at this session. Not available with test-mode API keys.
+      operationId: unlinkWhatsAppAltSession
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Session unlinked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltSessionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/egress-nodes:
+    get:
+      summary: List egress nodes
+      description: List a sender's Android egress nodes. `senderId` is required.
+      operationId: listWhatsAppAltEgressNodes
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: senderId
+        in: query
+        required: true
+        description: Sender whose egress nodes to list.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of egress nodes.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsAppAltEgressNode'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '400':
+          description: Missing or invalid senderId.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      summary: Pair an egress node
+      description: Register a new Android egress node for a sender and return its pairing payload. Encode `pairing.token`, `pairing.gatewayUrl`, and `pairing.wsPath` into the QR the Zavu Egress Node Android app scans. The token is not persisted — re-issue it with the pairing-token endpoint to show the QR again. Not available with test-mode API keys.
+      operationId: createWhatsAppAltEgressNode
+      tags:
+      - WhatsApp Alternative
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppAltEgressNodeCreateRequest'
+            example:
+              senderId: sender_12345
+              label: Store iPhone
+      responses:
+        '201':
+          description: Egress node created with pairing payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltEgressNodePairingResponse'
+        '400':
+          description: Invalid request or test-mode key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sender not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/egress-nodes/{nodeId}:
+    get:
+      summary: Get egress node
+      operationId: getWhatsAppAltEgressNode
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: nodeId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Egress node details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltEgressNodeResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Egress node not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Revoke egress node
+      description: Revoke (delete) an egress node and kill its live tunnel. Sessions bound to it fail closed (they will not fall back to a direct connection). Not available with test-mode API keys.
+      operationId: revokeWhatsAppAltEgressNode
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: nodeId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Egress node revoked.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Egress node not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/egress-nodes/{nodeId}/pairing-token:
+    post:
+      summary: Re-issue egress node pairing token
+      description: Re-issue the pairing token for an existing node to show its QR again. Not available with test-mode API keys.
+      operationId: reissueWhatsAppAltEgressNodeToken
+      tags:
+      - WhatsApp Alternative
+      parameters:
+      - name: nodeId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: New pairing payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltEgressNodePairingResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Egress node not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /v1/whatsapp-alt/proxy-status:
+    get:
+      summary: Managed proxy availability
+      description: Whether the managed Zavu proxy egress (`egress.kind = external`) is currently offered. When false, pair an Android egress node instead.
+      operationId: getWhatsAppAltProxyStatus
+      tags:
+      - WhatsApp Alternative
+      responses:
+        '200':
+          description: Proxy availability.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppAltProxyStatusResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    WhatsAppAltEgressKind:
+      type: string
+      description: 'How a WhatsApp Alternative session reaches WhatsApp.
+
+        - `external`: managed Zavu proxy (an in-country mobile/residential IP). Default.
+
+        - `android`: a customer-owned Android egress device that lends its IP (requires `nodeId`).
+
+
+        `direct` (Zavu server IP) is a guaranteed ban and cannot be set through the API; it may only appear on legacy sessions.'
+      enum:
+      - external
+      - android
+      - direct
+    WhatsAppAltProxyStatusResponse:
+      type: object
+      required:
+      - zavuProxyAvailable
+      properties:
+        zavuProxyAvailable:
+          type: boolean
+          description: Whether the managed Zavu proxy egress (`egress.kind = external`) is currently offered. When false, pair an Android egress node instead.
+    WhatsAppAltSessionResponse:
+      type: object
+      required:
+      - session
+      properties:
+        session:
+          $ref: '#/components/schemas/WhatsAppAltSession'
+    WhatsAppAltEgressNodeStatus:
+      type: string
+      description: pending = paired but never connected; online = tunnel is live; offline = the last tunnel dropped.
+      enum:
+      - pending
+      - online
+      - offline
+    WhatsAppAltEgressInput:
+      type: object
+      description: Egress to set on a session. Only `external` (managed Zavu proxy) and `android` (a customer device) are accepted — `direct` is a guaranteed ban and is rejected.
+      required:
+      - kind
+      properties:
+        kind:
+          type: string
+          enum:
+          - external
+          - android
+        nodeId:
+          type: string
+          description: Egress node ID. Required when `kind` is `android`.
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO 3166-1 alpha-2 country code to geo-match the proxy exit. Optional; auto-derived from the number when omitted.
+          example: cl
+    WhatsAppAltEgressNode:
+      type: object
+      required:
+      - id
+      - senderId
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          description: Egress node ID. Use it as `egress.nodeId` when setting a session's egress.
+        senderId:
+          type: string
+        label:
+          type: string
+        status:
+          $ref: '#/components/schemas/WhatsAppAltEgressNodeStatus'
+        exitIp:
+          type: string
+          description: Public IP the device currently exits from.
+        exitCountry:
+          type: string
+          description: ISO country of the exit IP.
+        net:
+          type: string
+          description: Network type reported by the device (wifi, cell, other).
+        lastSeenAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+    WhatsAppAltSessionCreateRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          maxLength: 200
+          description: Optional label for the session.
+        egress:
+          $ref: '#/components/schemas/WhatsAppAltEgressInput'
+    WhatsAppAltPairing:
+      type: object
+      required:
+      - token
+      - gatewayUrl
+      - wsPath
+      properties:
+        token:
+          type: string
+          description: Short-lived HMAC pairing token. Hand it to the Zavu Egress Node Android app by encoding `token`, `gatewayUrl`, and `wsPath` into the pairing QR the app scans. The token is not persisted — re-issue it with `POST /v1/whatsapp-alt/egress-nodes/{nodeId}/pairing-token` to show the QR again.
+        gatewayUrl:
+          type: string
+          description: WSS gateway the Android device dials out to.
+        wsPath:
+          type: string
+          example: /egress/agent
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the pairing token expires.
+    WhatsAppAltSessionStatus:
+      type: string
+      description: 'Connection state of the session, mirrored from the bridge.
+
+        - `initializing`: session created, bridge starting.
+
+        - `qr_ready`: `qrCode` is available; scan it from WhatsApp to link.
+
+        - `authenticating`: QR scanned, handshaking.
+
+        - `ready`: linked and connected.
+
+        - `disconnected`: unlinked or dropped.
+
+        - `failed`: could not connect (see `lastError`).'
+      enum:
+      - disconnected
+      - initializing
+      - qr_ready
+      - authenticating
+      - ready
+      - failed
+    WhatsAppAltEgressNodeResponse:
+      type: object
+      required:
+      - node
+      properties:
+        node:
+          $ref: '#/components/schemas/WhatsAppAltEgressNode'
+    WhatsAppAltEgressNodeCreateRequest:
+      type: object
+      required:
+      - senderId
+      properties:
+        senderId:
+          type: string
+          description: Sender the egress device belongs to.
+        label:
+          type: string
+          maxLength: 100
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    WhatsAppAltSession:
+      type: object
+      required:
+      - id
+      - status
+      - egress
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: jd7x2k3m4n5p6q7r8s9t0
+        displayName:
+          type: string
+        status:
+          $ref: '#/components/schemas/WhatsAppAltSessionStatus'
+        qrCode:
+          type: string
+          description: QR payload to render as a QR code and scan from the phone's WhatsApp (Linked devices → Link a device). Present only while `status` is `qr_ready`. Poll `GET /v1/whatsapp-alt/sessions/{sessionId}` until it appears; it rotates until scanned.
+        phoneNumber:
+          type: string
+          description: Linked WhatsApp number in E.164 format, once the session is ready.
+          example: '+56912345678'
+        pushName:
+          type: string
+          description: WhatsApp profile name of the linked account.
+        egress:
+          $ref: '#/components/schemas/WhatsAppAltEgressSpec'
+        senderId:
+          type: string
+          description: ID of the sender this session is linked to, if any.
+        lastError:
+          type: string
+          nullable: true
+        lastConnectedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WhatsAppAltEgressSpec:
+      type: object
+      description: Egress routing for a WhatsApp Alternative session.
+      required:
+      - kind
+      properties:
+        kind:
+          $ref: '#/components/schemas/WhatsAppAltEgressKind'
+        nodeId:
+          type: string
+          description: Egress node ID. Required when `kind` is `android`.
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO 3166-1 alpha-2 country code (lowercased) used to geo-match the proxy exit to the number's country. Optional; auto-derived from the phone number when omitted.
+          example: cl
+    WhatsAppAltLinkSenderRequest:
+      type: object
+      required:
+      - senderId
+      properties:
+        senderId:
+          type: string
+          description: Sender to attach this session to. The sender's outbound WhatsApp traffic then routes through this session, and inbound messages are attributed to it.
+    WhatsAppAltEgressNodePairingResponse:
+      type: object
+      required:
+      - node
+      - pairing
+      properties:
+        node:
+          $ref: '#/components/schemas/WhatsAppAltEgressNode'
+        pairing:
+          $ref: '#/components/schemas/WhatsAppAltPairing'
+    WhatsAppAltSetEgressRequest:
+      type: object
+      required:
+      - egress
+      properties:
+        egress:
+          $ref: '#/components/schemas/WhatsAppAltEgressInput'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

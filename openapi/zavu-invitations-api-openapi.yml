@@ -1,0 +1,369 @@
+openapi: 3.0.3
+info:
+  title: Zavu Unified Messaging Layer 10DLC Invitations API
+  version: 0.2.0
+  description: 'Unified multi-channel messaging API for Zavu.
+
+
+    Supported channels:
+
+    - **SMS**: Simple text messages
+
+    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
+
+    - **Telegram**: Bot messaging with text, media, and interactive elements
+
+    - **Email**: Transactional emails via Amazon SES
+
+
+    Design goals:
+
+    - Simple `send()` entrypoint for developers
+
+    - Project-level authentication via Bearer token
+
+    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
+
+    - If a non-text message type is sent, WhatsApp channel is used automatically
+
+    - 24-hour WhatsApp conversation window enforcement
+
+    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
+
+    '
+servers:
+- url: https://api.zavu.dev
+security:
+- bearerAuth: []
+tags:
+- name: Invitations
+paths:
+  /v1/invitations:
+    post:
+      summary: Create invitation
+      description: 'Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and connects. Set `connectionType` to choose how they connect:
+
+        - `whatsapp_waba` (default): the client completes Meta''s embedded signup, linking an official WhatsApp Business Account.
+
+        - `whatsapp_alt`: the client links their number by scanning a QR code. Requires the WhatsApp Alternative feature to be enabled for your team (otherwise returns 400).
+
+
+        Either way, the resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.'
+      operationId: createInvitation
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationCreateRequest'
+            examples:
+              basic:
+                summary: Basic invitation
+                value:
+                  clientName: Acme Corp
+              full:
+                summary: Full invitation with all options
+                value:
+                  clientName: Acme Corp
+                  clientEmail: contact@acme.com
+                  clientPhone: '+14155551234'
+                  expiresInDays: 14
+                  allowedPhoneCountries:
+                  - US
+                  - MX
+              whatsapp_alt:
+                summary: QR-linked WhatsApp (WhatsApp Alternative)
+                value:
+                  clientName: Acme Corp
+                  clientEmail: contact@acme.com
+                  connectionType: whatsapp_alt
+      responses:
+        '201':
+          description: Invitation created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Invitations
+    get:
+      summary: List invitations
+      description: List partner invitations for this project.
+      operationId: listInvitations
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/InvitationStatus'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of invitations.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invitation'
+                  nextCursor:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Invitations
+  /v1/invitations/{invitationId}:
+    get:
+      summary: Get invitation
+      operationId: getInvitation
+      parameters:
+      - $ref: '#/components/parameters/InvitationIdParam'
+      responses:
+        '200':
+          description: Invitation details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Invitation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Invitations
+  /v1/invitations/{invitationId}/cancel:
+    post:
+      summary: Cancel invitation
+      description: Cancel an active invitation. The client will no longer be able to use the invitation link.
+      operationId: cancelInvitation
+      parameters:
+      - $ref: '#/components/parameters/InvitationIdParam'
+      responses:
+        '200':
+          description: Invitation cancelled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+        '400':
+          description: Cannot cancel this invitation (already completed or cancelled).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Invitation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+      tags:
+      - Invitations
+components:
+  schemas:
+    InvitationStatus:
+      type: string
+      description: Current status of the partner invitation.
+      enum:
+      - pending
+      - in_progress
+      - completed
+      - expired
+      - cancelled
+    InvitationCreateRequest:
+      type: object
+      properties:
+        clientName:
+          type: string
+          maxLength: 100
+          description: Name of the client being invited.
+          example: Acme Corp
+        clientEmail:
+          type: string
+          format: email
+          description: Email of the client being invited.
+          example: contact@acme.com
+        clientPhone:
+          type: string
+          description: Phone number of the client in E.164 format.
+          example: '+14155551234'
+        phoneNumberId:
+          type: string
+          description: ID of a Zavu phone number to pre-assign for WhatsApp registration. If provided, the client will use this number instead of their own.
+          example: pn_abc123
+        expiresInDays:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 7
+          description: Number of days until the invitation expires.
+        allowedPhoneCountries:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: ISO country codes for allowed phone numbers.
+          example:
+          - US
+          - MX
+        connectionType:
+          type: string
+          enum:
+          - whatsapp_waba
+          - whatsapp_alt
+          default: whatsapp_waba
+          description: How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    Invitation:
+      type: object
+      required:
+      - id
+      - url
+      - token
+      - status
+      - expiresAt
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: inv_abc123
+        url:
+          type: string
+          description: Full URL to share with the client.
+          example: https://dashboard.zavu.dev/invite/abc123xyz
+        token:
+          type: string
+          description: Unique invitation token.
+        clientName:
+          type: string
+          nullable: true
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        phoneNumberId:
+          type: string
+          nullable: true
+          description: ID of a pre-assigned Zavu phone number for WhatsApp registration.
+        connectionType:
+          type: string
+          enum:
+          - whatsapp_waba
+          - whatsapp_alt
+          description: 'How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).'
+        status:
+          $ref: '#/components/schemas/InvitationStatus'
+        senderId:
+          type: string
+          nullable: true
+          description: ID of the sender created when invitation is completed.
+        expiresAt:
+          type: string
+          format: date-time
+        viewedAt:
+          type: string
+          format: date-time
+          nullable: true
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    InvitationResponse:
+      type: object
+      required:
+      - invitation
+      properties:
+        invitation:
+          $ref: '#/components/schemas/Invitation'
+  parameters:
+    InvitationIdParam:
+      name: invitationId
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
