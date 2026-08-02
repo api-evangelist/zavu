@@ -1,0 +1,26 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zavu.dev/authentication.md
+modes:
+  live:
+    key_prefix: zv_live_
+    behavior: Sends messages and delivers them to real recipients; charges balance.
+  test:
+    key_prefix: zv_test_
+    behavior: >-
+      Test keys simulate message sending but do not actually deliver messages,
+      allowing development and testing without incurring costs or delivering to
+      real recipients.
+auth:
+  header: Authorization
+  format: "Bearer <api_key>"
+key_management:
+  note: API keys (secrets) are shown only once at creation and must be stored securely.
+test_values:
+  note: >-
+    Zavu does not publish a fixed table of magic test phone numbers or cards;
+    the test/live separation is driven entirely by the API key prefix
+    (zv_test_ vs zv_live_). No verbatim test identifiers were published in the docs.
+cross_reference:
+  authentication: authentication/zavu-authentication.yml
+  conventions: conventions/zavu-conventions.yml

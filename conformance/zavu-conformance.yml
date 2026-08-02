@@ -1,0 +1,32 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/zavu-openapi-original.json + docs
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: Auth is http bearer API keys (zv_live_/zv_test_), not an OAuth2 flow.
+  - id: oidc
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Uses a custom {code,message,details} error envelope, not application/problem+json.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: No Sunset/Deprecation header policy published.
+  - id: idempotency
+    conforms: true
+    evidence: Idempotency-Key header documented; duplicate returns 409 with original resource.
+  - id: cursor-pagination
+    conforms: true
+    evidence: List endpoints use cursor/limit (some AWS-backed use nextToken).
+  - id: rate-limit-headers
+    conforms: true
+    evidence: X-RateLimit-Limit/Remaining/Reset + Retry-After on 429.
+  - id: webhooks-signed
+    conforms: true
+    evidence: X-Zavu-Signature header on webhook deliveries.
+  - id: 10dlc
+    conforms: true
+    evidence: Full 10DLC brand/campaign registration surface (18 operations) integrated with The Campaign Registry (TCR).
+  - id: json:api
+    conforms: false

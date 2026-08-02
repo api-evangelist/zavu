@@ -1,0 +1,23 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zavu.dev/concepts/rate-limiting.md
+scope: per-project
+algorithm: fixed-window (per-minute, resets at each minute boundary)
+tiers:
+  - {name: default, limit_count: 600, window: 1m, note: all new projects}
+  - {name: compliance_verified, limit_count: 1200, window: 1m, note: verified business compliance}
+  - {name: tendlc_verified, limit_count: 2400, window: 1m, note: approved 10DLC campaigns}
+headers:
+  - {name: X-RateLimit-Limit, meaning: max requests per minute}
+  - {name: X-RateLimit-Remaining, meaning: requests available in current window}
+  - {name: X-RateLimit-Reset, meaning: Unix ms when window resets}
+  - {name: Retry-After, meaning: seconds to wait (429 only)}
+exceeded:
+  status: 429
+  code: rate_limited
+  details_field: retryAfter
+best_practices:
+  - Monitor X-RateLimit-Remaining proactively.
+  - Back off using Retry-After.
+  - Use the Broadcasts API for 100+ recipients instead of individual sends.
+  - Include Idempotency-Key to retry safely.

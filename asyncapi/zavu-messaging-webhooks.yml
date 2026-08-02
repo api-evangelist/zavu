@@ -1,0 +1,39 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://docs.zavu.dev/webhooks
+  - openapi/zavu-openapi-original.json (WebhookEvent, WebhookPayload schemas)
+spec_type: Webhooks
+note: >-
+  Zavu documents a webhook event surface but does not publish a formal AsyncAPI
+  document. This artifact captures the webhook catalog (type: Webhooks). No
+  AsyncAPI spec was found to save verbatim.
+delivery:
+  registration:
+    - sender webhooks (webhookUrl + webhookEvents on sender create/update)
+    - project webhooks (POST /v1/invitations/webhook)
+  signature_header: X-Zavu-Signature
+  retry_policy:
+    attempts: 5
+    backoff: [1m, 5m, 15m, 1h, 4h]
+  payload:
+    id: string        # evt_...
+    type: string      # event type (see events)
+    timestamp: integer # Unix ms
+    senderId: string  # snd_...
+    projectId: string # prj_...
+    data: object
+events:
+  message_lifecycle:
+    - {type: message.queued, description: Message created and queued for sending. data.status=queued}
+    - {type: message.sent, description: Message accepted by the provider. data.status=sent}
+    - {type: message.delivered, description: Message delivered to recipient. data.status=delivered}
+    - {type: message.read, description: Message read by recipient (WhatsApp only). data.status=read}
+    - {type: message.failed, description: Message failed to send. data.status=failed; data.errorCode set}
+  inbound:
+    - {type: message.inbound, description: New message received from a contact (reactions delivered as message.inbound with messageType=reaction)}
+    - {type: conversation.new, description: A new conversation was started}
+  templates:
+    - {type: template.status_changed, description: A WhatsApp template's approval status changed}
+  project:
+    - {type: invitation.status_changed, description: A partner invitation's status changed}

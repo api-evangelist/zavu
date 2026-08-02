@@ -1,0 +1,45 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zavu.dev/ (SDKs section) + registry verification
+packages:
+  - language: javascript
+    registry: npm
+    name: "@zavudev/sdk"
+    url: https://www.npmjs.com/package/@zavudev/sdk
+    install: npm install @zavudev/sdk
+    version: 0.50.0
+    official: true
+  - language: python
+    registry: pypi
+    name: zavudev
+    url: https://pypi.org/project/zavudev/
+    install: pip install zavudev
+    version: 0.24.0
+    official: true
+  - language: ruby
+    registry: rubygems
+    name: zavudev
+    url: https://rubygems.org/gems/zavudev
+    install: gem install zavudev
+    official: true
+  - language: go
+    registry: github
+    name: github.com/zavudev/sdk-go
+    url: https://github.com/zavudev/sdk-go
+    install: go get github.com/zavudev/sdk-go
+    official: true
+  - language: php
+    registry: composer
+    name: zavudev/sdk
+    url: https://github.com/zavudev
+    install: composer require zavudev/sdk
+    namespace: "Zavudev\\Client"
+    official: true
+  - language: javascript
+    registry: npm
+    name: "@zavudev/sdk-mcp"
+    url: https://www.npmjs.com/package/@zavudev/sdk-mcp
+    install: npx -y @zavudev/sdk-mcp@latest
+    version: 0.31.0
+    official: true
+    note: MCP server package (see mcp/zavu-mcp.yml)

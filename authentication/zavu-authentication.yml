@@ -1,0 +1,29 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://docs.zavu.dev/authentication.md
+  - openapi/zavu-openapi-original.json
+docs: https://docs.zavu.dev/authentication.md
+summary:
+  types:
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  header: Authorization
+  format: "Bearer <api_key>"
+  key_prefixes:
+    live: zv_live_
+    test: zv_test_
+  env: ZAVUDEV_API_KEY
+  sources:
+  - openapi/zavu-openapi-original.json
+notes: >-
+  Zavu uses opaque API-key bearer tokens (prefixed zv_live_ / zv_test_) rather
+  than a full OAuth2 flow, so there is no OAuth scope surface (scopes/ skipped).
+  Keys are project/team-scoped; the account context endpoint (getCurrentApiKeyContext)
+  resolves the project bound to a key.

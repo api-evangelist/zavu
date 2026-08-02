@@ -1,0 +1,53 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/zavu-openapi-original.json
+entities:
+  - name: Sender
+    id_prefix: snd_
+    description: A configured channel identity (phone number, WhatsApp, email, Telegram bot) that sends/receives messages.
+  - name: Project
+    id_prefix: prj_
+    description: The account/project a Sender and API key belong to.
+  - name: Message
+    description: A single outbound or inbound message across a channel.
+  - name: Contact
+    description: A person/recipient with one or more channels.
+  - name: ContactChannel
+    description: A specific channel address belonging to a contact.
+  - name: Broadcast
+    description: A campaign that sends a message to many contacts with AI content review.
+  - name: Template
+    description: A reusable (WhatsApp) message template subject to approval.
+  - name: Agent
+    description: An AI agent bound to a sender (at most one per sender).
+  - name: AgentFlow
+    description: A conversational flow for an agent.
+  - name: KnowledgeBase
+    description: RAG document store for an agent.
+  - name: PhoneNumber
+    description: An owned/purchased phone number.
+  - name: TenDlcBrand
+    description: A 10DLC brand registration (TCR).
+  - name: TenDlcCampaign
+    description: A 10DLC campaign under a brand.
+  - name: Function
+    description: A serverless TypeScript function (Zavu Cloud) with deployments.
+  - name: WebhookEvent
+    id_prefix: evt_
+    description: An event delivered to a subscribed webhook endpoint.
+relationships:
+  - {from: Message, to: Sender, type: belongs_to, via: senderId}
+  - {from: Message, to: Contact, type: belongs_to, via: contactId}
+  - {from: Contact, to: ContactChannel, type: has_many, via: channels}
+  - {from: Broadcast, to: Sender, type: belongs_to, via: senderId}
+  - {from: Broadcast, to: Contact, type: has_many, via: contacts}
+  - {from: Template, to: Sender, type: belongs_to, via: senderId}
+  - {from: Agent, to: Sender, type: belongs_to, via: senderId}
+  - {from: AgentFlow, to: Agent, type: belongs_to, via: agentId}
+  - {from: KnowledgeBase, to: Agent, type: belongs_to, via: agentId}
+  - {from: PhoneNumber, to: Sender, type: belongs_to, via: senderId}
+  - {from: TenDlcCampaign, to: TenDlcBrand, type: belongs_to, via: brandId}
+  - {from: TenDlcCampaign, to: PhoneNumber, type: has_many, via: assignments}
+  - {from: WebhookEvent, to: Sender, type: belongs_to, via: senderId}
+  - {from: WebhookEvent, to: Message, type: references, via: data.messageId}
+note: id_prefix values are only recorded where the spec/webhook examples show them verbatim (evt_, snd_, prj_); operations confirm the reference (via) fields.

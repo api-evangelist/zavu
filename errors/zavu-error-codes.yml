@@ -1,0 +1,73 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zavu.dev/guides/whatsapp/error-codes.md
+envelope_field: errorCode
+appears_on:
+  - failed messages (API + dashboard)
+  - message.failed webhook events
+note: >-
+  Channel-level (WhatsApp) failure codes surfaced in the errorCode field of failed
+  messages. Complements the API-level error envelope in errors/zavu-problem-types.yml.
+categories:
+  - name: authorization
+    codes:
+      - {code: '0', name: AuthException, action: Reconnect the WhatsApp sender from Senders -> Connect WhatsApp}
+      - {code: '3', name: API Method, action: Reconnect with full permission set; avoid manual scope edits}
+      - {code: '10', name: Permission Denied, action: Verify number is registered to WABA and in connected state}
+      - {code: '190', name: Access Token Expired, action: Reconnect sender for automatic token rotation}
+      - {code: '200-299', name: Permission Errors, action: Check WABA status; follow Integrity resolution if blocked}
+  - name: rate_limit
+    codes:
+      - {code: '4', name: Too Many Calls, action: Back off with exponential delay (start 1s, cap 60s)}
+      - {code: '80007', name: Rate Limit Reached, action: Retry after Retry-After hint}
+      - {code: '130429', name: Throughput Limit, action: Use Zavu Broadcasts for automatic pacing}
+      - {code: '131048', name: Spam Rate Limit, action: Pause campaign; resume after quality rating recovers}
+      - {code: '131056', name: Pair Rate Limit, action: Hold sends to that contact ~30 minutes}
+      - {code: '133016', name: Registration Limit, action: Wait out the 72h window; do not script repeated reconnects}
+  - name: integrity
+    codes:
+      - {code: '368', name: Temporarily Blocked, action: Resolve flagged item in WhatsApp Manager; wait for unblock}
+      - {code: '130497', name: Country Restriction, action: Use different channel for that country}
+      - {code: '131031', name: Account Locked, action: Contact support for appeal process}
+  - name: template
+    codes:
+      - {code: '100', name: Invalid Parameter, action: Match variable keys to template format; include all required vars}
+      - {code: '132000', name: Parameter Count Mismatch, action: Match exact variable count}
+      - {code: '132001', name: Template Does Not Exist, action: Confirm name + language match approved template}
+      - {code: '132005', name: Translation Too Long, action: Shorten body/header for that locale}
+      - {code: '132007', name: Format Policy Violation, action: Edit template and resubmit}
+      - {code: '132012', name: Parameter Format Mismatch, action: Send correct type for each component}
+      - {code: '132015', name: Template Paused, action: Edit for clarity and resubmit}
+      - {code: '132016', name: Template Disabled, action: Create new template with improved copy}
+      - {code: '132068', name: Flow Blocked, action: Review and republish Flow}
+      - {code: '132069', name: Flow Throttled, action: Pace flow sends; investigate repeated triggers}
+  - name: delivery
+    codes:
+      - {code: '131026', name: Message Undeliverable, action: Fall back to SMS/email via Smart Routing}
+      - {code: '131047', name: Re-engagement Required, action: Send an approved template instead of a session message}
+      - {code: '131049', name: Per-User Marketing Limit, action: Reduce marketing frequency to that contact}
+      - {code: '131051', name: Unsupported Message Type, action: Use supported message type for recipient device}
+  - name: media
+    codes:
+      - {code: '131052', name: Media Download Error, action: Ask user to resend or request via another channel}
+      - {code: '131053', name: Media Upload Error, action: Verify file format, size, and codec specs}
+  - name: flows
+    codes:
+      - {code: '139000', name: Blocked by Integrity, action: Resolve integrity issues first}
+      - {code: '139001', name: Cannot Update Published Flow, action: Clone, edit, publish new version}
+      - {code: '139002', name: Incomplete Flow Details, action: Complete all required fields}
+      - {code: '139003', name: Deprecation Error, action: Check current status before deprecating}
+      - {code: '139004', name: Cannot Delete Published Flow, action: Deprecate instead of delete}
+      - {code: '139006', name: Not Enough Metrics Data, action: Wait for more usage data}
+  - name: misc
+    codes:
+      - {code: '131000', name: Unknown Error, action: Retry once; contact support if persistent}
+      - {code: '131005', name: Access Denied, action: Reconnect sender}
+      - {code: '131008', name: Missing Required Parameter, action: Check API reference for required fields}
+      - {code: '131009', name: Invalid Parameter Value, action: Validate enums and value lengths}
+      - {code: '131016', name: Service Unavailable, action: Retry with backoff; check status.zavu.dev}
+      - {code: '131021', name: Sender Equals Recipient, action: Use different phone numbers}
+      - {code: '131037', name: Missing Display Name, action: Set and approve display name in Senders -> Profile}
+      - {code: '131042', name: Payment Issue, action: Update billing details in Settings}
+      - {code: '131045', name: Incorrect Certificate, action: Reconnect phone number from dashboard}
+      - {code: '131057', name: Account in Maintenance, action: Wait; clears automatically}

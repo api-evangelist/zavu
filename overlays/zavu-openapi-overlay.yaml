@@ -1,0 +1,24 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Zavu Unified Messaging Layer API
+  version: 1.0.0
+extends: openapi/zavu-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enrichment:
+        idempotency:
+          header: Idempotency-Key
+          conflict_status: 409
+        pagination:
+          style: cursor
+          params: [cursor, limit, nextToken]
+        rate_limit_headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+        webhook_signature_header: X-Zavu-Signature
+        error_envelope: {code: string, message: string, details: object}
+        channel_error_codes: errors/zavu-error-codes.yml
+        test_mode: {live_prefix: zv_live_, test_prefix: zv_test_}
+        mcp_server: "@zavudev/sdk-mcp"
+  - target: $.servers
+    update:
+      x-apievangelist-note: Single production server https://api.zavu.dev (v1 in path).

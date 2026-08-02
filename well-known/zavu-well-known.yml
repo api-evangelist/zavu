@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: searched
+source: live probes of /.well-known/* on api.zavu.dev and zavu.dev
+hosts:
+  - https://api.zavu.dev
+  - https://zavu.dev
+documents:
+  - path: /.well-known/security.txt
+    host: https://api.zavu.dev
+    status: 404
+  - path: /.well-known/security.txt
+    host: https://zavu.dev
+    status: 404
+  - path: /.well-known/openid-configuration
+    host: https://api.zavu.dev
+    status: 404
+  - path: /.well-known/openid-configuration
+    host: https://zavu.dev
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    host: https://api.zavu.dev
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    host: https://zavu.dev
+    status: 404
+  - path: /.well-known/api-catalog
+    host: https://api.zavu.dev
+    status: 404
+  - path: /.well-known/api-catalog
+    host: https://zavu.dev
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    host: https://api.zavu.dev
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    host: https://zavu.dev
+    status: 404
+note: No .well-known discovery documents are published on either host as of the probe date.

@@ -1,0 +1,56 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://docs.zavu.dev/authentication.md
+  - https://docs.zavu.dev/concepts/rate-limiting.md
+  - https://docs.zavu.dev/webhooks
+  - openapi/zavu-openapi-original.json
+authentication:
+  style: bearer
+  header: Authorization
+  format: "Bearer zv_live_... | zv_test_..."
+  scheme: http bearer (JWT)
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  scope: message send (and other create operations)
+  behavior: >-
+    Retrying a request with the same Idempotency-Key returns 409 Conflict with the
+    original message/resource rather than creating a duplicate.
+  conflict_status: 409
+pagination:
+  style: cursor
+  request_params: [cursor, limit, nextToken]
+  note: List endpoints use cursor-based pagination; some AWS-backed list endpoints use nextToken.
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.zavu.dev/v1
+request_tracing:
+  note: Event/webhook payloads carry a unique event id (evt_...) and Unix-ms timestamp.
+error_envelope:
+  format: custom-json
+  shape:
+    code: string        # machine-readable, e.g. invalid_request, rate_limited
+    message: string     # human-readable
+    details: object     # optional structured context
+  channel_error_field: errorCode   # channel/provider (e.g. WhatsApp) failure codes on message.failed
+  cross_reference:
+    problem_types: errors/zavu-problem-types.yml
+    error_codes: errors/zavu-error-codes.yml
+rate_limit_signaling:
+  headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    - Retry-After   # on 429 only
+  algorithm: fixed-window (per-minute)
+  tiers:
+    default: 600 req/min
+    compliance_verified: 1200 req/min
+    tendlc_verified: 2400 req/min
+  cross_reference: rate-limits/zavu-rate-limits.yml
+webhooks:
+  signature_header: X-Zavu-Signature
+  retry_policy: 5 attempts (1m, 5m, 15m, 1h, 4h)
+  cross_reference: asyncapi/zavu-messaging-webhooks.yml

@@ -1,0 +1,60 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/zavu-openapi-original.json
+format: custom-json
+envelope:
+  code: string
+  message: string
+  details: object
+note: >-
+  Zavu does not use RFC 9457 application/problem+json; errors are returned as a
+  custom JSON envelope {code, message, details}. Channel/provider-level failure
+  codes (e.g. WhatsApp) are surfaced separately in the errorCode field of failed
+  messages — see errors/zavu-error-codes.yml.
+problems:
+  - status: 400
+    code: invalid_request
+    title: Bad request
+    description: Request validation failed (e.g. invalid phone number, malformed body).
+    occurrences: 82
+  - status: 401
+    code: unauthorized
+    title: Unauthorized
+    description: Missing or invalid Bearer API key.
+    occurrences: 163
+  - status: 402
+    code: payment_required
+    title: Insufficient balance
+    description: Account balance is insufficient to reserve the operation cost.
+    occurrences: 2
+    source_operations: [sendBroadcast, purchasePhoneNumber]
+  - status: 403
+    code: forbidden
+    title: Forbidden
+    description: API key lacks permission for the resource or action.
+    occurrences: 11
+  - status: 404
+    code: not_found
+    title: Resource not found
+    description: The referenced resource does not exist or is not visible to this project.
+    occurrences: 124
+  - status: 409
+    code: conflict
+    title: Conflict
+    description: >-
+      Duplicate request detected via Idempotency-Key, or a state conflict; the
+      original resource is returned.
+    occurrences: 2
+    source_operations: [sendMessage, createBroadcast]
+  - status: 429
+    code: rate_limited
+    title: Rate limit exceeded
+    description: Per-project request rate exceeded; see Retry-After header / details.retryAfter.
+    occurrences: 1
+    source_operations: [sendMessage]
+  - status: 500
+    code: internal_error
+    title: Internal server error
+    description: Unexpected server error.
+    occurrences: 1
+    source_operations: [sendMessage]

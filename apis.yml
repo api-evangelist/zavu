@@ -1,7 +1,18 @@
 aid: zavu
 name: Zavu
-description: Zavu is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Zavu is a unified multi-channel messaging platform that consolidates SMS,
+  WhatsApp, Telegram, Email, Voice, and Messenger behind a single REST API, so
+  developers integrate once instead of stitching together Twilio, Vonage,
+  MessageBird and others. The Unified Messaging Layer API adds smart ML-powered
+  channel routing with automatic fallback and retry, signed webhooks for delivery
+  and inbound events, WhatsApp templates and 10DLC brand/campaign registration,
+  broadcasts with AI content review, contacts, AI agents with flows and RAG
+  knowledge bases, serverless TypeScript functions (Zavu Cloud), and phone-number
+  provisioning. Auth is API-key bearer tokens with test (zv_test_) and live
+  (zv_live_) modes, idempotency keys, cursor pagination, and per-project rate
+  limiting. Official SDKs ship for TypeScript, Python, Ruby, Go, and PHP, plus an
+  official MCP server. Zavu is a 500 Global portfolio company.
 url: https://raw.githubusercontent.com/api-evangelist/zavu/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,12 +20,496 @@ x-backed-by:
 - 500-global
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
+image: https://zavu.dev/favicon.ico
 tags:
 - Company
-apis: []
+- Messaging
+- SMS
+- WhatsApp
+- Email
+- Voice
+- Communications
+- CPaaS
+- Webhooks
+- AI Agents
+apis:
+- aid: zavu:zavu-10dlc-api
+  name: Zavu 10DLC API
+  description: The 10DLC API from Zavu — 11 operation(s) for 10dlc.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - 10DLC
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-10dlc-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-account-api
+  name: Zavu Account API
+  description: The Account API from Zavu — 1 operation(s) for account.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-account-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-agent-flows-api
+  name: Zavu Agent Flows API
+  description: The Agent Flows API from Zavu — 3 operation(s) for agent flows.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Agent Flows
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-agent-flows-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-agent-knowledge-bases-api
+  name: Zavu Agent Knowledge Bases API
+  description: The Agent Knowledge Bases API from Zavu — 4 operation(s) for agent knowledge bases.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Agent Knowledge Bases
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-agent-knowledge-bases-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-agent-tools-api
+  name: Zavu Agent Tools API
+  description: The Agent Tools API from Zavu — 3 operation(s) for agent tools.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Agent Tools
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-agent-tools-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-agents-api
+  name: Zavu Agents API
+  description: The Agents API from Zavu — 4 operation(s) for agents.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Agents
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-agents-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-balance-api
+  name: Zavu Balance API
+  description: The Balance API from Zavu — 1 operation(s) for balance.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Balance
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-balance-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-broadcasts-api
+  name: Zavu Broadcasts API
+  description: The Broadcasts API from Zavu — 10 operation(s) for broadcasts.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Broadcasts
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-broadcasts-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-contacts-api
+  name: Zavu Contacts API
+  description: The Contacts API from Zavu — 8 operation(s) for contacts.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-contacts-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-functions-api
+  name: Zavu Functions API
+  description: The Functions API from Zavu — 12 operation(s) for functions.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Functions
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-functions-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-introspect-api
+  name: Zavu Introspect API
+  description: The Introspect API from Zavu — 1 operation(s) for introspect.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Introspect
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-introspect-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-invitations-api
+  name: Zavu Invitations API
+  description: The Invitations API from Zavu — 3 operation(s) for invitations.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Invitations
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-invitations-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-messages-api
+  name: Zavu Messages API
+  description: The Messages API from Zavu — 4 operation(s) for messages.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-messages-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-phone-numbers-api
+  name: Zavu Phone Numbers API
+  description: The Phone Numbers API from Zavu — 4 operation(s) for phone numbers.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Phone Numbers
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-phone-numbers-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-regulatory-api
+  name: Zavu Regulatory API
+  description: The Regulatory API from Zavu — 5 operation(s) for regulatory.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Regulatory
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-regulatory-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-senders-api
+  name: Zavu Senders API
+  description: The Senders API from Zavu — 5 operation(s) for senders.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Senders
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-senders-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-sub-accounts-api
+  name: Zavu Sub-Accounts API
+  description: The Sub-Accounts API from Zavu — 5 operation(s) for sub-accounts.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Sub-Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-sub-accounts-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-templates-api
+  name: Zavu Templates API
+  description: The Templates API from Zavu — 3 operation(s) for templates.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-templates-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-url-verification-api
+  name: Zavu URL Verification API
+  description: The URL Verification API from Zavu — 3 operation(s) for url verification.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - URL Verification
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-url-verification-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-whatsapp-alternative-api
+  name: Zavu WhatsApp Alternative API
+  description: The WhatsApp Alternative API from Zavu — 11 operation(s) for whatsapp alternative.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - WhatsApp Alternative
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-whatsapp-alternative-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-whatsapp-sync-api
+  name: Zavu WhatsApp Sync API
+  description: The WhatsApp Sync API from Zavu — 3 operation(s) for whatsapp sync.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - WhatsApp Sync
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-whatsapp-sync-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +518,70 @@ maintainers:
 common:
 - type: Website
   url: https://zavu.dev
+- type: DeveloperPortal
+  url: https://docs.zavu.dev
+- type: Documentation
+  url: https://docs.zavu.dev
+- type: APIReference
+  url: https://docs.zavu.dev/api-reference
+- type: GettingStarted
+  url: https://docs.zavu.dev/quickstart
+- type: Blog
+  url: https://zavu.dev/en/blog
+- type: Support
+  url: https://zavu.dev/en/contact
+- type: StatusPage
+  url: https://status.zavu.dev
+- type: GitHubOrganization
+  url: https://github.com/zavudev
+- type: Pricing
+  url: https://zavu.dev/en/pricing
+- type: SignUp
+  url: https://dashboard.zavu.dev
+- type: Login
+  url: https://dashboard.zavu.dev
+- type: TermsOfService
+  url: https://zavu.dev/en/terms
+- type: PrivacyPolicy
+  url: https://zavu.dev/en/privacy
+- type: Authentication
+  url: authentication/zavu-authentication.yml
+- type: DomainSecurity
+  url: security/zavu-domain-security.yml
+- type: Packages
+  url: packages/zavu-packages.yml
+- type: SDKs
+  url: packages/zavu-packages.yml
+- type: MCPServer
+  url: mcp/zavu-mcp.yml
+- type: LLMsTxt
+  url: llms/zavu-llms.txt
+- type: Overlay
+  url: overlays/zavu-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/zavu-conformance.yml
+- type: ErrorCatalog
+  url: errors/zavu-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/zavu-lifecycle.yml
+- type: Conventions
+  url: conventions/zavu-conventions.yml
+- type: Idempotency
+  url: conventions/zavu-conventions.yml
+- type: Sandbox
+  url: sandbox/zavu-sandbox.yml
+- type: DataModel
+  url: data-model/zavu-data-model.yml
+- type: RateLimits
+  url: rate-limits/zavu-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/zavu-messaging-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/zavu-agentic-access.yml
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

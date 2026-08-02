@@ -1,0 +1,16 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/zavu-openapi-original.json + conventions/ + errors/
+skills:
+  - file: zavu-send-message.md
+    name: Send a multi-channel message with Zavu
+    api: openapi/zavu-openapi-original.json
+    operations: [sendMessage, getMessage, listMessages]
+  - file: zavu-run-broadcast.md
+    name: Run a Zavu broadcast campaign
+    api: openapi/zavu-openapi-original.json
+    operations: [createBroadcast, addBroadcastContacts, sendBroadcast, retryBroadcastReview, getBroadcast]
+  - file: zavu-manage-contacts.md
+    name: Manage Zavu contacts and channels
+    api: openapi/zavu-openapi-original.json
+    operations: [createContact, getContactByPhone, addContactChannel, mergeContacts, listContacts]
