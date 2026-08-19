@@ -1,0 +1,454 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "10DLC",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List 10DLC brands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/brands",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List 10DLC brand registrations for this project."
+        },
+        {
+          "info": {
+            "name": "Create 10DLC brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/brands",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a 10DLC brand registration. The brand starts in draft status. Submit it for review using the submit endpoint."
+        },
+        {
+          "info": {
+            "name": "List 10DLC use cases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/use-cases",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List available use cases for 10DLC campaign registration."
+        },
+        {
+          "info": {
+            "name": "Get 10DLC brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/:brandId",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC brand ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get 10DLC brand"
+        },
+        {
+          "info": {
+            "name": "Update 10DLC brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/:brandId",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC brand ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a 10DLC brand in draft status. Cannot update after submission."
+        },
+        {
+          "info": {
+            "name": "Delete 10DLC brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/:brandId",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC brand ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete 10DLC brand"
+        },
+        {
+          "info": {
+            "name": "Submit 10DLC brand for review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/:brandId/submit",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC brand ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit a draft brand to The Campaign Registry (TCR) for vetting. The brand must be in draft status. A $35 registration fee is charged from your balance."
+        },
+        {
+          "info": {
+            "name": "Sync 10DLC brand status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/brands/:brandId/sync",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC brand ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync the brand status with the registration provider. Use this to check for approval updates after submission."
+        },
+        {
+          "info": {
+            "name": "List 10DLC campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns",
+            "params": [
+              {
+                "name": "brandId",
+                "value": "",
+                "type": "query",
+                "description": "Filter campaigns by brand ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List 10DLC campaign registrations for this project."
+        },
+        {
+          "info": {
+            "name": "Create 10DLC campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a 10DLC campaign under an existing brand. The campaign starts in draft status. Submit it for carrier review using the submit endpoint."
+        },
+        {
+          "info": {
+            "name": "Get 10DLC campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get 10DLC campaign"
+        },
+        {
+          "info": {
+            "name": "Update 10DLC campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a 10DLC campaign in draft status. Cannot update after submission."
+        },
+        {
+          "info": {
+            "name": "Delete 10DLC campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete 10DLC campaign"
+        },
+        {
+          "info": {
+            "name": "Submit 10DLC campaign for review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId/submit",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit a draft campaign for carrier review. The campaign must be in draft status and its brand must be verified."
+        },
+        {
+          "info": {
+            "name": "Sync 10DLC campaign status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId/sync",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync the campaign status with the registration provider. Use this to check for approval updates after submission."
+        },
+        {
+          "info": {
+            "name": "List campaign phone number assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId/phone-numbers",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List phone numbers assigned to a 10DLC campaign."
+        },
+        {
+          "info": {
+            "name": "Assign phone number to campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId/phone-numbers",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Assign a US phone number to an approved 10DLC campaign. The campaign must be in approved status."
+        },
+        {
+          "info": {
+            "name": "Unassign phone number from campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/10dlc/campaigns/:campaignId/phone-numbers/:assignmentId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "10DLC campaign ID."
+              },
+              {
+                "name": "assignmentId",
+                "value": "",
+                "type": "path",
+                "description": "Phone number assignment ID."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove a phone number assignment from a 10DLC campaign."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

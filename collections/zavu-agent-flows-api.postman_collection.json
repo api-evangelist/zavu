@@ -1,0 +1,1924 @@
+{
+  "item": [
+    {
+      "id": "d87e8525-8e79-4572-bad3-66d84b0e4696",
+      "name": "Agent Flows",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "433123e0-0c2b-43ec-a96e-1c342d35fa46",
+          "name": "List flows",
+          "request": {
+            "name": "List flows",
+            "description": {
+              "content": "List flows for an agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "enabled",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7fd298f8-6562-44c8-b43d-b475abff2c1f",
+              "name": "List of flows.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"name\": \"string\",\n      \"trigger\": {\n        \"type\": \"always\",\n        \"keywords\": [\n          \"string\",\n          \"string\"\n        ],\n        \"intent\": \"string\"\n      },\n      \"steps\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"llm\",\n          \"config\": {\n            \"key_0\": 113.06468922413826,\n            \"key_1\": 6748.794730094299\n          },\n          \"nextStepId\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"message\",\n          \"config\": {\n            \"key_0\": true,\n            \"key_1\": false,\n            \"key_2\": \"string\"\n          },\n          \"nextStepId\": \"string\"\n        }\n      ],\n      \"enabled\": true,\n      \"priority\": 5686,\n      \"createdAt\": \"2007-01-09T21:07:50.186Z\",\n      \"updatedAt\": \"2006-10-31T20:09:36.406Z\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"name\": \"string\",\n      \"trigger\": {\n        \"type\": \"manual\",\n        \"keywords\": [\n          \"string\",\n          \"string\"\n        ],\n        \"intent\": \"string\"\n      },\n      \"steps\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"message\",\n          \"config\": {\n            \"key_0\": 6590,\n            \"key_1\": false\n          },\n          \"nextStepId\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"llm\",\n          \"config\": {\n            \"key_0\": true,\n            \"key_1\": 4427,\n            \"key_2\": true\n          },\n          \"nextStepId\": \"string\"\n        }\n      ],\n      \"enabled\": false,\n      \"priority\": 8176,\n      \"createdAt\": \"1981-09-12T11:36:02.640Z\",\n      \"updatedAt\": \"1984-12-10T05:02:03.363Z\",\n      \"description\": \"string\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c38b27f9-589a-4cbc-8f5b-51df6048f349",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68460a9e-5f6e-4dca-9d79-9fe77b4162b4",
+              "name": "Agent not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17312c06-8cda-431b-b648-529f307564c3",
+          "name": "Create flow",
+          "request": {
+            "name": "Create flow",
+            "description": {
+              "content": "Create a new flow for an agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\",\n  \"enabled\": false,\n  \"priority\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fc82f14b-559e-4963-961c-8e10c2096d49",
+              "name": "Flow created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lead Capture\",\n  \"description\": \"Capture lead information\",\n  \"trigger\": {\n    \"type\": \"keyword\",\n    \"keywords\": [\n      \"info\",\n      \"pricing\",\n      \"demo\"\n    ]\n  },\n  \"steps\": [\n    {\n      \"id\": \"welcome\",\n      \"type\": \"message\",\n      \"config\": {\n        \"text\": \"Thanks for your interest! Let me get some info.\"\n      },\n      \"nextStepId\": \"ask_name\"\n    },\n    {\n      \"id\": \"ask_name\",\n      \"type\": \"collect\",\n      \"config\": {\n        \"variable\": \"name\",\n        \"prompt\": \"What's your name?\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"flow\": {\n    \"id\": \"string\",\n    \"agentId\": \"string\",\n    \"name\": \"string\",\n    \"trigger\": {\n      \"type\": \"<string>\",\n      \"keywords\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"intent\": \"<string>\"\n    },\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 5156,\n          \"key_1\": false,\n          \"key_2\": \"string\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 2433\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ],\n    \"enabled\": true,\n    \"priority\": 7661,\n    \"createdAt\": \"1992-05-24T08:45:16.835Z\",\n    \"updatedAt\": \"1955-12-02T03:35:16.357Z\",\n    \"description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "270d145d-eef6-43b0-ad1e-827d44ddcd08",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lead Capture\",\n  \"description\": \"Capture lead information\",\n  \"trigger\": {\n    \"type\": \"keyword\",\n    \"keywords\": [\n      \"info\",\n      \"pricing\",\n      \"demo\"\n    ]\n  },\n  \"steps\": [\n    {\n      \"id\": \"welcome\",\n      \"type\": \"message\",\n      \"config\": {\n        \"text\": \"Thanks for your interest! Let me get some info.\"\n      },\n      \"nextStepId\": \"ask_name\"\n    },\n    {\n      \"id\": \"ask_name\",\n      \"type\": \"collect\",\n      \"config\": {\n        \"variable\": \"name\",\n        \"prompt\": \"What's your name?\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b1f2445-0844-47f3-927a-d85f61f5d3ee",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lead Capture\",\n  \"description\": \"Capture lead information\",\n  \"trigger\": {\n    \"type\": \"keyword\",\n    \"keywords\": [\n      \"info\",\n      \"pricing\",\n      \"demo\"\n    ]\n  },\n  \"steps\": [\n    {\n      \"id\": \"welcome\",\n      \"type\": \"message\",\n      \"config\": {\n        \"text\": \"Thanks for your interest! Let me get some info.\"\n      },\n      \"nextStepId\": \"ask_name\"\n    },\n    {\n      \"id\": \"ask_name\",\n      \"type\": \"collect\",\n      \"config\": {\n        \"variable\": \"name\",\n        \"prompt\": \"What's your name?\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65d71070-a9fa-4418-9ca5-cda95321a77f",
+              "name": "Agent not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lead Capture\",\n  \"description\": \"Capture lead information\",\n  \"trigger\": {\n    \"type\": \"keyword\",\n    \"keywords\": [\n      \"info\",\n      \"pricing\",\n      \"demo\"\n    ]\n  },\n  \"steps\": [\n    {\n      \"id\": \"welcome\",\n      \"type\": \"message\",\n      \"config\": {\n        \"text\": \"Thanks for your interest! Let me get some info.\"\n      },\n      \"nextStepId\": \"ask_name\"\n    },\n    {\n      \"id\": \"ask_name\",\n      \"type\": \"collect\",\n      \"config\": {\n        \"variable\": \"name\",\n        \"prompt\": \"What's your name?\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67914af2-0663-437c-b6e1-9ab609e2e06c",
+          "name": "Get flow",
+          "request": {
+            "name": "Get flow",
+            "description": {
+              "content": "Get a specific flow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows",
+                ":flowId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flowId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "78a6401f-7e5e-4abd-b6f7-721756c295f0",
+              "name": "Flow details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"flow\": {\n    \"id\": \"string\",\n    \"agentId\": \"string\",\n    \"name\": \"string\",\n    \"trigger\": {\n      \"type\": \"<string>\",\n      \"keywords\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"intent\": \"<string>\"\n    },\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 5156,\n          \"key_1\": false,\n          \"key_2\": \"string\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 2433\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ],\n    \"enabled\": true,\n    \"priority\": 7661,\n    \"createdAt\": \"1992-05-24T08:45:16.835Z\",\n    \"updatedAt\": \"1955-12-02T03:35:16.357Z\",\n    \"description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9aefe31-3972-429e-9816-447662e73682",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d54a6841-a27a-4362-934d-f214481b3935",
+              "name": "Flow not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f33390f0-2290-41d9-92e0-3db8b3b09cfa",
+          "name": "Update flow",
+          "request": {
+            "name": "Update flow",
+            "description": {
+              "content": "Update a flow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows",
+                ":flowId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flowId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": 8357.863525548353,\n        \"key_1\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"enabled\": \"<boolean>\",\n  \"priority\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9d34ba4e-091b-4601-b772-f0b789f3ebe3",
+              "name": "Flow updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": 7670.1925008102335,\n        \"key_1\": true,\n        \"key_2\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"enabled\": \"<boolean>\",\n  \"priority\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"flow\": {\n    \"id\": \"string\",\n    \"agentId\": \"string\",\n    \"name\": \"string\",\n    \"trigger\": {\n      \"type\": \"<string>\",\n      \"keywords\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"intent\": \"<string>\"\n    },\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 5156,\n          \"key_1\": false,\n          \"key_2\": \"string\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 2433\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ],\n    \"enabled\": true,\n    \"priority\": 7661,\n    \"createdAt\": \"1992-05-24T08:45:16.835Z\",\n    \"updatedAt\": \"1955-12-02T03:35:16.357Z\",\n    \"description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ee83fa8-5527-4e30-9d8f-e167eed5406b",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": 7670.1925008102335,\n        \"key_1\": true,\n        \"key_2\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"enabled\": \"<boolean>\",\n  \"priority\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69192a5c-1f12-43f6-bdda-d1a3384735af",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": 7670.1925008102335,\n        \"key_1\": true,\n        \"key_2\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"enabled\": \"<boolean>\",\n  \"priority\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23a453b7-c769-498e-831f-8431e6291759",
+              "name": "Flow not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"keywords\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"intent\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"config\": {\n        \"key_0\": 7670.1925008102335,\n        \"key_1\": true,\n        \"key_2\": \"string\"\n      },\n      \"nextStepId\": \"<string>\"\n    }\n  ],\n  \"enabled\": \"<boolean>\",\n  \"priority\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be53fc73-0c40-4188-8c96-e51611fb3972",
+          "name": "Delete flow",
+          "request": {
+            "name": "Delete flow",
+            "description": {
+              "content": "Delete a flow. Cannot delete flows with active sessions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows",
+                ":flowId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flowId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "743b277e-1564-45b2-8237-2887ff2c94c4",
+              "name": "Flow deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6815eabf-f2d6-46bc-860b-4510396194bb",
+              "name": "Cannot delete flow with active sessions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5bff4c2-f021-4b89-8244-36b72007a735",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8db2f2b1-d81f-45ca-8e53-fbb89e38830b",
+              "name": "Flow not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f615331-eaa5-4d41-93a1-bdf4f49326cf",
+          "name": "Duplicate flow",
+          "request": {
+            "name": "Duplicate flow",
+            "description": {
+              "content": "Create a copy of an existing flow with a new name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "senders",
+                ":senderId",
+                "agent",
+                "flows",
+                ":flowId",
+                "duplicate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "senderId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flowId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7da3023d-963f-4627-8b25-535b2903537b",
+              "name": "Flow duplicated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId",
+                    "duplicate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newName\": \"Lead Capture (Copy)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"flow\": {\n    \"id\": \"string\",\n    \"agentId\": \"string\",\n    \"name\": \"string\",\n    \"trigger\": {\n      \"type\": \"<string>\",\n      \"keywords\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"intent\": \"<string>\"\n    },\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 5156,\n          \"key_1\": false,\n          \"key_2\": \"string\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\",\n        \"config\": {\n          \"key_0\": 2433\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ],\n    \"enabled\": true,\n    \"priority\": 7661,\n    \"createdAt\": \"1992-05-24T08:45:16.835Z\",\n    \"updatedAt\": \"1955-12-02T03:35:16.357Z\",\n    \"description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6a1f00c-52af-454d-9817-daf34d25dac1",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId",
+                    "duplicate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newName\": \"Lead Capture (Copy)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f327b87c-f1d0-41be-99cd-010e88a710c9",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId",
+                    "duplicate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newName\": \"Lead Capture (Copy)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8496ca27-c2ba-404c-a714-5cb1bee11622",
+              "name": "Flow not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "senders",
+                    ":senderId",
+                    "agent",
+                    "flows",
+                    ":flowId",
+                    "duplicate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "senderId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flowId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newName\": \"Lead Capture (Copy)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zavu.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "aacc3575-f2ff-460d-b2eb-8c2873c481c6",
+    "name": "Zavu Unified Messaging Layer 10DLC Agent Flows API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified multi-channel messaging API for Zavu.\n\nSupported channels:\n- **SMS**: Simple text messages\n- **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates\n- **Telegram**: Bot messaging with text, media, and interactive elements\n- **Email**: Transactional emails via Amazon SES\n\nDesign goals:\n- Simple `send()` entrypoint for developers\n- Project-level authentication via Bearer token\n- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)\n- If a non-text message type is sent, WhatsApp channel is used automatically\n- 24-hour WhatsApp conversation window enforcement\n- Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)\n",
+      "type": "text/plain"
+    }
+  }
+}

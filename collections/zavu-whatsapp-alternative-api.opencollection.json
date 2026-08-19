@@ -1,0 +1,365 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC WhatsApp Alternative API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "WhatsApp Alternative",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List WhatsApp Alternative sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List the project's WhatsApp Alternative sessions (unofficial WhatsApp Web channel)."
+        },
+        {
+          "info": {
+            "name": "Create WhatsApp Alternative session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a session and start the bridge. The QR is generated asynchronously: poll `GET /v1/whatsapp-alt/sessions/{sessionId}` until `status` is `qr_ready` and `qrCode` is present, then scan it from the phone (WhatsApp → Linked devices → Link a device).\n\nThe session routes through an egress from the first QR. It defaults to the managed Zavu proxy (`egress.kind = external`); pass `egress` to override. Direct (server IP) egress is not supported. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Get WhatsApp Alternative session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a session including its live `status` and, while linking, the `qrCode` to scan."
+        },
+        {
+          "info": {
+            "name": "Delete WhatsApp Alternative session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete the session, unlink its senders, and log the device out of WhatsApp (it disappears from the phone's Linked devices). Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Set session egress",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId/egress",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change how the session reaches WhatsApp: the managed Zavu proxy (`external`) or a customer Android device (`android`, requires `nodeId`). Takes effect on the next connect/reconnect. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Reconnect session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId/reconnect",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Re-initialize the session on the bridge (e.g. after `failed` or `disconnected`). If credentials are still valid it reconnects; otherwise it returns to `qr_ready`. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Log out session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId/logout",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Log the device out of WhatsApp (clears credentials; the device disappears from the phone's Linked devices). The session row is kept — reconnect to link again with a fresh QR. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Link session to a sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId/link",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach the session to a sender so the sender's outbound WhatsApp messages route through this session and inbound messages are attributed to it. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Unlink session from senders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/sessions/:sessionId/unlink",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Detach every sender currently pointing at this session. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "List egress nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/egress-nodes",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "query",
+                "description": "Sender whose egress nodes to list."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List a sender's Android egress nodes. `senderId` is required."
+        },
+        {
+          "info": {
+            "name": "Pair an egress node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/egress-nodes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Register a new Android egress node for a sender and return its pairing payload. Encode `pairing.token`, `pairing.gatewayUrl`, and `pairing.wsPath` into the QR the Zavu Egress Node Android app scans. The token is not persisted — re-issue it with the pairing-token endpoint to show the QR again. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Get egress node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/egress-nodes/:nodeId",
+            "params": [
+              {
+                "name": "nodeId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get egress node"
+        },
+        {
+          "info": {
+            "name": "Revoke egress node",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/egress-nodes/:nodeId",
+            "params": [
+              {
+                "name": "nodeId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Revoke (delete) an egress node and kill its live tunnel. Sessions bound to it fail closed (they will not fall back to a direct connection). Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Re-issue egress node pairing token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/egress-nodes/:nodeId/pairing-token",
+            "params": [
+              {
+                "name": "nodeId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Re-issue the pairing token for an existing node to show its QR again. Not available with test-mode API keys."
+        },
+        {
+          "info": {
+            "name": "Managed proxy availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/whatsapp-alt/proxy-status",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Whether the managed Zavu proxy egress (`egress.kind = external`) is currently offered. When false, pair an Android egress node instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

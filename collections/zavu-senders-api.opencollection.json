@@ -1,0 +1,236 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC Senders API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Senders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List senders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List senders"
+        },
+        {
+          "info": {
+            "name": "Create sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create sender"
+        },
+        {
+          "info": {
+            "name": "Get sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get sender"
+        },
+        {
+          "info": {
+            "name": "Update sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update sender"
+        },
+        {
+          "info": {
+            "name": "Delete sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/senders/:senderId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete sender"
+        },
+        {
+          "info": {
+            "name": "Regenerate webhook secret",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/webhook/secret",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Regenerate the webhook secret for a sender. The old secret will be invalidated immediately."
+        },
+        {
+          "info": {
+            "name": "Get WhatsApp Business profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/profile",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the WhatsApp Business profile for a sender. The sender must have a WhatsApp Business Account connected."
+        },
+        {
+          "info": {
+            "name": "Update WhatsApp Business profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/profile",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update the WhatsApp Business profile for a sender. The sender must have a WhatsApp Business Account connected."
+        },
+        {
+          "info": {
+            "name": "Upload WhatsApp Business profile picture",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/profile/picture",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload a new profile picture for the WhatsApp Business profile. The image will be uploaded to Meta and set as the profile picture."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

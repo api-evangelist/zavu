@@ -4,36 +4,74 @@ status: published
 source: https://docs.zavu.dev/tools/mcp-server.md
 server:
   name: zavu
-  package: "@zavudev/sdk-mcp"
+  package: '@zavudev/sdk-mcp'
   registry: npm
   url: https://www.npmjs.com/package/@zavudev/sdk-mcp
-  transport: stdio        # default; also supports http (--transport=http --port=3000)
+  transport: stdio
   install: npx -y @zavudev/sdk-mcp@latest
   auth:
     type: api_key
     env: ZAVUDEV_API_KEY
   clients:
-    - claude-desktop
-    - claude-code
-    - cursor
-    - vs-code
+  - claude-desktop
+  - claude-code
+  - cursor
+  - vs-code
   remote:
     transport: http
     example_url: http://localhost:3000
     auth: bearer
 tool_categories:
-  - name: messages
-    tools: [send_messages, retrieve_messages, list_messages, react_messages]
-  - name: templates
-    tools: [create_templates, retrieve_templates, list_templates, delete_templates, submit_templates]
-  - name: senders
-    tools: [create_senders, retrieve_senders, update_senders, list_senders, delete_senders]
-  - name: contacts
-    tools: [retrieve_contacts, update_contacts, list_contacts, retrieve_by_phone_contacts]
-  - name: broadcasts
-    tools: [create_broadcasts, retrieve_broadcasts, send_broadcasts, cancel_broadcasts, progress_broadcasts]
-  - name: phone_numbers
-    tools: [search_available_phone_numbers, purchase_phone_numbers, list_phone_numbers, release_phone_numbers]
-  - name: introspect
-    tools: [validate_phone_introspect]
-note: Official first-party MCP server generated from the Zavu OpenAPI (Stainless). Supports --tools=dynamic mode.
+- name: messages
+  tools:
+  - send_messages
+  - retrieve_messages
+  - list_messages
+  - react_messages
+- name: templates
+  tools:
+  - create_templates
+  - retrieve_templates
+  - list_templates
+  - delete_templates
+  - submit_templates
+- name: senders
+  tools:
+  - create_senders
+  - retrieve_senders
+  - update_senders
+  - list_senders
+  - delete_senders
+- name: contacts
+  tools:
+  - retrieve_contacts
+  - update_contacts
+  - list_contacts
+  - retrieve_by_phone_contacts
+- name: broadcasts
+  tools:
+  - create_broadcasts
+  - retrieve_broadcasts
+  - send_broadcasts
+  - cancel_broadcasts
+  - progress_broadcasts
+- name: phone_numbers
+  tools:
+  - search_available_phone_numbers
+  - purchase_phone_numbers
+  - list_phone_numbers
+  - release_phone_numbers
+- name: introspect
+  tools:
+  - validate_phone_introspect
+note: Official first-party MCP server generated from the Zavu OpenAPI (Stainless). Supports --tools=dynamic
+  mode.
+deployment:
+  mode: none
+  endpoint: http://localhost:3000
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,4370 @@
+{
+  "item": [
+    {
+      "id": "589da0b6-f041-4680-ba43-00a995339710",
+      "name": "10DLC",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a451db1a-3b8d-4750-b3ae-3bb318a5746c",
+          "name": "List 10DLC brands",
+          "request": {
+            "name": "List 10DLC brands",
+            "description": {
+              "content": "List 10DLC brand registrations for this project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b053149f-be9f-4d0c-9e9d-2f5b6e3f0e92",
+              "name": "List of brands.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"entityType\": \"GOVERNMENT\",\n      \"displayName\": \"Acme Corp\",\n      \"email\": \"bKW59w@yPLGnBoGwqI.ca\",\n      \"phone\": \"+14155551234\",\n      \"street\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"US\",\n      \"vertical\": \"Technology\",\n      \"status\": \"verified\",\n      \"createdAt\": \"1963-12-08T15:25:37.985Z\",\n      \"updatedAt\": \"1968-09-10T05:24:07.849Z\",\n      \"companyName\": \"string\",\n      \"ein\": \"12-3456789\",\n      \"firstName\": \"string\",\n      \"lastName\": \"string\",\n      \"website\": \"http://PPctJpQLXpnNLPKeuCm.umqPVprJ.faY-ysoJujhm\",\n      \"stockSymbol\": \"string\",\n      \"stockExchange\": \"string\",\n      \"brandScore\": 1170,\n      \"brandRelationship\": \"string\",\n      \"failureReason\": \"string\",\n      \"submittedAt\": \"1949-04-30T18:03:23.717Z\",\n      \"verifiedAt\": \"2022-12-27T08:44:47.256Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"entityType\": \"NON_PROFIT\",\n      \"displayName\": \"Acme Corp\",\n      \"email\": \"C6mzYUvX@REXKhTCnlGllBuZXcEOeJrgVSaNw.ua\",\n      \"phone\": \"+14155551234\",\n      \"street\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"US\",\n      \"vertical\": \"Technology\",\n      \"status\": \"rejected\",\n      \"createdAt\": \"2021-06-02T14:25:45.663Z\",\n      \"updatedAt\": \"1994-02-01T05:42:56.118Z\",\n      \"companyName\": \"string\",\n      \"ein\": \"12-3456789\",\n      \"firstName\": \"string\",\n      \"lastName\": \"string\",\n      \"website\": \"https://DOOMqHVXRQKshptEDTmonLNZvPLXg.tvetpQd2bLweNieibDtiUYcA\",\n      \"stockSymbol\": \"string\",\n      \"stockExchange\": \"string\",\n      \"brandScore\": 9527,\n      \"brandRelationship\": \"string\",\n      \"failureReason\": \"string\",\n      \"submittedAt\": \"1952-01-06T03:31:08.276Z\",\n      \"verifiedAt\": \"1984-02-16T15:15:51.933Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7bf8424-7a33-4f47-8e82-de7ee97339eb",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54784b13-4621-4dd7-9e0e-72b0a6c7ea2f",
+          "name": "Create 10DLC brand",
+          "request": {
+            "name": "Create 10DLC brand",
+            "description": {
+              "content": "Create a 10DLC brand registration. The brand starts in draft status. Submit it for review using the submit endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"vertical\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4dbdd06a-dac5-48f2-ad0a-7b9c9927887d",
+              "name": "Brand created in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"PRIVATE_PROFIT\",\n  \"displayName\": \"Acme Corp\",\n  \"companyName\": \"Acme Corporation\",\n  \"ein\": \"12-3456789\",\n  \"email\": \"compliance@acme.com\",\n  \"phone\": \"+14155551234\",\n  \"street\": \"123 Main St\",\n  \"city\": \"San Francisco\",\n  \"state\": \"CA\",\n  \"postalCode\": \"94102\",\n  \"country\": \"US\",\n  \"website\": \"https://acme.com\",\n  \"vertical\": \"Technology\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"brand\": {\n    \"id\": \"string\",\n    \"entityType\": \"<string>\",\n    \"displayName\": \"Acme Corp\",\n    \"email\": \"3g2@MOYADbjNPsOUx.fsj\",\n    \"phone\": \"+14155551234\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"US\",\n    \"vertical\": \"Technology\",\n    \"status\": \"draft\",\n    \"createdAt\": \"2009-05-25T23:09:40.393Z\",\n    \"updatedAt\": \"1961-02-03T00:49:48.448Z\",\n    \"companyName\": \"string\",\n    \"ein\": \"12-3456789\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"website\": \"http://hGxENMykxsBtTPQPisUGIzOrPBQDtERU.epOGE4Rm3JbOPPfWTcEsZ5no4eMFx+6hRUw+sGUCxa\",\n    \"stockSymbol\": \"string\",\n    \"stockExchange\": \"string\",\n    \"brandScore\": 4623,\n    \"brandRelationship\": \"string\",\n    \"failureReason\": \"string\",\n    \"submittedAt\": \"1963-12-06T15:36:48.243Z\",\n    \"verifiedAt\": \"1974-01-17T08:13:00.806Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a618718-ae2f-428f-a28d-22130e7606bb",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"PRIVATE_PROFIT\",\n  \"displayName\": \"Acme Corp\",\n  \"companyName\": \"Acme Corporation\",\n  \"ein\": \"12-3456789\",\n  \"email\": \"compliance@acme.com\",\n  \"phone\": \"+14155551234\",\n  \"street\": \"123 Main St\",\n  \"city\": \"San Francisco\",\n  \"state\": \"CA\",\n  \"postalCode\": \"94102\",\n  \"country\": \"US\",\n  \"website\": \"https://acme.com\",\n  \"vertical\": \"Technology\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64dd9bef-a520-4dac-a417-96e2ffa32b19",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"PRIVATE_PROFIT\",\n  \"displayName\": \"Acme Corp\",\n  \"companyName\": \"Acme Corporation\",\n  \"ein\": \"12-3456789\",\n  \"email\": \"compliance@acme.com\",\n  \"phone\": \"+14155551234\",\n  \"street\": \"123 Main St\",\n  \"city\": \"San Francisco\",\n  \"state\": \"CA\",\n  \"postalCode\": \"94102\",\n  \"country\": \"US\",\n  \"website\": \"https://acme.com\",\n  \"vertical\": \"Technology\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97f49db2-ed27-446c-9a87-501780ad043d",
+          "name": "List 10DLC use cases",
+          "request": {
+            "name": "List 10DLC use cases",
+            "description": {
+              "content": "List available use cases for 10DLC campaign registration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                "use-cases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d10051fc-e7cf-4a58-a938-5a94547b5ead",
+              "name": "List of available use cases.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    "use-cases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"useCases\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0e0ddd5-7c56-4448-aebd-49494f23bdab",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    "use-cases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87844caa-6a56-4a03-8140-06c4d8187d87",
+          "name": "Get 10DLC brand",
+          "request": {
+            "name": "Get 10DLC brand",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                ":brandId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "brandId",
+                  "description": "(Required) 10DLC brand ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cfaadfe6-ec64-4f48-85e7-46156ee972f5",
+              "name": "Brand details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"brand\": {\n    \"id\": \"string\",\n    \"entityType\": \"<string>\",\n    \"displayName\": \"Acme Corp\",\n    \"email\": \"3g2@MOYADbjNPsOUx.fsj\",\n    \"phone\": \"+14155551234\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"US\",\n    \"vertical\": \"Technology\",\n    \"status\": \"draft\",\n    \"createdAt\": \"2009-05-25T23:09:40.393Z\",\n    \"updatedAt\": \"1961-02-03T00:49:48.448Z\",\n    \"companyName\": \"string\",\n    \"ein\": \"12-3456789\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"website\": \"http://hGxENMykxsBtTPQPisUGIzOrPBQDtERU.epOGE4Rm3JbOPPfWTcEsZ5no4eMFx+6hRUw+sGUCxa\",\n    \"stockSymbol\": \"string\",\n    \"stockExchange\": \"string\",\n    \"brandScore\": 4623,\n    \"brandRelationship\": \"string\",\n    \"failureReason\": \"string\",\n    \"submittedAt\": \"1963-12-06T15:36:48.243Z\",\n    \"verifiedAt\": \"1974-01-17T08:13:00.806Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fb135c3-c668-4b16-bcc6-ada493bb0db1",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7518ee90-b8de-422e-8260-216428744239",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "146c6aab-aabe-4874-a4d2-c74723bf9d2e",
+          "name": "Update 10DLC brand",
+          "request": {
+            "name": "Update 10DLC brand",
+            "description": {
+              "content": "Update a 10DLC brand in draft status. Cannot update after submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                ":brandId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "brandId",
+                  "description": "(Required) 10DLC brand ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"vertical\": \"<string>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "70bd55b0-0982-4457-b953-b49df9a3846d",
+              "name": "Brand updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"vertical\": \"<string>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"brand\": {\n    \"id\": \"string\",\n    \"entityType\": \"<string>\",\n    \"displayName\": \"Acme Corp\",\n    \"email\": \"3g2@MOYADbjNPsOUx.fsj\",\n    \"phone\": \"+14155551234\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"US\",\n    \"vertical\": \"Technology\",\n    \"status\": \"draft\",\n    \"createdAt\": \"2009-05-25T23:09:40.393Z\",\n    \"updatedAt\": \"1961-02-03T00:49:48.448Z\",\n    \"companyName\": \"string\",\n    \"ein\": \"12-3456789\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"website\": \"http://hGxENMykxsBtTPQPisUGIzOrPBQDtERU.epOGE4Rm3JbOPPfWTcEsZ5no4eMFx+6hRUw+sGUCxa\",\n    \"stockSymbol\": \"string\",\n    \"stockExchange\": \"string\",\n    \"brandScore\": 4623,\n    \"brandRelationship\": \"string\",\n    \"failureReason\": \"string\",\n    \"submittedAt\": \"1963-12-06T15:36:48.243Z\",\n    \"verifiedAt\": \"1974-01-17T08:13:00.806Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4bd7d78-f80b-4b1d-bcc8-6e852f0ab0db",
+              "name": "Invalid request or brand already submitted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"vertical\": \"<string>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08181121-8978-4156-9ab0-848ee8524ff8",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"vertical\": \"<string>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd9b77cb-457a-482a-adb6-8fb173d70f6e",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entityType\": \"<string>\",\n  \"displayName\": \"<string>\",\n  \"companyName\": \"<string>\",\n  \"ein\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<string>\",\n  \"street\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"postalCode\": \"<string>\",\n  \"country\": \"<string>\",\n  \"website\": \"<uri>\",\n  \"vertical\": \"<string>\",\n  \"stockSymbol\": \"<string>\",\n  \"stockExchange\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5251a84-cd2e-43d3-ad61-d75a151d4b3b",
+          "name": "Delete 10DLC brand",
+          "request": {
+            "name": "Delete 10DLC brand",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                ":brandId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "brandId",
+                  "description": "(Required) 10DLC brand ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "867402e7-2b56-4bfe-a39d-5c8a88d4d7aa",
+              "name": "Brand deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c8898d83-b651-41ae-a70d-2ee7c97d8765",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e47f7982-756e-467f-85df-0d08aa7b95b2",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fca79971-44f2-4537-8b9f-7c292a6290e4",
+          "name": "Submit 10DLC brand for review",
+          "request": {
+            "name": "Submit 10DLC brand for review",
+            "description": {
+              "content": "Submit a draft brand to The Campaign Registry (TCR) for vetting. The brand must be in draft status. A $35 registration fee is charged from your balance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                ":brandId",
+                "submit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "brandId",
+                  "description": "(Required) 10DLC brand ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ade40d6b-7bc9-4b2e-b2e5-0f3106734c10",
+              "name": "Brand submitted for review.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"brand\": {\n    \"id\": \"string\",\n    \"entityType\": \"<string>\",\n    \"displayName\": \"Acme Corp\",\n    \"email\": \"3g2@MOYADbjNPsOUx.fsj\",\n    \"phone\": \"+14155551234\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"US\",\n    \"vertical\": \"Technology\",\n    \"status\": \"draft\",\n    \"createdAt\": \"2009-05-25T23:09:40.393Z\",\n    \"updatedAt\": \"1961-02-03T00:49:48.448Z\",\n    \"companyName\": \"string\",\n    \"ein\": \"12-3456789\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"website\": \"http://hGxENMykxsBtTPQPisUGIzOrPBQDtERU.epOGE4Rm3JbOPPfWTcEsZ5no4eMFx+6hRUw+sGUCxa\",\n    \"stockSymbol\": \"string\",\n    \"stockExchange\": \"string\",\n    \"brandScore\": 4623,\n    \"brandRelationship\": \"string\",\n    \"failureReason\": \"string\",\n    \"submittedAt\": \"1963-12-06T15:36:48.243Z\",\n    \"verifiedAt\": \"1974-01-17T08:13:00.806Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f7e1542-6286-4764-858d-6e27990b65a8",
+              "name": "Brand already submitted or invalid status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e85e63c-4580-41c1-a8e8-228c24b8b9a2",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8046d0d0-68d7-46ef-8c5b-481b3829f78e",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02695dd8-46cd-4b7c-8783-c8abe02543c0",
+          "name": "Sync 10DLC brand status",
+          "request": {
+            "name": "Sync 10DLC brand status",
+            "description": {
+              "content": "Sync the brand status with the registration provider. Use this to check for approval updates after submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "brands",
+                ":brandId",
+                "sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "brandId",
+                  "description": "(Required) 10DLC brand ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a430e0ce-9b20-4895-b944-15a04597aa2f",
+              "name": "Brand status synced.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"brand\": {\n    \"id\": \"string\",\n    \"entityType\": \"<string>\",\n    \"displayName\": \"Acme Corp\",\n    \"email\": \"3g2@MOYADbjNPsOUx.fsj\",\n    \"phone\": \"+14155551234\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"US\",\n    \"vertical\": \"Technology\",\n    \"status\": \"draft\",\n    \"createdAt\": \"2009-05-25T23:09:40.393Z\",\n    \"updatedAt\": \"1961-02-03T00:49:48.448Z\",\n    \"companyName\": \"string\",\n    \"ein\": \"12-3456789\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"website\": \"http://hGxENMykxsBtTPQPisUGIzOrPBQDtERU.epOGE4Rm3JbOPPfWTcEsZ5no4eMFx+6hRUw+sGUCxa\",\n    \"stockSymbol\": \"string\",\n    \"stockExchange\": \"string\",\n    \"brandScore\": 4623,\n    \"brandRelationship\": \"string\",\n    \"failureReason\": \"string\",\n    \"submittedAt\": \"1963-12-06T15:36:48.243Z\",\n    \"verifiedAt\": \"1974-01-17T08:13:00.806Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48b55ebf-0032-4b02-addc-f01c2168ed9c",
+              "name": "Brand has not been submitted yet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be344434-331a-44f0-9a47-17d9759286af",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47ab96e0-173b-40b0-9057-80d3207f7c05",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "brands",
+                    ":brandId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "brandId",
+                      "description": "(Required) 10DLC brand ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "88a8f77d-022a-4ca5-9c0b-456400addbb2",
+          "name": "List 10DLC campaigns",
+          "request": {
+            "name": "List 10DLC campaigns",
+            "description": {
+              "content": "List 10DLC campaign registrations for this project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "brandId",
+                  "value": "<string>",
+                  "description": "Filter campaigns by brand ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f9380370-8cbc-456f-ae83-2a99accb5140",
+              "name": "List of campaigns.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "brandId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"brandId\": \"string\",\n      \"name\": \"Order Notifications\",\n      \"useCase\": \"ACCOUNT_NOTIFICATION\",\n      \"description\": \"string\",\n      \"sampleMessages\": [\n        \"string\",\n        \"string\"\n      ],\n      \"subscriberOptIn\": true,\n      \"subscriberOptOut\": false,\n      \"subscriberHelp\": true,\n      \"numberPooling\": true,\n      \"directLending\": true,\n      \"embeddedLink\": false,\n      \"embeddedPhone\": false,\n      \"affiliateMarketing\": true,\n      \"ageGated\": true,\n      \"status\": \"pending\",\n      \"createdAt\": \"2014-05-26T11:11:54.524Z\",\n      \"updatedAt\": \"1982-03-27T10:42:15.331Z\",\n      \"subUseCases\": [\n        \"string\",\n        \"string\"\n      ],\n      \"messageFlow\": \"string\",\n      \"helpMessage\": \"string\",\n      \"optInKeywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"optOutKeywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"dailyLimit\": 2334,\n      \"failureReason\": \"string\",\n      \"registrationCostCents\": 6889,\n      \"monthlyFeeCents\": 977,\n      \"submittedAt\": \"1987-12-15T03:54:59.546Z\",\n      \"approvedAt\": \"1996-06-26T12:57:22.323Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"brandId\": \"string\",\n      \"name\": \"Order Notifications\",\n      \"useCase\": \"ACCOUNT_NOTIFICATION\",\n      \"description\": \"string\",\n      \"sampleMessages\": [\n        \"string\",\n        \"string\"\n      ],\n      \"subscriberOptIn\": true,\n      \"subscriberOptOut\": true,\n      \"subscriberHelp\": true,\n      \"numberPooling\": false,\n      \"directLending\": false,\n      \"embeddedLink\": false,\n      \"embeddedPhone\": true,\n      \"affiliateMarketing\": false,\n      \"ageGated\": false,\n      \"status\": \"pending\",\n      \"createdAt\": \"1969-07-19T13:04:27.841Z\",\n      \"updatedAt\": \"1964-05-25T12:52:43.448Z\",\n      \"subUseCases\": [\n        \"string\",\n        \"string\"\n      ],\n      \"messageFlow\": \"string\",\n      \"helpMessage\": \"string\",\n      \"optInKeywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"optOutKeywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"dailyLimit\": 1785,\n      \"failureReason\": \"string\",\n      \"registrationCostCents\": 4786,\n      \"monthlyFeeCents\": 452,\n      \"submittedAt\": \"2019-10-31T03:11:28.949Z\",\n      \"approvedAt\": \"1998-06-07T09:09:31.760Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35bd5040-0d2a-407b-a12a-c9df0e21c462",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "brandId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "29ca2a48-9ce2-423e-9933-885937ee0ddf",
+          "name": "Create 10DLC campaign",
+          "request": {
+            "name": "Create 10DLC campaign",
+            "description": {
+              "content": "Create a 10DLC campaign under an existing brand. The campaign starts in draft status. Submit it for carrier review using the submit endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brandId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"useCase\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"subscriberOptIn\": \"<boolean>\",\n  \"subscriberOptOut\": \"<boolean>\",\n  \"subscriberHelp\": \"<boolean>\",\n  \"numberPooling\": \"<boolean>\",\n  \"directLending\": \"<boolean>\",\n  \"embeddedLink\": \"<boolean>\",\n  \"embeddedPhone\": \"<boolean>\",\n  \"affiliateMarketing\": \"<boolean>\",\n  \"ageGated\": \"<boolean>\",\n  \"subUseCases\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "52b9d7ec-8b45-4971-90fd-34b40d670652",
+              "name": "Campaign created in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brandId\": \"brand_abc123\",\n  \"name\": \"Order Notifications\",\n  \"useCase\": \"ACCOUNT_NOTIFICATION\",\n  \"description\": \"Send order status updates and shipping notifications to customers who opted in.\",\n  \"sampleMessages\": [\n    \"Hi {{name}}, your order #{{order_id}} has shipped! Track it at {{url}}\",\n    \"Your order #{{order_id}} has been delivered. Thank you for your purchase!\"\n  ],\n  \"subscriberOptIn\": true,\n  \"subscriberOptOut\": true,\n  \"subscriberHelp\": true,\n  \"numberPooling\": false,\n  \"directLending\": false,\n  \"embeddedLink\": true,\n  \"embeddedPhone\": false,\n  \"affiliateMarketing\": false,\n  \"ageGated\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign\": {\n    \"id\": \"string\",\n    \"brandId\": \"string\",\n    \"name\": \"Order Notifications\",\n    \"useCase\": \"ACCOUNT_NOTIFICATION\",\n    \"description\": \"string\",\n    \"sampleMessages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subscriberOptIn\": true,\n    \"subscriberOptOut\": false,\n    \"subscriberHelp\": true,\n    \"numberPooling\": false,\n    \"directLending\": false,\n    \"embeddedLink\": true,\n    \"embeddedPhone\": true,\n    \"affiliateMarketing\": false,\n    \"ageGated\": false,\n    \"status\": \"rejected\",\n    \"createdAt\": \"1989-10-25T11:52:11.971Z\",\n    \"updatedAt\": \"1979-04-30T02:10:30.103Z\",\n    \"subUseCases\": [\n      \"string\",\n      \"string\"\n    ],\n    \"messageFlow\": \"string\",\n    \"helpMessage\": \"string\",\n    \"optInKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"optOutKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dailyLimit\": 4147,\n    \"failureReason\": \"string\",\n    \"registrationCostCents\": 2312,\n    \"monthlyFeeCents\": 5077,\n    \"submittedAt\": \"1977-05-24T19:53:37.483Z\",\n    \"approvedAt\": \"1972-08-02T12:03:35.817Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34db09fa-b95a-4a0a-8461-8e4f1ad35e1d",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brandId\": \"brand_abc123\",\n  \"name\": \"Order Notifications\",\n  \"useCase\": \"ACCOUNT_NOTIFICATION\",\n  \"description\": \"Send order status updates and shipping notifications to customers who opted in.\",\n  \"sampleMessages\": [\n    \"Hi {{name}}, your order #{{order_id}} has shipped! Track it at {{url}}\",\n    \"Your order #{{order_id}} has been delivered. Thank you for your purchase!\"\n  ],\n  \"subscriberOptIn\": true,\n  \"subscriberOptOut\": true,\n  \"subscriberHelp\": true,\n  \"numberPooling\": false,\n  \"directLending\": false,\n  \"embeddedLink\": true,\n  \"embeddedPhone\": false,\n  \"affiliateMarketing\": false,\n  \"ageGated\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0bdde681-040d-4b3b-954d-d6efb51363be",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brandId\": \"brand_abc123\",\n  \"name\": \"Order Notifications\",\n  \"useCase\": \"ACCOUNT_NOTIFICATION\",\n  \"description\": \"Send order status updates and shipping notifications to customers who opted in.\",\n  \"sampleMessages\": [\n    \"Hi {{name}}, your order #{{order_id}} has shipped! Track it at {{url}}\",\n    \"Your order #{{order_id}} has been delivered. Thank you for your purchase!\"\n  ],\n  \"subscriberOptIn\": true,\n  \"subscriberOptOut\": true,\n  \"subscriberHelp\": true,\n  \"numberPooling\": false,\n  \"directLending\": false,\n  \"embeddedLink\": true,\n  \"embeddedPhone\": false,\n  \"affiliateMarketing\": false,\n  \"ageGated\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4875da4-832d-428f-94fa-f81d034d4896",
+              "name": "Brand not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brandId\": \"brand_abc123\",\n  \"name\": \"Order Notifications\",\n  \"useCase\": \"ACCOUNT_NOTIFICATION\",\n  \"description\": \"Send order status updates and shipping notifications to customers who opted in.\",\n  \"sampleMessages\": [\n    \"Hi {{name}}, your order #{{order_id}} has shipped! Track it at {{url}}\",\n    \"Your order #{{order_id}} has been delivered. Thank you for your purchase!\"\n  ],\n  \"subscriberOptIn\": true,\n  \"subscriberOptOut\": true,\n  \"subscriberHelp\": true,\n  \"numberPooling\": false,\n  \"directLending\": false,\n  \"embeddedLink\": true,\n  \"embeddedPhone\": false,\n  \"affiliateMarketing\": false,\n  \"ageGated\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95e19c82-2bda-4933-b039-e41cf1e69660",
+          "name": "Get 10DLC campaign",
+          "request": {
+            "name": "Get 10DLC campaign",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f87518ac-e0a3-414e-bd1e-3f35d09b0b78",
+              "name": "Campaign details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign\": {\n    \"id\": \"string\",\n    \"brandId\": \"string\",\n    \"name\": \"Order Notifications\",\n    \"useCase\": \"ACCOUNT_NOTIFICATION\",\n    \"description\": \"string\",\n    \"sampleMessages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subscriberOptIn\": true,\n    \"subscriberOptOut\": false,\n    \"subscriberHelp\": true,\n    \"numberPooling\": false,\n    \"directLending\": false,\n    \"embeddedLink\": true,\n    \"embeddedPhone\": true,\n    \"affiliateMarketing\": false,\n    \"ageGated\": false,\n    \"status\": \"rejected\",\n    \"createdAt\": \"1989-10-25T11:52:11.971Z\",\n    \"updatedAt\": \"1979-04-30T02:10:30.103Z\",\n    \"subUseCases\": [\n      \"string\",\n      \"string\"\n    ],\n    \"messageFlow\": \"string\",\n    \"helpMessage\": \"string\",\n    \"optInKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"optOutKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dailyLimit\": 4147,\n    \"failureReason\": \"string\",\n    \"registrationCostCents\": 2312,\n    \"monthlyFeeCents\": 5077,\n    \"submittedAt\": \"1977-05-24T19:53:37.483Z\",\n    \"approvedAt\": \"1972-08-02T12:03:35.817Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91416b80-8811-462a-b413-295d81c4e30c",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5584177-da73-43e3-b209-374258194a79",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9b29634-ae21-4246-93f1-8c3badee2f3c",
+          "name": "Update 10DLC campaign",
+          "request": {
+            "name": "Update 10DLC campaign",
+            "description": {
+              "content": "Update a 10DLC campaign in draft status. Cannot update after submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c939b321-0807-4245-bb7f-5047dbd66398",
+              "name": "Campaign updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign\": {\n    \"id\": \"string\",\n    \"brandId\": \"string\",\n    \"name\": \"Order Notifications\",\n    \"useCase\": \"ACCOUNT_NOTIFICATION\",\n    \"description\": \"string\",\n    \"sampleMessages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subscriberOptIn\": true,\n    \"subscriberOptOut\": false,\n    \"subscriberHelp\": true,\n    \"numberPooling\": false,\n    \"directLending\": false,\n    \"embeddedLink\": true,\n    \"embeddedPhone\": true,\n    \"affiliateMarketing\": false,\n    \"ageGated\": false,\n    \"status\": \"rejected\",\n    \"createdAt\": \"1989-10-25T11:52:11.971Z\",\n    \"updatedAt\": \"1979-04-30T02:10:30.103Z\",\n    \"subUseCases\": [\n      \"string\",\n      \"string\"\n    ],\n    \"messageFlow\": \"string\",\n    \"helpMessage\": \"string\",\n    \"optInKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"optOutKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dailyLimit\": 4147,\n    \"failureReason\": \"string\",\n    \"registrationCostCents\": 2312,\n    \"monthlyFeeCents\": 5077,\n    \"submittedAt\": \"1977-05-24T19:53:37.483Z\",\n    \"approvedAt\": \"1972-08-02T12:03:35.817Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4c5a95f-1468-4287-be4c-61da2e8531b6",
+              "name": "Invalid request or campaign already submitted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5205c87-65bc-4fcb-9872-64c09f6063e6",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cdc11f1c-54eb-4c7a-8d3b-26d47fc8427b",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"sampleMessages\": [\n    \"<string>\"\n  ],\n  \"messageFlow\": \"<string>\",\n  \"helpMessage\": \"<string>\",\n  \"optInKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"optOutKeywords\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "66df865e-307c-4a0a-bfd2-7e84ac2449d9",
+          "name": "Delete 10DLC campaign",
+          "request": {
+            "name": "Delete 10DLC campaign",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a516a866-d252-45a8-941e-6bda7cdc1979",
+              "name": "Campaign deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "93a4aa40-5d15-4089-9d5d-7a5227db0506",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c2e6a2f-3a89-400b-a94a-d3697cdc6fa6",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85537695-8e1d-404b-8b00-f33961c7267a",
+          "name": "Submit 10DLC campaign for review",
+          "request": {
+            "name": "Submit 10DLC campaign for review",
+            "description": {
+              "content": "Submit a draft campaign for carrier review. The campaign must be in draft status and its brand must be verified.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId",
+                "submit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "53d16812-0bfc-4622-b772-2fcf399048b5",
+              "name": "Campaign submitted for review.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign\": {\n    \"id\": \"string\",\n    \"brandId\": \"string\",\n    \"name\": \"Order Notifications\",\n    \"useCase\": \"ACCOUNT_NOTIFICATION\",\n    \"description\": \"string\",\n    \"sampleMessages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subscriberOptIn\": true,\n    \"subscriberOptOut\": false,\n    \"subscriberHelp\": true,\n    \"numberPooling\": false,\n    \"directLending\": false,\n    \"embeddedLink\": true,\n    \"embeddedPhone\": true,\n    \"affiliateMarketing\": false,\n    \"ageGated\": false,\n    \"status\": \"rejected\",\n    \"createdAt\": \"1989-10-25T11:52:11.971Z\",\n    \"updatedAt\": \"1979-04-30T02:10:30.103Z\",\n    \"subUseCases\": [\n      \"string\",\n      \"string\"\n    ],\n    \"messageFlow\": \"string\",\n    \"helpMessage\": \"string\",\n    \"optInKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"optOutKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dailyLimit\": 4147,\n    \"failureReason\": \"string\",\n    \"registrationCostCents\": 2312,\n    \"monthlyFeeCents\": 5077,\n    \"submittedAt\": \"1977-05-24T19:53:37.483Z\",\n    \"approvedAt\": \"1972-08-02T12:03:35.817Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11dc1f16-27c1-40fc-a4c6-b951e7c746c7",
+              "name": "Campaign already submitted or invalid status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ca04b90-657c-43c4-9d8b-62f0e42f24e5",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc2d6b34-0e61-4ddc-a976-031f99aa7d6b",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1abd8ef9-a4f8-4668-9e3c-fad23e6b6c85",
+          "name": "Sync 10DLC campaign status",
+          "request": {
+            "name": "Sync 10DLC campaign status",
+            "description": {
+              "content": "Sync the campaign status with the registration provider. Use this to check for approval updates after submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId",
+                "sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e3f8edc8-14b1-44ee-bbec-acab4f238eeb",
+              "name": "Campaign status synced.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign\": {\n    \"id\": \"string\",\n    \"brandId\": \"string\",\n    \"name\": \"Order Notifications\",\n    \"useCase\": \"ACCOUNT_NOTIFICATION\",\n    \"description\": \"string\",\n    \"sampleMessages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subscriberOptIn\": true,\n    \"subscriberOptOut\": false,\n    \"subscriberHelp\": true,\n    \"numberPooling\": false,\n    \"directLending\": false,\n    \"embeddedLink\": true,\n    \"embeddedPhone\": true,\n    \"affiliateMarketing\": false,\n    \"ageGated\": false,\n    \"status\": \"rejected\",\n    \"createdAt\": \"1989-10-25T11:52:11.971Z\",\n    \"updatedAt\": \"1979-04-30T02:10:30.103Z\",\n    \"subUseCases\": [\n      \"string\",\n      \"string\"\n    ],\n    \"messageFlow\": \"string\",\n    \"helpMessage\": \"string\",\n    \"optInKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"optOutKeywords\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dailyLimit\": 4147,\n    \"failureReason\": \"string\",\n    \"registrationCostCents\": 2312,\n    \"monthlyFeeCents\": 5077,\n    \"submittedAt\": \"1977-05-24T19:53:37.483Z\",\n    \"approvedAt\": \"1972-08-02T12:03:35.817Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eed77dd9-5c3d-461a-bc9a-3f95a56a0d9a",
+              "name": "Campaign has not been submitted yet.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8db3ce96-275d-4c64-bb1d-27debae92275",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87967eac-e007-414e-ab3a-9f602a1741ae",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "926bbdc1-9b6b-444a-a598-23cacf841909",
+          "name": "List campaign phone number assignments",
+          "request": {
+            "name": "List campaign phone number assignments",
+            "description": {
+              "content": "List phone numbers assigned to a 10DLC campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId",
+                "phone-numbers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "23cbe791-0599-470d-bb31-8c822f66caa7",
+              "name": "List of phone number assignments.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"campaignId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"status\": \"active\",\n      \"createdAt\": \"1950-03-31T07:31:45.910Z\",\n      \"updatedAt\": \"1976-04-24T00:04:30.442Z\",\n      \"failureReason\": \"string\",\n      \"assignedAt\": \"1955-02-17T18:27:40.709Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"campaignId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"status\": \"active\",\n      \"createdAt\": \"1952-04-08T07:43:51.296Z\",\n      \"updatedAt\": \"1960-04-21T01:47:13.910Z\",\n      \"failureReason\": \"string\",\n      \"assignedAt\": \"1989-09-24T15:36:17.295Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f052fd3-1de9-4a8c-96fb-e1b52c6a80b6",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da0c82e9-e9c0-4686-a46b-a3aeae80682e",
+              "name": "Campaign not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8b2df4ed-6630-40d7-8368-90fe44846b8a",
+          "name": "Assign phone number to campaign",
+          "request": {
+            "name": "Assign phone number to campaign",
+            "description": {
+              "content": "Assign a US phone number to an approved 10DLC campaign. The campaign must be in approved status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId",
+                "phone-numbers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumberId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0b55a350-5c49-4f44-8372-5d9495bdf52a",
+              "name": "Phone number assigned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumberId\": \"pn_abc123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"assignment\": {\n    \"id\": \"string\",\n    \"campaignId\": \"string\",\n    \"phoneNumberId\": \"string\",\n    \"status\": \"active\",\n    \"createdAt\": \"2021-07-28T15:34:30.514Z\",\n    \"updatedAt\": \"2011-06-01T14:41:51.790Z\",\n    \"failureReason\": \"string\",\n    \"assignedAt\": \"2022-03-23T04:00:57.855Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f3eb1a2-97a7-4860-b7aa-26519de8de92",
+              "name": "Campaign not approved or invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumberId\": \"pn_abc123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ee4018e-93c0-4090-8321-f04bc5a5a3a5",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumberId\": \"pn_abc123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69597a7f-addc-411f-ae0f-5d2b0145dab7",
+              "name": "Campaign or phone number not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumberId\": \"pn_abc123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36460ec9-b48c-4eb3-9c35-b49f0f7038e8",
+          "name": "Unassign phone number from campaign",
+          "request": {
+            "name": "Unassign phone number from campaign",
+            "description": {
+              "content": "Remove a phone number assignment from a 10DLC campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "10dlc",
+                "campaigns",
+                ":campaignId",
+                "phone-numbers",
+                ":assignmentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) 10DLC campaign ID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignmentId",
+                  "description": "(Required) Phone number assignment ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3ac1ccc-b270-49e2-8533-2554a3f0a0a8",
+              "name": "Phone number unassigned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers",
+                    ":assignmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignmentId",
+                      "description": "(Required) Phone number assignment ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b6881aa3-11f9-4371-80bc-8f8371465d69",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers",
+                    ":assignmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignmentId",
+                      "description": "(Required) Phone number assignment ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6688596-25c5-4173-b6fe-3926d4f67075",
+              "name": "Campaign or assignment not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "10dlc",
+                    "campaigns",
+                    ":campaignId",
+                    "phone-numbers",
+                    ":assignmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) 10DLC campaign ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignmentId",
+                      "description": "(Required) Phone number assignment ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2913,\n    \"key_1\": false,\n    \"key_2\": 1879\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zavu.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3df5b14e-e3c9-45ad-9eaa-b21d9c8b8ed9",
+    "name": "Zavu Unified Messaging Layer 10DLC API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified multi-channel messaging API for Zavu.\n\nSupported channels:\n- **SMS**: Simple text messages\n- **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates\n- **Telegram**: Bot messaging with text, media, and interactive elements\n- **Email**: Transactional emails via Amazon SES\n\nDesign goals:\n- Simple `send()` entrypoint for developers\n- Project-level authentication via Bearer token\n- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)\n- If a non-text message type is sent, WhatsApp channel is used automatically\n- 24-hour WhatsApp conversation window enforcement\n- Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)\n",
+      "type": "text/plain"
+    }
+  }
+}

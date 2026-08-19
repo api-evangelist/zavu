@@ -1,0 +1,1624 @@
+{
+  "item": [
+    {
+      "id": "f6bd045f-63ee-429b-a2e3-e60564830c8e",
+      "name": "Messages",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6c1ad523-1ffa-4064-a23b-2639667d57b3",
+          "name": "Send a message",
+          "request": {
+            "name": "Send a message",
+            "description": {
+              "content": "Send a message to a recipient via SMS or WhatsApp.\n\n**Channel selection:**\n- If `channel` is omitted and `messageType` is `text`, defaults to SMS\n- If `messageType` is anything other than `text`, WhatsApp is used automatically\n\n**WhatsApp 24-hour window:**\n- Free-form messages (non-template) require an open 24h window\n- Window opens when the user messages you first\n- Use template messages to initiate conversations outside the window\n\n**Daily limits:**\n- Unverified accounts: 200 messages per channel per day\n- Complete KYC verification to increase limits to 10,000/day",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                "key": "Zavu-Sender",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"messageType\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"locationName\": \"<string>\",\n    \"locationAddress\": \"<string>\",\n    \"contacts\": [\n      {\n        \"name\": \"<string>\",\n        \"phones\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"phones\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ],\n    \"buttons\": [\n      {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\"\n      }\n    ],\n    \"listButton\": \"<string>\",\n    \"sections\": [\n      {\n        \"title\": \"<string>\",\n        \"rows\": [\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\",\n            \"description\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"title\": \"<string>\",\n        \"rows\": [\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\",\n            \"description\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"ctaDisplayText\": \"<string>\",\n    \"ctaUrl\": \"<uri>\",\n    \"ctaHeaderType\": \"<string>\",\n    \"ctaHeaderText\": \"<string>\",\n    \"ctaHeaderMediaUrl\": \"<uri>\",\n    \"footerText\": \"<string>\",\n    \"emoji\": \"<string>\",\n    \"reactToMessageId\": \"<string>\",\n    \"replyToMessageId\": \"<string>\",\n    \"replyToProviderMessageId\": \"<string>\",\n    \"replyToFrom\": \"<string>\",\n    \"replyToText\": \"<string>\",\n    \"replyToMessageType\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\"\n    }\n  },\n  \"subject\": \"<string>\",\n  \"htmlBody\": \"<string>\",\n  \"replyTo\": \"<email>\",\n  \"idempotencyKey\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"fallbackEnabled\": true,\n  \"voiceLanguage\": \"<string>\",\n  \"attachments\": [\n    {\n      \"filename\": \"<string>\",\n      \"content\": \"<string>\",\n      \"path\": \"<uri>\",\n      \"content_type\": \"<string>\",\n      \"content_id\": \"<string>\"\n    },\n    {\n      \"filename\": \"<string>\",\n      \"content\": \"<string>\",\n      \"path\": \"<uri>\",\n      \"content_type\": \"<string>\",\n      \"content_id\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "89572018-c378-404f-8b56-a97c7d3aedf3",
+              "name": "Message accepted for delivery.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": {\n    \"id\": \"jd7x2k3m4n5p6q7r8s9t0\",\n    \"to\": \"+56912345678\",\n    \"status\": \"sent\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"createdAt\": \"1994-03-02T23:51:34.484Z\",\n    \"from\": \"+13125551212\",\n    \"senderId\": \"sender_12345\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"https://example.com/image.jpg\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"image/jpeg\",\n      \"filename\": \"invoice.pdf\",\n      \"latitude\": \"<number>\",\n      \"longitude\": \"<number>\",\n      \"locationName\": \"<string>\",\n      \"locationAddress\": \"<string>\",\n      \"contacts\": [\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"buttons\": [\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        }\n      ],\n      \"listButton\": \"<string>\",\n      \"sections\": [\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        },\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        }\n      ],\n      \"ctaDisplayText\": \"See Dates\",\n      \"ctaUrl\": \"https://example.com/schedule\",\n      \"ctaHeaderType\": \"<string>\",\n      \"ctaHeaderText\": \"<string>\",\n      \"ctaHeaderMediaUrl\": \"<uri>\",\n      \"footerText\": \"Dates subject to change.\",\n      \"emoji\": \"<string>\",\n      \"reactToMessageId\": \"<string>\",\n      \"replyToMessageId\": \"<string>\",\n      \"replyToProviderMessageId\": \"<string>\",\n      \"replyToFrom\": \"<string>\",\n      \"replyToText\": \"<string>\",\n      \"replyToMessageType\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"1\": \"John\",\n        \"2\": \"ORD-12345\"\n      },\n      \"templateButtonVariables\": {\n        \"0\": \"abc-report-token\"\n      },\n      \"templateHeaderVariables\": {\n        \"1\": \"Jorge y Laura\"\n      }\n    },\n    \"providerMessageId\": \"string\",\n    \"errorCode\": \"string\",\n    \"errorMessage\": \"string\",\n    \"cost\": 3512.729407748135,\n    \"costProvider\": 9323.487509833672,\n    \"costTotal\": 3891.978748278451,\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"updatedAt\": \"1987-04-25T20:27:57.110Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31b30934-b7d3-408e-b125-db433fb736c7",
+              "name": "Invalid request or WhatsApp 24h window not open.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"whatsapp_window_closed\",\n  \"message\": \"WhatsApp 24-hour window is not open. Use a template message or wait for user to message first.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9582ca0-7e4f-4f8a-993d-762e34daaf43",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed122e05-993d-42d3-9498-feb9c532cf74",
+              "name": "Message blocked due to URL restrictions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"url_not_verified\",\n  \"message\": \"Message blocked: Contains unverified URLs. Submit URLs for verification via the /v1/urls endpoint.\",\n  \"details\": {\n    \"urls\": [\n      \"https://example.com\"\n    ],\n    \"submissionEndpoint\": \"/v1/urls\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d3835a9-9f6a-4fda-94db-80e080531458",
+              "name": "Template or sender not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0982d1f5-d778-4468-95be-7d9b3b1b7a1b",
+              "name": "Idempotency conflict (message already sent).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c769dbe7-8632-450c-851f-fae0f8f2190c",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31b67912-cb98-4f72-84e3-e5ebb2dba23b",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": \"+56912345678\",\n  \"text\": \"Your verification code is 123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f91b1e6-38c5-4822-a310-02d9a703e14d",
+          "name": "List messages",
+          "request": {
+            "name": "List messages",
+            "description": {
+              "content": "List messages previously sent by this project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by status. Not all stored statuses are filterable."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "channel",
+                  "value": "<string>",
+                  "description": "Filter by delivery channel."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f3eecc3b-5480-478a-a5c9-561bf543348b",
+              "name": "List of messages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"jd7x2k3m4n5p6q7r8s9t0\",\n      \"to\": \"+56912345678\",\n      \"status\": \"delivered\",\n      \"channel\": \"<string>\",\n      \"messageType\": \"<string>\",\n      \"createdAt\": \"2022-11-11T20:18:57.923Z\",\n      \"from\": \"+13125551212\",\n      \"senderId\": \"sender_12345\",\n      \"text\": \"string\",\n      \"content\": {\n        \"mediaUrl\": \"https://example.com/image.jpg\",\n        \"mediaId\": \"<string>\",\n        \"mimeType\": \"image/jpeg\",\n        \"filename\": \"invoice.pdf\",\n        \"latitude\": \"<number>\",\n        \"longitude\": \"<number>\",\n        \"locationName\": \"<string>\",\n        \"locationAddress\": \"<string>\",\n        \"contacts\": [\n          {\n            \"name\": \"<string>\",\n            \"phones\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          {\n            \"name\": \"<string>\",\n            \"phones\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        ],\n        \"buttons\": [\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"listButton\": \"<string>\",\n        \"sections\": [\n          {\n            \"title\": \"<string>\",\n            \"rows\": [\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          },\n          {\n            \"title\": \"<string>\",\n            \"rows\": [\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"ctaDisplayText\": \"See Dates\",\n        \"ctaUrl\": \"https://example.com/schedule\",\n        \"ctaHeaderType\": \"<string>\",\n        \"ctaHeaderText\": \"<string>\",\n        \"ctaHeaderMediaUrl\": \"<uri>\",\n        \"footerText\": \"Dates subject to change.\",\n        \"emoji\": \"<string>\",\n        \"reactToMessageId\": \"<string>\",\n        \"replyToMessageId\": \"<string>\",\n        \"replyToProviderMessageId\": \"<string>\",\n        \"replyToFrom\": \"<string>\",\n        \"replyToText\": \"<string>\",\n        \"replyToMessageType\": \"<string>\",\n        \"templateId\": \"<string>\",\n        \"templateVariables\": {\n          \"1\": \"John\",\n          \"2\": \"ORD-12345\"\n        },\n        \"templateButtonVariables\": {\n          \"0\": \"abc-report-token\"\n        },\n        \"templateHeaderVariables\": {\n          \"1\": \"Jorge y Laura\"\n        }\n      },\n      \"providerMessageId\": \"string\",\n      \"errorCode\": \"string\",\n      \"errorMessage\": \"string\",\n      \"cost\": 2221.2954637689186,\n      \"costProvider\": 6754.744330486397,\n      \"costTotal\": 2361.389163034444,\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"updatedAt\": \"1959-04-10T20:57:44.937Z\"\n    },\n    {\n      \"id\": \"jd7x2k3m4n5p6q7r8s9t0\",\n      \"to\": \"+56912345678\",\n      \"status\": \"delivered\",\n      \"channel\": \"<string>\",\n      \"messageType\": \"<string>\",\n      \"createdAt\": \"2024-02-29T06:05:30.445Z\",\n      \"from\": \"+13125551212\",\n      \"senderId\": \"sender_12345\",\n      \"text\": \"string\",\n      \"content\": {\n        \"mediaUrl\": \"https://example.com/image.jpg\",\n        \"mediaId\": \"<string>\",\n        \"mimeType\": \"image/jpeg\",\n        \"filename\": \"invoice.pdf\",\n        \"latitude\": \"<number>\",\n        \"longitude\": \"<number>\",\n        \"locationName\": \"<string>\",\n        \"locationAddress\": \"<string>\",\n        \"contacts\": [\n          {\n            \"name\": \"<string>\",\n            \"phones\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          },\n          {\n            \"name\": \"<string>\",\n            \"phones\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        ],\n        \"buttons\": [\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"listButton\": \"<string>\",\n        \"sections\": [\n          {\n            \"title\": \"<string>\",\n            \"rows\": [\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          },\n          {\n            \"title\": \"<string>\",\n            \"rows\": [\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"id\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"title\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"description\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"ctaDisplayText\": \"See Dates\",\n        \"ctaUrl\": \"https://example.com/schedule\",\n        \"ctaHeaderType\": \"<string>\",\n        \"ctaHeaderText\": \"<string>\",\n        \"ctaHeaderMediaUrl\": \"<uri>\",\n        \"footerText\": \"Dates subject to change.\",\n        \"emoji\": \"<string>\",\n        \"reactToMessageId\": \"<string>\",\n        \"replyToMessageId\": \"<string>\",\n        \"replyToProviderMessageId\": \"<string>\",\n        \"replyToFrom\": \"<string>\",\n        \"replyToText\": \"<string>\",\n        \"replyToMessageType\": \"<string>\",\n        \"templateId\": \"<string>\",\n        \"templateVariables\": {\n          \"1\": \"John\",\n          \"2\": \"ORD-12345\"\n        },\n        \"templateButtonVariables\": {\n          \"0\": \"abc-report-token\"\n        },\n        \"templateHeaderVariables\": {\n          \"1\": \"Jorge y Laura\"\n        }\n      },\n      \"providerMessageId\": \"string\",\n      \"errorCode\": \"string\",\n      \"errorMessage\": \"string\",\n      \"cost\": 7447.625814598686,\n      \"costProvider\": 5940.065131518349,\n      \"costTotal\": 2018.9736910500278,\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"updatedAt\": \"2009-07-23T20:07:27.633Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "233ce6c8-2d2a-4491-b0b1-52c7a359103b",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "53ba3697-f05a-44c3-b22a-ee8ccbdbf052",
+          "name": "Get message by ID",
+          "request": {
+            "name": "Get message by ID",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "messages",
+                ":messageId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "messageId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "936bc108-041b-4cb7-a120-bbefb60284eb",
+              "name": "Message details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": {\n    \"id\": \"jd7x2k3m4n5p6q7r8s9t0\",\n    \"to\": \"+56912345678\",\n    \"status\": \"sent\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"createdAt\": \"1994-03-02T23:51:34.484Z\",\n    \"from\": \"+13125551212\",\n    \"senderId\": \"sender_12345\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"https://example.com/image.jpg\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"image/jpeg\",\n      \"filename\": \"invoice.pdf\",\n      \"latitude\": \"<number>\",\n      \"longitude\": \"<number>\",\n      \"locationName\": \"<string>\",\n      \"locationAddress\": \"<string>\",\n      \"contacts\": [\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"buttons\": [\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        }\n      ],\n      \"listButton\": \"<string>\",\n      \"sections\": [\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        },\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        }\n      ],\n      \"ctaDisplayText\": \"See Dates\",\n      \"ctaUrl\": \"https://example.com/schedule\",\n      \"ctaHeaderType\": \"<string>\",\n      \"ctaHeaderText\": \"<string>\",\n      \"ctaHeaderMediaUrl\": \"<uri>\",\n      \"footerText\": \"Dates subject to change.\",\n      \"emoji\": \"<string>\",\n      \"reactToMessageId\": \"<string>\",\n      \"replyToMessageId\": \"<string>\",\n      \"replyToProviderMessageId\": \"<string>\",\n      \"replyToFrom\": \"<string>\",\n      \"replyToText\": \"<string>\",\n      \"replyToMessageType\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"1\": \"John\",\n        \"2\": \"ORD-12345\"\n      },\n      \"templateButtonVariables\": {\n        \"0\": \"abc-report-token\"\n      },\n      \"templateHeaderVariables\": {\n        \"1\": \"Jorge y Laura\"\n      }\n    },\n    \"providerMessageId\": \"string\",\n    \"errorCode\": \"string\",\n    \"errorMessage\": \"string\",\n    \"cost\": 3512.729407748135,\n    \"costProvider\": 9323.487509833672,\n    \"costTotal\": 3891.978748278451,\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"updatedAt\": \"1987-04-25T20:27:57.110Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb8262d0-d8ef-47e0-b95a-c29f153a0cbf",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7234752-6904-470e-b4d7-30e3755c21ff",
+              "name": "Message not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "623092a4-b6b0-4553-97f4-5e4e7d805f9a",
+          "name": "Send reaction to message",
+          "request": {
+            "name": "Send reaction to message",
+            "description": {
+              "content": "Send an emoji reaction to an existing WhatsApp message. Reactions are only supported for WhatsApp messages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages",
+                ":messageId",
+                "reactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "messageId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                "key": "Zavu-Sender",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emoji\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "56ff267d-950c-4542-b437-9a847240fdc0",
+              "name": "Reaction accepted for delivery.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "reactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emoji\": \"👍\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": {\n    \"id\": \"jd7x2k3m4n5p6q7r8s9t0\",\n    \"to\": \"+56912345678\",\n    \"status\": \"sent\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"createdAt\": \"1994-03-02T23:51:34.484Z\",\n    \"from\": \"+13125551212\",\n    \"senderId\": \"sender_12345\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"https://example.com/image.jpg\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"image/jpeg\",\n      \"filename\": \"invoice.pdf\",\n      \"latitude\": \"<number>\",\n      \"longitude\": \"<number>\",\n      \"locationName\": \"<string>\",\n      \"locationAddress\": \"<string>\",\n      \"contacts\": [\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"name\": \"<string>\",\n          \"phones\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"buttons\": [\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"title\": \"<string>\"\n        }\n      ],\n      \"listButton\": \"<string>\",\n      \"sections\": [\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        },\n        {\n          \"title\": \"<string>\",\n          \"rows\": [\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"title\": \"<string>\",\n              \"description\": \"<string>\"\n            }\n          ]\n        }\n      ],\n      \"ctaDisplayText\": \"See Dates\",\n      \"ctaUrl\": \"https://example.com/schedule\",\n      \"ctaHeaderType\": \"<string>\",\n      \"ctaHeaderText\": \"<string>\",\n      \"ctaHeaderMediaUrl\": \"<uri>\",\n      \"footerText\": \"Dates subject to change.\",\n      \"emoji\": \"<string>\",\n      \"reactToMessageId\": \"<string>\",\n      \"replyToMessageId\": \"<string>\",\n      \"replyToProviderMessageId\": \"<string>\",\n      \"replyToFrom\": \"<string>\",\n      \"replyToText\": \"<string>\",\n      \"replyToMessageType\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"1\": \"John\",\n        \"2\": \"ORD-12345\"\n      },\n      \"templateButtonVariables\": {\n        \"0\": \"abc-report-token\"\n      },\n      \"templateHeaderVariables\": {\n        \"1\": \"Jorge y Laura\"\n      }\n    },\n    \"providerMessageId\": \"string\",\n    \"errorCode\": \"string\",\n    \"errorMessage\": \"string\",\n    \"cost\": 3512.729407748135,\n    \"costProvider\": 9323.487509833672,\n    \"costTotal\": 3891.978748278451,\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"updatedAt\": \"1987-04-25T20:27:57.110Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6a013b2-638d-4c6e-8e69-44f8187e8830",
+              "name": "Invalid request or message is not from WhatsApp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "reactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emoji\": \"👍\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"bad_request\",\n  \"message\": \"Reactions are only supported for WhatsApp messages\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0781e9eb-65fa-460a-85b2-6564ccffd30c",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "reactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emoji\": \"👍\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4e3fba2-4beb-4fe0-81a5-18a4cfcc2c2d",
+              "name": "Message not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "reactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emoji\": \"👍\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a7717b2-1d28-476e-992c-7a8c9d282f1a",
+          "name": "Show typing indicator",
+          "request": {
+            "name": "Show typing indicator",
+            "description": {
+              "content": "Mark an inbound WhatsApp message as read and display a typing indicator to the user while you prepare a response. The indicator is automatically dismissed when you send a reply, or after 25 seconds — whichever comes first. Only valid for inbound WhatsApp messages. Use this when a reply will take more than a couple of seconds (LLM agent, tool call, lookup) to improve the recipient's experience.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages",
+                ":messageId",
+                "typing"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "messageId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                "key": "Zavu-Sender",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f268e223-c3b3-440b-8df0-9489a57c79bf",
+              "name": "Typing indicator displayed and message marked as read.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "typing"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecded528-a36e-47ed-b53c-e44857dded1b",
+              "name": "Invalid request — message is not WhatsApp, not inbound, or has no provider message ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "typing"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"bad_request\",\n  \"message\": \"Typing indicators are only supported for WhatsApp messages\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b52fa3a1-3e2a-4eed-99cc-5d1fe81ef116",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "typing"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f03d073c-0e7e-4afb-8c8e-52ee1618edcd",
+              "name": "Message not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    ":messageId",
+                    "typing"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional sender profile ID. If omitted, the project's default sender will be used.",
+                    "key": "Zavu-Sender",
+                    "value": "sender_12345"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": 4636.802435558556\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zavu.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2f14251f-f537-4c1c-a20f-e0cf5d72fce2",
+    "name": "Zavu Unified Messaging Layer 10DLC Messages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified multi-channel messaging API for Zavu.\n\nSupported channels:\n- **SMS**: Simple text messages\n- **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates\n- **Telegram**: Bot messaging with text, media, and interactive elements\n- **Email**: Transactional emails via Amazon SES\n\nDesign goals:\n- Simple `send()` entrypoint for developers\n- Project-level authentication via Bearer token\n- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)\n- If a non-text message type is sent, WhatsApp channel is used automatically\n- 24-hour WhatsApp conversation window enforcement\n- Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)\n",
+      "type": "text/plain"
+    }
+  }
+}

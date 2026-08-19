@@ -1,0 +1,1144 @@
+{
+  "item": [
+    {
+      "id": "0de3ae06-7179-4a20-a5fe-989eaf974c9f",
+      "name": "Templates",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "034d5bdd-eb40-40bb-a193-889a48523f01",
+          "name": "List templates",
+          "request": {
+            "name": "List templates",
+            "description": {
+              "content": "List WhatsApp message templates for this project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4f824033-659c-4b40-9276-237baec9de09",
+              "name": "List of templates.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"order_confirmation\",\n      \"language\": \"en\",\n      \"body\": \"Hi {{1}}, your order {{2}} has shipped.\",\n      \"category\": \"AUTHENTICATION\",\n      \"smsBody\": \"string\",\n      \"telegramBody\": \"string\",\n      \"instagramBody\": \"string\",\n      \"status\": \"draft\",\n      \"variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"headerType\": \"string\",\n      \"headerContent\": \"string\",\n      \"footer\": \"string\",\n      \"buttons\": [\n        {\n          \"type\": \"string\",\n          \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n        },\n        {\n          \"type\": \"string\",\n          \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n        }\n      ],\n      \"addSecurityRecommendation\": true,\n      \"codeExpirationMinutes\": 32,\n      \"whatsapp\": {\n        \"templateName\": \"string\",\n        \"namespace\": \"string\",\n        \"status\": \"string\"\n      },\n      \"createdAt\": \"1954-04-06T17:30:02.262Z\",\n      \"updatedAt\": \"1978-06-04T14:19:14.826Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"order_confirmation\",\n      \"language\": \"en\",\n      \"body\": \"Hi {{1}}, your order {{2}} has shipped.\",\n      \"category\": \"AUTHENTICATION\",\n      \"smsBody\": \"string\",\n      \"telegramBody\": \"string\",\n      \"instagramBody\": \"string\",\n      \"status\": \"draft\",\n      \"variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"headerType\": \"string\",\n      \"headerContent\": \"string\",\n      \"footer\": \"string\",\n      \"buttons\": [\n        {\n          \"type\": \"string\",\n          \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n        },\n        {\n          \"type\": \"string\",\n          \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n        }\n      ],\n      \"addSecurityRecommendation\": true,\n      \"codeExpirationMinutes\": 78,\n      \"whatsapp\": {\n        \"templateName\": \"string\",\n        \"namespace\": \"string\",\n        \"status\": \"string\"\n      },\n      \"createdAt\": \"2007-10-20T05:14:52.983Z\",\n      \"updatedAt\": \"1955-12-30T09:17:03.180Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d436acc2-92c8-4695-b9bf-8145eeb079bc",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e34a0cf-c764-44ec-ae9b-62d7860b09f1",
+          "name": "Create template",
+          "request": {
+            "name": "Create template",
+            "description": {
+              "content": "Create a WhatsApp message template. Note: Templates must be approved by Meta before use.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"language\": \"en\",\n  \"body\": \"<string>\",\n  \"smsBody\": \"<string>\",\n  \"telegramBody\": \"<string>\",\n  \"instagramBody\": \"<string>\",\n  \"whatsappCategory\": \"<string>\",\n  \"headerType\": \"<string>\",\n  \"headerContent\": \"<string>\",\n  \"footer\": \"<string>\",\n  \"variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"buttons\": [\n    {\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"example\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"otpType\": \"<string>\",\n      \"packageName\": \"<string>\",\n      \"signatureHash\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"text\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"example\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"otpType\": \"<string>\",\n      \"packageName\": \"<string>\",\n      \"signatureHash\": \"<string>\"\n    }\n  ],\n  \"addSecurityRecommendation\": \"<boolean>\",\n  \"codeExpirationMinutes\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9f4a67e9-04cb-4d14-847d-a0af3111b36c",
+              "name": "Template created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has been confirmed and will ship within 24 hours.\",\n  \"whatsappCategory\": \"UTILITY\",\n  \"variables\": [\n    \"customer_name\",\n    \"order_id\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has shipped.\",\n  \"category\": \"<string>\",\n  \"smsBody\": \"string\",\n  \"telegramBody\": \"string\",\n  \"instagramBody\": \"string\",\n  \"status\": \"draft\",\n  \"variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"headerType\": \"string\",\n  \"headerContent\": \"string\",\n  \"footer\": \"string\",\n  \"buttons\": [\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    },\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    }\n  ],\n  \"addSecurityRecommendation\": true,\n  \"codeExpirationMinutes\": 62,\n  \"whatsapp\": {\n    \"templateName\": \"string\",\n    \"namespace\": \"string\",\n    \"status\": \"string\"\n  },\n  \"createdAt\": \"1996-11-05T04:14:19.551Z\",\n  \"updatedAt\": \"2018-09-10T09:12:57.601Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87eb7067-2272-4509-ac6f-69453c623e62",
+              "name": "Invalid template.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has been confirmed and will ship within 24 hours.\",\n  \"whatsappCategory\": \"UTILITY\",\n  \"variables\": [\n    \"customer_name\",\n    \"order_id\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4242f55-54b0-4e3c-adbc-21805de36bea",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has been confirmed and will ship within 24 hours.\",\n  \"whatsappCategory\": \"UTILITY\",\n  \"variables\": [\n    \"customer_name\",\n    \"order_id\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9cc48da-6530-447c-8876-9aaf24b57487",
+          "name": "Get template",
+          "request": {
+            "name": "Get template",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "templates",
+                ":templateId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "templateId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0e65e912-909e-4011-9d6c-cc78d4f86417",
+              "name": "Template details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has shipped.\",\n  \"category\": \"<string>\",\n  \"smsBody\": \"string\",\n  \"telegramBody\": \"string\",\n  \"instagramBody\": \"string\",\n  \"status\": \"draft\",\n  \"variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"headerType\": \"string\",\n  \"headerContent\": \"string\",\n  \"footer\": \"string\",\n  \"buttons\": [\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    },\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    }\n  ],\n  \"addSecurityRecommendation\": true,\n  \"codeExpirationMinutes\": 62,\n  \"whatsapp\": {\n    \"templateName\": \"string\",\n    \"namespace\": \"string\",\n    \"status\": \"string\"\n  },\n  \"createdAt\": \"1996-11-05T04:14:19.551Z\",\n  \"updatedAt\": \"2018-09-10T09:12:57.601Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59d64012-420a-43d0-b6ca-d3cdf75e94e6",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21be1108-bb0e-4926-a3de-6234578f9a48",
+              "name": "Template not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d53179d4-d4c5-41ba-b5c8-77e3f1594244",
+          "name": "Delete template",
+          "request": {
+            "name": "Delete template",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "templates",
+                ":templateId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "templateId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "71346887-fa11-4931-8fc7-e62390a3357a",
+              "name": "Template deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0eac91b7-0348-47b2-bb1b-600e52e4e8a4",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ab9cd67-f681-451c-a846-b82038df54ea",
+              "name": "Template not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2619a732-999f-4e63-a888-2af7126b3105",
+          "name": "Submit template for approval",
+          "request": {
+            "name": "Submit template for approval",
+            "description": {
+              "content": "Submit a WhatsApp template to Meta for approval. The template must be in draft status and associated with a sender that has a WhatsApp Business Account configured.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "templates",
+                ":templateId",
+                "submit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "templateId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderId\": \"<string>\",\n  \"category\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e1930694-7565-45f8-aaf8-50144ad21ce6",
+              "name": "Template submitted for approval.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"senderId\": \"sender_abc123\",\n  \"category\": \"UTILITY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"order_confirmation\",\n  \"language\": \"en\",\n  \"body\": \"Hi {{1}}, your order {{2}} has shipped.\",\n  \"category\": \"<string>\",\n  \"smsBody\": \"string\",\n  \"telegramBody\": \"string\",\n  \"instagramBody\": \"string\",\n  \"status\": \"draft\",\n  \"variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"headerType\": \"string\",\n  \"headerContent\": \"string\",\n  \"footer\": \"string\",\n  \"buttons\": [\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    },\n    {\n      \"type\": \"string\",\n      \"description\": \"Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.\"\n    }\n  ],\n  \"addSecurityRecommendation\": true,\n  \"codeExpirationMinutes\": 62,\n  \"whatsapp\": {\n    \"templateName\": \"string\",\n    \"namespace\": \"string\",\n    \"status\": \"string\"\n  },\n  \"createdAt\": \"1996-11-05T04:14:19.551Z\",\n  \"updatedAt\": \"2018-09-10T09:12:57.601Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "927964be-b055-4e6a-b6f6-42fecc3a0d08",
+              "name": "Invalid request or template not in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"senderId\": \"sender_abc123\",\n  \"category\": \"UTILITY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"bad_request\",\n  \"message\": \"Template is already pending approval or approved\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98d49610-6209-44d6-b8c1-76164957e859",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"senderId\": \"sender_abc123\",\n  \"category\": \"UTILITY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "628d870d-fa48-4542-9c42-a1cca894f5f3",
+              "name": "Template or sender not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "templates",
+                    ":templateId",
+                    "submit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "templateId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"senderId\": \"sender_abc123\",\n  \"category\": \"UTILITY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zavu.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0d496a10-17df-497e-8bed-8ac828bcc6e2",
+    "name": "Zavu Unified Messaging Layer 10DLC Templates API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified multi-channel messaging API for Zavu.\n\nSupported channels:\n- **SMS**: Simple text messages\n- **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates\n- **Telegram**: Bot messaging with text, media, and interactive elements\n- **Email**: Transactional emails via Amazon SES\n\nDesign goals:\n- Simple `send()` entrypoint for developers\n- Project-level authentication via Bearer token\n- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)\n- If a non-text message type is sent, WhatsApp channel is used automatically\n- 24-hour WhatsApp conversation window enforcement\n- Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)\n",
+      "type": "text/plain"
+    }
+  }
+}

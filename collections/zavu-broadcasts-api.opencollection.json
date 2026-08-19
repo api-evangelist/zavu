@@ -1,0 +1,376 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC Broadcasts API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Broadcasts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List broadcasts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/broadcasts",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List broadcasts for this project."
+        },
+        {
+          "info": {
+            "name": "Create broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new broadcast campaign. Add contacts after creation, then send."
+        },
+        {
+          "info": {
+            "name": "Get broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get broadcast"
+        },
+        {
+          "info": {
+            "name": "Update broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a broadcast in draft status."
+        },
+        {
+          "info": {
+            "name": "Delete broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a broadcast in draft status."
+        },
+        {
+          "info": {
+            "name": "List broadcast contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/contacts",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List contacts in a broadcast with optional status filter."
+        },
+        {
+          "info": {
+            "name": "Add contacts to broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/contacts",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Add contacts to a broadcast in batch. Maximum 1000 contacts per request."
+        },
+        {
+          "info": {
+            "name": "Remove contact from broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/contacts/:contactId",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Broadcast contact ID (not the global contact ID)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove a contact from a broadcast in draft status."
+        },
+        {
+          "info": {
+            "name": "Send broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/send",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance."
+        },
+        {
+          "info": {
+            "name": "Reschedule broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/schedule",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update the scheduled time for a broadcast. The broadcast must be in scheduled status."
+        },
+        {
+          "info": {
+            "name": "Cancel broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/cancel",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a broadcast. Pending contacts will be skipped, but already queued messages may still be delivered."
+        },
+        {
+          "info": {
+            "name": "Retry broadcast review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/retry-review",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Resubmit a rejected broadcast for AI review after editing content. Maximum 3 review attempts allowed per broadcast."
+        },
+        {
+          "info": {
+            "name": "Escalate to manual review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/escalate",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Request manual review by the Zavu team for a rejected broadcast. Use this after automated review rejection if you believe the content is legitimate."
+        },
+        {
+          "info": {
+            "name": "Get broadcast progress",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/broadcasts/:broadcastId/progress",
+            "params": [
+              {
+                "name": "broadcastId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get real-time progress of a broadcast including delivery counts and estimated completion time."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

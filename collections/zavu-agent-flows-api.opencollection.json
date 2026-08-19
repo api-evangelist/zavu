@@ -1,0 +1,203 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC Agent Flows API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent Flows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List flows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List flows for an agent."
+        },
+        {
+          "info": {
+            "name": "Create flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new flow for an agent."
+        },
+        {
+          "info": {
+            "name": "Get flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows/:flowId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "flowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a specific flow."
+        },
+        {
+          "info": {
+            "name": "Update flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows/:flowId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "flowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a flow."
+        },
+        {
+          "info": {
+            "name": "Delete flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows/:flowId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "flowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a flow. Cannot delete flows with active sessions."
+        },
+        {
+          "info": {
+            "name": "Duplicate flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/flows/:flowId/duplicate",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "flowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a copy of an existing flow with a new name."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

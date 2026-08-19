@@ -1,0 +1,3870 @@
+{
+  "item": [
+    {
+      "id": "96432a8e-5a1e-4b2b-8c89-c948dec0cc75",
+      "name": "Broadcasts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "51b3be3e-0e71-4d7d-b753-1ef18fd193c8",
+          "name": "Create broadcast",
+          "request": {
+            "name": "Create broadcast",
+            "description": {
+              "content": "Create a new broadcast campaign. Add contacts after creation, then send.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"messageType\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\"\n    }\n  },\n  \"senderId\": \"<string>\",\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"scheduledAt\": \"<dateTime>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"idempotencyKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ddda95a9-b158-485e-a3f9-f76291448b0c",
+              "name": "Broadcast created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Black Friday Sale\",\n  \"channel\": \"sms\",\n  \"text\": \"Hi {{name}}, check out our Black Friday deals! Use code FRIDAY20 for 20% off.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"cancelled\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 1078,\n    \"createdAt\": \"1947-01-15T01:01:23.402Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 2124,\n    \"sendingCount\": 9883,\n    \"deliveredCount\": 7412,\n    \"failedCount\": 3077,\n    \"estimatedCost\": 5442.076433035279,\n    \"reservedAmount\": 3617.7112232210716,\n    \"actualCost\": 978.6798557924459,\n    \"scheduledAt\": \"2015-09-10T03:34:19.177Z\",\n    \"startedAt\": \"2014-06-14T18:09:12.475Z\",\n    \"completedAt\": \"2000-04-24T23:56:33.575Z\",\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"updatedAt\": \"2007-12-19T23:55:58.909Z\",\n    \"reviewResult\": {\n      \"score\": 465.3647702403174,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"1987-12-22T20:51:07.719Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 8036\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f882e098-1ac9-4526-9c6b-ac6643377558",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Black Friday Sale\",\n  \"channel\": \"sms\",\n  \"text\": \"Hi {{name}}, check out our Black Friday deals! Use code FRIDAY20 for 20% off.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9dc9a27-2592-4221-aa90-332fe58530f9",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Black Friday Sale\",\n  \"channel\": \"sms\",\n  \"text\": \"Hi {{name}}, check out our Black Friday deals! Use code FRIDAY20 for 20% off.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "994f942a-cd93-4969-b93e-d25999e456ee",
+              "name": "Idempotency conflict (broadcast already exists).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Black Friday Sale\",\n  \"channel\": \"sms\",\n  \"text\": \"Hi {{name}}, check out our Black Friday deals! Use code FRIDAY20 for 20% off.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"completed\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3562,\n    \"createdAt\": \"2018-07-19T06:02:22.447Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 8014,\n    \"sendingCount\": 5590,\n    \"deliveredCount\": 3830,\n    \"failedCount\": 8753,\n    \"estimatedCost\": 1857.1848512262422,\n    \"reservedAmount\": 8494.068888455542,\n    \"actualCost\": 1644.3069084581387,\n    \"scheduledAt\": \"2009-03-18T05:05:21.471Z\",\n    \"startedAt\": \"1996-06-05T10:32:52.375Z\",\n    \"completedAt\": \"1948-11-20T08:21:57.205Z\",\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"updatedAt\": \"1960-10-22T17:34:51.212Z\",\n    \"reviewResult\": {\n      \"score\": 7492.574179757003,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"1974-05-10T07:54:15.705Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 6015\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96ed2a4b-2328-4b9f-8f15-a32258afa53d",
+          "name": "List broadcasts",
+          "request": {
+            "name": "List broadcasts",
+            "description": {
+              "content": "List broadcasts for this project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "58ee87cd-1f71-400f-bee4-2999978ea8e8",
+              "name": "List of broadcasts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"brd_abc123\",\n      \"name\": \"string\",\n      \"status\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"messageType\": \"<string>\",\n      \"totalContacts\": 5249,\n      \"createdAt\": \"1986-05-03T00:04:13.209Z\",\n      \"text\": \"string\",\n      \"content\": {\n        \"mediaUrl\": \"<string>\",\n        \"mediaId\": \"<string>\",\n        \"mimeType\": \"<string>\",\n        \"filename\": \"<string>\",\n        \"templateId\": \"<string>\",\n        \"templateVariables\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\",\n          \"key_3\": \"<string>\"\n        },\n        \"templateButtonVariables\": {\n          \"key_0\": \"<string>\"\n        },\n        \"templateHeaderVariables\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        }\n      },\n      \"senderId\": \"string\",\n      \"emailSubject\": \"string\",\n      \"pendingCount\": 5173,\n      \"sendingCount\": 3446,\n      \"deliveredCount\": 1939,\n      \"failedCount\": 6350,\n      \"estimatedCost\": 547.0415632166703,\n      \"reservedAmount\": 5899.811235230206,\n      \"actualCost\": 3346.651656481905,\n      \"scheduledAt\": \"1951-04-26T16:39:43.862Z\",\n      \"startedAt\": \"1997-04-04T12:13:05.914Z\",\n      \"completedAt\": \"2016-06-11T21:44:10.590Z\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"updatedAt\": \"2021-04-09T06:16:42.771Z\",\n      \"reviewResult\": {\n        \"score\": 1623.4092478971452,\n        \"categories\": [\n          \"string\",\n          \"string\"\n        ],\n        \"reasoning\": \"string\",\n        \"reviewedAt\": \"1998-08-22T00:24:55.841Z\",\n        \"flaggedContent\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"reviewAttempts\": 9\n    },\n    {\n      \"id\": \"brd_abc123\",\n      \"name\": \"string\",\n      \"status\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"messageType\": \"<string>\",\n      \"totalContacts\": 7375,\n      \"createdAt\": \"1999-03-22T17:51:00.242Z\",\n      \"text\": \"string\",\n      \"content\": {\n        \"mediaUrl\": \"<string>\",\n        \"mediaId\": \"<string>\",\n        \"mimeType\": \"<string>\",\n        \"filename\": \"<string>\",\n        \"templateId\": \"<string>\",\n        \"templateVariables\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"templateButtonVariables\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"templateHeaderVariables\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\"\n        }\n      },\n      \"senderId\": \"string\",\n      \"emailSubject\": \"string\",\n      \"pendingCount\": 9903,\n      \"sendingCount\": 2477,\n      \"deliveredCount\": 4254,\n      \"failedCount\": 3285,\n      \"estimatedCost\": 2369.7943813439983,\n      \"reservedAmount\": 7448.93420890012,\n      \"actualCost\": 1335.7831488553275,\n      \"scheduledAt\": \"1959-12-09T03:28:54.554Z\",\n      \"startedAt\": \"1959-06-25T05:23:19.653Z\",\n      \"completedAt\": \"1979-04-23T15:28:07.570Z\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"updatedAt\": \"1972-07-12T04:16:19.611Z\",\n      \"reviewResult\": {\n        \"score\": 2246.5370833782395,\n        \"categories\": [\n          \"string\",\n          \"string\"\n        ],\n        \"reasoning\": \"string\",\n        \"reviewedAt\": \"1976-07-07T03:23:36.114Z\",\n        \"flaggedContent\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"reviewAttempts\": 8291\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9778b6e-effb-4933-88b2-f28131c756c6",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3bec09ad-2220-423e-a0fb-6831476f5f71",
+          "name": "Get broadcast",
+          "request": {
+            "name": "Get broadcast",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "60c1843c-b5d5-4f61-a3d4-216f7f78f805",
+              "name": "Broadcast details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1649566-d855-421d-990e-93e73ca7f877",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce8d93c0-15f8-480f-a57b-1040e674651f",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bbcbecce-0523-4690-ab1b-6d372e206279",
+          "name": "Update broadcast",
+          "request": {
+            "name": "Update broadcast",
+            "description": {
+              "content": "Update a broadcast in draft status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e1b058f8-a553-40f2-9e94-5edcfc8e8653",
+              "name": "Broadcast updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  },\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85683994-d859-4a2a-8446-1c9cf36be2b9",
+              "name": "Invalid request or broadcast not in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  },\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a209a405-f4c3-4680-9c17-aa97e5099056",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  },\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2aaa5f8-1e35-41b2-a693-0b359927fc9f",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"text\": \"<string>\",\n  \"content\": {\n    \"mediaUrl\": \"<string>\",\n    \"mediaId\": \"<string>\",\n    \"mimeType\": \"<string>\",\n    \"filename\": \"<string>\",\n    \"templateId\": \"<string>\",\n    \"templateVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateButtonVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"templateHeaderVariables\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  },\n  \"emailSubject\": \"<string>\",\n  \"emailHtmlBody\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "00c75280-5cba-4c20-a223-cff09ebde46b",
+          "name": "Delete broadcast",
+          "request": {
+            "name": "Delete broadcast",
+            "description": {
+              "content": "Delete a broadcast in draft status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dc2cf409-4184-4c08-b4c9-57f752e7f97d",
+              "name": "Broadcast deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "70cda3bc-e3d9-462e-bb71-2cf4df8d58fa",
+              "name": "Broadcast not in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39afeda6-4094-4c7e-be33-0bec408ad024",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7efeeb0f-3afd-4efb-b765-58294bc0287a",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e08d8f8-f20e-4b9d-b7a4-df66da094f07",
+          "name": "Add contacts to broadcast",
+          "request": {
+            "name": "Add contacts to broadcast",
+            "description": {
+              "content": "Add contacts to a broadcast in batch. Maximum 1000 contacts per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contacts\": [\n    {\n      \"recipient\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\"\n      }\n    },\n    {\n      \"recipient\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6efcdae6-9794-4aa9-aa5c-ba8299c93b35",
+              "name": "Contacts added.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"recipient\": \"+14155551234\",\n      \"templateVariables\": {\n        \"name\": \"John\",\n        \"order_id\": \"ORD-001\"\n      }\n    },\n    {\n      \"recipient\": \"+14155555678\",\n      \"templateVariables\": {\n        \"name\": \"Jane\",\n        \"order_id\": \"ORD-002\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"added\": 2196,\n  \"duplicates\": 597,\n  \"invalid\": 3746,\n  \"errors\": [\n    {\n      \"recipient\": \"string\",\n      \"reason\": \"string\"\n    },\n    {\n      \"recipient\": \"string\",\n      \"reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95db3620-5a47-41f3-812b-0cb75b0808b9",
+              "name": "Invalid request or broadcast not in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"recipient\": \"+14155551234\",\n      \"templateVariables\": {\n        \"name\": \"John\",\n        \"order_id\": \"ORD-001\"\n      }\n    },\n    {\n      \"recipient\": \"+14155555678\",\n      \"templateVariables\": {\n        \"name\": \"Jane\",\n        \"order_id\": \"ORD-002\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1e5d8ec-f380-4080-bb22-9753bb9083fd",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"recipient\": \"+14155551234\",\n      \"templateVariables\": {\n        \"name\": \"John\",\n        \"order_id\": \"ORD-001\"\n      }\n    },\n    {\n      \"recipient\": \"+14155555678\",\n      \"templateVariables\": {\n        \"name\": \"Jane\",\n        \"order_id\": \"ORD-002\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb60221e-bda9-413e-96eb-01a4deb424fc",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"recipient\": \"+14155551234\",\n      \"templateVariables\": {\n        \"name\": \"John\",\n        \"order_id\": \"ORD-001\"\n      }\n    },\n    {\n      \"recipient\": \"+14155555678\",\n      \"templateVariables\": {\n        \"name\": \"Jane\",\n        \"order_id\": \"ORD-002\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b0db0a9-e57f-4d3b-9f9f-61b1da5558ff",
+          "name": "List broadcast contacts",
+          "request": {
+            "name": "List broadcast contacts",
+            "description": {
+              "content": "List contacts in a broadcast with optional status filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fb6d2e83-fb56-4847-8484-fd05e5ad9ab3",
+              "name": "List of broadcast contacts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"recipient\": \"string\",\n      \"recipientType\": \"email\",\n      \"status\": \"<string>\",\n      \"createdAt\": \"1994-02-02T06:35:00.358Z\",\n      \"templateVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"messageId\": \"string\",\n      \"errorCode\": \"string\",\n      \"errorMessage\": \"string\",\n      \"cost\": 6803.210742352547,\n      \"processedAt\": \"2021-12-22T03:16:25.023Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"recipient\": \"string\",\n      \"recipientType\": \"email\",\n      \"status\": \"<string>\",\n      \"createdAt\": \"2018-01-05T22:17:18.947Z\",\n      \"templateVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"string\"\n      },\n      \"messageId\": \"string\",\n      \"errorCode\": \"string\",\n      \"errorMessage\": \"string\",\n      \"cost\": 8621.836198066141,\n      \"processedAt\": \"2025-10-28T05:05:42.622Z\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cea588a-9afe-4db9-bf11-92c80d1ade1c",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f4148b5-9b14-47f8-8257-612bf118cdd3",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "338a1659-0042-4b29-a145-e1f505862bb5",
+          "name": "Remove contact from broadcast",
+          "request": {
+            "name": "Remove contact from broadcast",
+            "description": {
+              "content": "Remove a contact from a broadcast in draft status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "contacts",
+                ":contactId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contactId",
+                  "description": "(Required) Broadcast contact ID (not the global contact ID)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9de4b7af-5704-4175-8240-e16a86ac3aad",
+              "name": "Contact removed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) Broadcast contact ID (not the global contact ID)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "38b4857c-7bc8-4872-a778-7040fc526af9",
+              "name": "Broadcast not in draft status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) Broadcast contact ID (not the global contact ID)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8368a9cd-1053-4018-9985-24c01e32094c",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) Broadcast contact ID (not the global contact ID)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb4cb80a-4fb6-4edd-a673-c20bb6b32179",
+              "name": "Broadcast or contact not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) Broadcast contact ID (not the global contact ID)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d71b8ab-663a-4ebc-90e5-7ccd2f5de1b1",
+          "name": "Send broadcast",
+          "request": {
+            "name": "Send broadcast",
+            "description": {
+              "content": "Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "send"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduledAt\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d9c45414-d2cb-442a-85ea-b121ee873ac9",
+              "name": "Broadcast started or scheduled.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2094435f-6635-4871-a4cb-74cc421cc89b",
+              "name": "Invalid request, no contacts, or broadcast not in valid status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2069f9b4-db09-47db-ba21-0a46c45a91d5",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88668e7f-05da-42fb-a3b9-2078622b1f80",
+              "name": "Insufficient balance.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"insufficient_balance\",\n  \"message\": \"Insufficient balance. Available: $50.00\",\n  \"details\": {\n    \"totalBalance\": 50,\n    \"reservedBalance\": 25,\n    \"availableBalance\": 25\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b2ba289-1581-4731-97eb-188e31f7b9da",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1cb81c0-eaf5-4690-aa6f-ba85cb2a423d",
+          "name": "Reschedule broadcast",
+          "request": {
+            "name": "Reschedule broadcast",
+            "description": {
+              "content": "Update the scheduled time for a broadcast. The broadcast must be in scheduled status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "schedule"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduledAt\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d62ea3de-e590-4222-8794-604131f905ea",
+              "name": "Broadcast rescheduled.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scheduledAt\": \"2024-01-15T14:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3daf43d-c438-493b-81b0-d769af079363",
+              "name": "Invalid request or broadcast not in scheduled status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scheduledAt\": \"2024-01-15T14:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7664ee06-41d2-4781-ab8e-d1a9b3ec0c4b",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scheduledAt\": \"2024-01-15T14:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51c1a5b2-3307-4fc2-8675-62178df746ed",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scheduledAt\": \"2024-01-15T14:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5a9edcd-956a-4ba1-8858-3356b7b374d0",
+          "name": "Cancel broadcast",
+          "request": {
+            "name": "Cancel broadcast",
+            "description": {
+              "content": "Cancel a broadcast. Pending contacts will be skipped, but already queued messages may still be delivered.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4fc36d62-3fec-4253-be14-5b44a8e4bbde",
+              "name": "Broadcast cancelled.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02d07076-0bb4-4807-955a-6eb0a4ddfd5f",
+              "name": "Broadcast cannot be cancelled in current status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56e07926-868c-40f6-a9bd-6082651d605a",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec371ca6-2a6b-4c61-8b87-499a906f1b53",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46dadd49-3442-48e5-9729-b4eab7707bb1",
+          "name": "Retry broadcast review",
+          "request": {
+            "name": "Retry broadcast review",
+            "description": {
+              "content": "Resubmit a rejected broadcast for AI review after editing content. Maximum 3 review attempts allowed per broadcast.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "retry-review"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8c87cc78-69ee-45a4-a180-2b3fe661e09f",
+              "name": "Review resubmitted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "retry-review"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a05bc6bc-03e8-4363-bdfd-3efe38321acc",
+              "name": "Broadcast not in rejected status or max attempts reached.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "retry-review"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Only rejected broadcasts can retry review\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b8e23b5-f651-4bd0-bc68-9a7737db7baf",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "retry-review"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e14fcfd1-6640-482e-85ea-16f7c2ef40ad",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "retry-review"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9218b21a-d224-4124-9e13-8c03a1473463",
+          "name": "Escalate to manual review",
+          "request": {
+            "name": "Escalate to manual review",
+            "description": {
+              "content": "Request manual review by the Zavu team for a rejected broadcast. Use this after automated review rejection if you believe the content is legitimate.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "escalate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54311150-c3a1-4a82-ad85-23802f5c21e4",
+              "name": "Escalation submitted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcast\": {\n    \"id\": \"brd_abc123\",\n    \"name\": \"string\",\n    \"status\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"messageType\": \"<string>\",\n    \"totalContacts\": 3797,\n    \"createdAt\": \"2005-03-02T23:27:09.430Z\",\n    \"text\": \"string\",\n    \"content\": {\n      \"mediaUrl\": \"<string>\",\n      \"mediaId\": \"<string>\",\n      \"mimeType\": \"<string>\",\n      \"filename\": \"<string>\",\n      \"templateId\": \"<string>\",\n      \"templateVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"templateButtonVariables\": {\n        \"key_0\": \"<string>\"\n      },\n      \"templateHeaderVariables\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    \"senderId\": \"string\",\n    \"emailSubject\": \"string\",\n    \"pendingCount\": 5655,\n    \"sendingCount\": 3873,\n    \"deliveredCount\": 6573,\n    \"failedCount\": 5112,\n    \"estimatedCost\": 5661.7382942227805,\n    \"reservedAmount\": 5993.845433409695,\n    \"actualCost\": 8263.09986499768,\n    \"scheduledAt\": \"2020-02-23T13:42:48.603Z\",\n    \"startedAt\": \"1952-12-30T10:09:40.453Z\",\n    \"completedAt\": \"1999-07-13T13:13:02.013Z\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"updatedAt\": \"1992-02-04T15:58:50.740Z\",\n    \"reviewResult\": {\n      \"score\": 3623.510372954143,\n      \"categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reasoning\": \"string\",\n      \"reviewedAt\": \"2014-01-21T20:08:44.726Z\",\n      \"flaggedContent\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"reviewAttempts\": 1025\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "487a3412-a6d7-409a-88cc-12aac8999c02",
+              "name": "Broadcast not in rejected status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Only rejected broadcasts can be escalated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87ad3ce3-514d-44ab-9395-2b2570d5b6f4",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1dd8f95b-e0eb-4309-bb47-a0ccfc512543",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20aab493-4270-4ef9-a289-695b25f890c3",
+          "name": "Get broadcast progress",
+          "request": {
+            "name": "Get broadcast progress",
+            "description": {
+              "content": "Get real-time progress of a broadcast including delivery counts and estimated completion time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "broadcasts",
+                ":broadcastId",
+                "progress"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6f5ae43b-e40f-4bde-a671-62b2b3572c44",
+              "name": "Broadcast progress.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "progress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"broadcastId\": \"brd_abc123\",\n  \"status\": \"sending\",\n  \"total\": 5000,\n  \"pending\": 2500,\n  \"sending\": 100,\n  \"delivered\": 2350,\n  \"failed\": 50,\n  \"skipped\": 0,\n  \"percentComplete\": 48,\n  \"estimatedCost\": 75,\n  \"reservedAmount\": 75,\n  \"actualCost\": 35.25,\n  \"startedAt\": \"2024-01-15T10:30:00.000Z\",\n  \"estimatedCompletionAt\": \"2024-01-15T10:45:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fc4c4ff-f993-4e16-bc73-5397a3112d54",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "progress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f949ccf-fc42-451e-b7cb-d9a85d2f4fcd",
+              "name": "Broadcast not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "broadcasts",
+                    ":broadcastId",
+                    "progress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"invalid_request\",\n  \"message\": \"Phone number is invalid\",\n  \"details\": {\n    \"key_0\": 2091.0018379217777,\n    \"key_1\": 2550.3842090954986,\n    \"key_2\": 4586.352020668532\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zavu.dev",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "539d8e94-f018-4906-95e7-87364e970a8c",
+    "name": "Zavu Unified Messaging Layer 10DLC Broadcasts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified multi-channel messaging API for Zavu.\n\nSupported channels:\n- **SMS**: Simple text messages\n- **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates\n- **Telegram**: Bot messaging with text, media, and interactive elements\n- **Email**: Transactional emails via Amazon SES\n\nDesign goals:\n- Simple `send()` entrypoint for developers\n- Project-level authentication via Bearer token\n- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)\n- If a non-text message type is sent, WhatsApp channel is used automatically\n- 24-hour WhatsApp conversation window enforcement\n- Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)\n",
+      "type": "text/plain"
+    }
+  }
+}

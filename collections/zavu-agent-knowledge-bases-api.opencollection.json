@@ -1,0 +1,335 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC Agent Knowledge Bases API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent Knowledge Bases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List knowledge bases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List knowledge bases for an agent."
+        },
+        {
+          "info": {
+            "name": "Create knowledge base",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new knowledge base for an agent."
+        },
+        {
+          "info": {
+            "name": "Get knowledge base",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a specific knowledge base."
+        },
+        {
+          "info": {
+            "name": "Update knowledge base",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a knowledge base."
+        },
+        {
+          "info": {
+            "name": "Delete knowledge base",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a knowledge base and all its documents."
+        },
+        {
+          "info": {
+            "name": "List documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId/documents",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List documents in a knowledge base."
+        },
+        {
+          "info": {
+            "name": "Create document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId/documents",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Add a document to a knowledge base. The document will be automatically processed for RAG."
+        },
+        {
+          "info": {
+            "name": "Get document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId/documents/:docId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "docId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a single document from a knowledge base."
+        },
+        {
+          "info": {
+            "name": "Update document",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId/documents/:docId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "docId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a document's title or content. Updating content reprocesses the document for RAG."
+        },
+        {
+          "info": {
+            "name": "Delete document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/knowledge-bases/:kbId/documents/:docId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "docId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a document from a knowledge base."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

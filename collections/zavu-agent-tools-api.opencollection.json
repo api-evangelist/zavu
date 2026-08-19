@@ -1,0 +1,203 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zavu Unified Messaging Layer 10DLC Agent Tools API",
+    "version": "0.2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent Tools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List tools for an agent."
+        },
+        {
+          "info": {
+            "name": "Create tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new tool for an agent. Tools allow the agent to call external webhooks."
+        },
+        {
+          "info": {
+            "name": "Get tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools/:toolId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "toolId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a specific tool."
+        },
+        {
+          "info": {
+            "name": "Update tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools/:toolId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "toolId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a tool."
+        },
+        {
+          "info": {
+            "name": "Delete tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools/:toolId",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "toolId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a tool."
+        },
+        {
+          "info": {
+            "name": "Test tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zavu.dev/v1/senders/:senderId/agent/tools/:toolId/test",
+            "params": [
+              {
+                "name": "senderId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "toolId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Test a tool by triggering its webhook with test parameters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
