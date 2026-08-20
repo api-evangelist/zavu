@@ -45,6 +45,17 @@ tags:
 - Voice
 - Communications
 - CPaaS
+- Webhook
+- AI Agents
+tags_raw:
+- Company
+- Messaging
+- SMS
+- WhatsApp
+- Email
+- Voice
+- Communications
+- CPaaS
 - Webhooks
 - AI Agents
 apis:
@@ -186,6 +197,8 @@ apis:
   humanURL: https://docs.zavu.dev/api-reference
   baseURL: https://api.zavu.dev/v1
   tags:
+  - Balances
+  tags_raw:
   - Balance
   properties:
   - type: OpenAPI
@@ -318,6 +331,8 @@ apis:
   humanURL: https://docs.zavu.dev/api-reference
   baseURL: https://api.zavu.dev/v1
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -406,6 +421,8 @@ apis:
   humanURL: https://docs.zavu.dev/api-reference
   baseURL: https://api.zavu.dev/v1
   tags:
+  - Subaccounts
+  tags_raw:
   - Sub-Accounts
   properties:
   - type: OpenAPI
