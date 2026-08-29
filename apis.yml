@@ -545,6 +545,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/zavu-capability-edges.yml
+  name: Zavu Business Capability Map
 - type: Website
   url: https://zavu.dev
 - type: DeveloperPortal
