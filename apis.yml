@@ -433,7 +433,7 @@ apis:
   humanURL: https://docs.zavu.dev/api-reference
   baseURL: https://api.zavu.dev/v1
   tags:
-  - Subaccounts
+  - Sub-Accounts
   tags_raw:
   - Sub-Accounts
   properties:
