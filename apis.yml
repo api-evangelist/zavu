@@ -430,30 +430,6 @@ apis:
     url: asyncapi/zavu-messaging-webhooks.yml
   - type: RateLimits
     url: rate-limits/zavu-rate-limits.yml
-- aid: zavu:zavu-sub-accounts-api
-  name: Zavu Sub-Accounts API
-  description: The Sub-Accounts API from Zavu — 5 operation(s) for sub-accounts.
-  humanURL: https://docs.zavu.dev/api-reference
-  baseURL: https://api.zavu.dev/v1
-  tags:
-  - Subaccounts
-  tags_raw:
-  - Sub-Accounts
-  properties:
-  - type: OpenAPI
-    url: openapi/zavu-sub-accounts-api-openapi.yml
-  - type: Authentication
-    url: authentication/zavu-authentication.yml
-  - type: ErrorCatalog
-    url: errors/zavu-problem-types.yml
-  - type: ErrorCatalog
-    url: errors/zavu-error-codes.yml
-  - type: DataModel
-    url: data-model/zavu-data-model.yml
-  - type: Webhooks
-    url: asyncapi/zavu-messaging-webhooks.yml
-  - type: RateLimits
-    url: rate-limits/zavu-rate-limits.yml
 - aid: zavu:zavu-templates-api
   name: Zavu Templates API
   description: The Templates API from Zavu — 3 operation(s) for templates.
@@ -530,6 +506,28 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/zavu-whatsapp-sync-api-openapi.yml
+  - type: Authentication
+    url: authentication/zavu-authentication.yml
+  - type: ErrorCatalog
+    url: errors/zavu-problem-types.yml
+  - type: ErrorCatalog
+    url: errors/zavu-error-codes.yml
+  - type: DataModel
+    url: data-model/zavu-data-model.yml
+  - type: Webhooks
+    url: asyncapi/zavu-messaging-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/zavu-rate-limits.yml
+- aid: zavu:zavu-subaccounts-api
+  name: Zavu Subaccounts API
+  description: The Subaccounts API from Zavu — 5 operation(s) for subaccounts.
+  humanURL: https://docs.zavu.dev/api-reference
+  baseURL: https://api.zavu.dev/v1
+  tags:
+  - Subaccounts
+  properties:
+  - type: OpenAPI
+    url: openapi/zavu-subaccounts-api-openapi.yml
   - type: Authentication
     url: authentication/zavu-authentication.yml
   - type: ErrorCatalog
