@@ -236,6 +236,8 @@ apis:
   humanURL: https://docs.zavu.dev/api-reference
   baseURL: https://api.zavu.dev/v1
   tags:
+  - Broadcast
+  tags_raw:
   - Broadcasts
   properties:
   - type: OpenAPI
