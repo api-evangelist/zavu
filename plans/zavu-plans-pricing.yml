@@ -1,0 +1,136 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://www.zavu.dev/en/pricing
+sources:
+- https://www.zavu.dev/en/pricing
+- https://zavu.dev/en/pricing
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: tiered-subscription
+published: true
+note: Developer messaging platform page with Free/Pro/Enterprise tiers plus extensive per-unit usage rates;
+  Enterprise is custom/negotiated.
+plan_count: 17
+currency: USD
+plans:
+- name: Free Plan
+  price_text: $ 0 /mo
+  price: 0
+  currency: USD
+  period: month
+  included_quota: Two channel connections (one can be WhatsApp), 2,000 messages a month on WhatsApp, Telegram,
+    Instagram and Messenger, $2 of credit for SMS, voice and email, 250,000 memory units a month, 300k
+    function calls, 1 GB media storage
+  overage: then $5/1M memory units; function calls then $5/1M
+- name: Pro
+  price_text: $ 20 /mo
+  price: 20
+  currency: USD
+  period: month
+  included_quota: Unlimited send/receive on WhatsApp, Telegram, Instagram and Messenger; $20 of credit
+    for SMS, voice and email; 2M memory units a month; 100 GB media storage; 300k function calls
+  overage: 2M memory units a month so agents remember every contact, then $5 per million; function calls
+    300k free, then $5/1M; memory storage 5 GB then $1/GB
+- name: Enterprise
+  price_text: Custom
+  period: month
+  included_quota: Everything in Pro, rates negotiated for volume, NET-30 postpaid, uptime SLA, named engineer
+- name: Channel connections
+  price_text: from $3/mo each
+  price: 3
+  currency: USD
+  period: month
+  unit: connection
+- name: WhatsApp account
+  price_text: first free, then $7/mo
+  price: 7
+  currency: USD
+  period: month
+  unit: account
+  included_quota: first one free
+- name: Phone number
+  price_text: from $0.63/mo
+  price: 0.63
+  currency: USD
+  period: month
+  unit: number
+  included_quota: One US number included
+- name: Transactional email
+  price_text: $0.40 / 1,000
+  price: 0.4
+  currency: USD
+  period: per-use
+  unit: 1,000 emails
+- name: Marketing email
+  price_text: $0.80 / 1,000
+  price: 0.8
+  currency: USD
+  period: per-use
+  unit: 1,000 emails
+- name: SMS
+  price_text: from $0.004/SMS
+  price: 0.004
+  currency: USD
+  period: per-use
+  unit: SMS
+- name: Voice Agents
+  price_text: from $0.07/min
+  price: 0.07
+  currency: USD
+  period: per-use
+  unit: minute
+- name: Telephony
+  price_text: From $0.003/min
+  price: 0.003
+  currency: USD
+  period: per-use
+  unit: minute
+- name: Function calls
+  price_text: 300k invocations free, then $5/1M
+  currency: USD
+  period: per-use
+  unit: 1M invocations
+  included_quota: 300,000 invocations/month
+  overage: $5/1M
+- name: Agent memory
+  price_text: 250k units free, then $5/1M
+  currency: USD
+  period: per-use
+  unit: 1M units
+  included_quota: 250k units free (Free), 2M (Pro)
+  overage: $5/1M
+- name: Media storage
+  price_text: 1 GB free, then $0.03/GB
+  currency: USD
+  period: month
+  unit: GB
+  included_quota: 1 GB free, Pro 100 GB
+  overage: $0.03/GB
+- name: 10DLC registration (US)
+  price_text: From $4 + $10/mo
+  currency: USD
+  period: month
+  overage: $4 once for the brand, plus a campaign at $15 once and $10/mo, or $2 and $2/mo if it is low
+    volume; optional vetting is $40
+- name: Dedicated email IP
+  price_text: $30/mo
+  price: 30
+  currency: USD
+  period: month
+  unit: IP
+- name: Team members
+  price_text: $9/mo each
+  price: 9
+  currency: USD
+  period: month
+  unit: seat
+  included_quota: One included
+rate_limit_statements:
+- 2,000 messages a month on WhatsApp, Telegram, Instagram and Messenger
+- Memories stored per project 5k
+- Memories stored per project 50k
+- At zero, sends are rejected The API returns 402 with code insufficient_balance
