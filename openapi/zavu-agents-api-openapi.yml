@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Agents API
+  title: Zavu Unified Messaging Layer Agents API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -249,8 +221,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/AgentExecution'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -306,7 +279,38 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    AgentProvider:
+      type: string
+      description: LLM provider for the AI agent.
+      enum:
+      - openai
+      - anthropic
+      - google
+      - mistral
+      - zavu
     Agent:
       type: object
       description: AI Agent configuration for a sender.
@@ -351,13 +355,15 @@ components:
           description: Whether to include contact metadata in context.
           default: true
         maxTokens:
-          type: integer
+          type:
+          - integer
+          - 'null'
           description: Maximum tokens for LLM response.
-          nullable: true
         temperature:
-          type: number
+          type:
+          - number
+          - 'null'
           description: LLM temperature (0-2).
-          nullable: true
         triggerOnChannels:
           type: array
           items:
@@ -389,6 +395,56 @@ components:
         updatedAt:
           type: string
           format: date-time
+    AgentResponse:
+      type: object
+      required:
+      - agent
+      properties:
+        agent:
+          $ref: '#/components/schemas/Agent'
+    AgentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        enabled:
+          type: boolean
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+        systemPrompt:
+          type: string
+          maxLength: 10000
+        apiKey:
+          type: string
+        contextWindowMessages:
+          type: integer
+          minimum: 1
+          maximum: 50
+        includeContactMetadata:
+          type: boolean
+        maxTokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 4096
+        temperature:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 2
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
     AgentExecution:
       type: object
       required:
@@ -408,16 +464,19 @@ components:
         inboundMessageId:
           type: string
         responseMessageId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         responseText:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         status:
           $ref: '#/components/schemas/AgentExecutionStatus'
         errorMessage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         inputTokens:
           type: integer
         outputTokens:
@@ -430,6 +489,39 @@ components:
         createdAt:
           type: string
           format: date-time
+    AgentExecutionStatus:
+      type: string
+      description: Status of an agent execution.
+      enum:
+      - success
+      - error
+      - filtered
+      - rate_limited
+      - balance_insufficient
+    AgentStats:
+      type: object
+      required:
+      - totalInvocations
+      - totalTokensUsed
+      - totalCost
+      - successCount
+      - errorCount
+      properties:
+        totalInvocations:
+          type: integer
+        totalTokensUsed:
+          type: integer
+        totalCost:
+          type: number
+          description: Total cost in USD.
+        successCount:
+          type: integer
+        errorCount:
+          type: integer
+        avgLatencyMs:
+          type:
+          - number
+          - 'null'
     AgentCreateRequest:
       type: object
       required:
@@ -479,117 +571,6 @@ components:
             type: string
           default:
           - text
-    AgentExecutionStatus:
-      type: string
-      description: Status of an agent execution.
-      enum:
-      - success
-      - error
-      - filtered
-      - rate_limited
-      - balance_insufficient
-    AgentResponse:
-      type: object
-      required:
-      - agent
-      properties:
-        agent:
-          $ref: '#/components/schemas/Agent'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    AgentStats:
-      type: object
-      required:
-      - totalInvocations
-      - totalTokensUsed
-      - totalCost
-      - successCount
-      - errorCount
-      properties:
-        totalInvocations:
-          type: integer
-        totalTokensUsed:
-          type: integer
-        totalCost:
-          type: number
-          description: Total cost in USD.
-        successCount:
-          type: integer
-        errorCount:
-          type: integer
-        avgLatencyMs:
-          type: number
-          nullable: true
-    AgentUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        enabled:
-          type: boolean
-        provider:
-          $ref: '#/components/schemas/AgentProvider'
-        model:
-          type: string
-        systemPrompt:
-          type: string
-          maxLength: 10000
-        apiKey:
-          type: string
-        contextWindowMessages:
-          type: integer
-          minimum: 1
-          maximum: 50
-        includeContactMetadata:
-          type: boolean
-        maxTokens:
-          type: integer
-          minimum: 1
-          maximum: 4096
-          nullable: true
-        temperature:
-          type: number
-          minimum: 0
-          maximum: 2
-          nullable: true
-        triggerOnChannels:
-          type: array
-          items:
-            type: string
-        triggerOnMessageTypes:
-          type: array
-          items:
-            type: string
-    AgentProvider:
-      type: string
-      description: LLM provider for the AI agent.
-      enum:
-      - openai
-      - anthropic
-      - google
-      - mistral
-      - zavu
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

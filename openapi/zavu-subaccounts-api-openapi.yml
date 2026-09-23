@@ -1,42 +1,14 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Sub-Accounts API
+  title: Zavu Unified Messaging Layer Sub Accounts API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
 - bearerAuth: []
 tags:
-- name: Sub-Accounts
+- name: Subaccounts
 paths:
   /v1/sub-accounts:
     post:
@@ -44,7 +16,7 @@ paths:
       description: Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response. Requires a parent project API key; sub-account API keys receive HTTP 403.
       operationId: createSubAccount
       tags:
-      - Sub-Accounts
+      - Subaccounts
       requestBody:
         required: true
         content:
@@ -94,7 +66,7 @@ paths:
       description: List sub-accounts for this team. Requires a parent project API key; sub-account API keys receive HTTP 403.
       operationId: listSubAccounts
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - name: limit
         in: query
@@ -121,8 +93,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/SubAccount'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -142,7 +115,7 @@ paths:
       summary: Get sub-account
       operationId: getSubAccount
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       responses:
@@ -177,7 +150,7 @@ paths:
       summary: Update sub-account
       operationId: updateSubAccount
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       requestBody:
@@ -225,7 +198,7 @@ paths:
       description: Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked. Requires a parent project API key; sub-account API keys receive HTTP 403.
       operationId: deactivateSubAccount
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       responses:
@@ -271,7 +244,7 @@ paths:
       description: Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap). Requires a parent project API key; sub-account API keys receive HTTP 403.
       operationId: getSubAccountBalance
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       responses:
@@ -306,7 +279,7 @@ paths:
       summary: List sub-account API keys
       operationId: listSubAccountApiKeys
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       responses:
@@ -348,7 +321,7 @@ paths:
       summary: Create sub-account API key
       operationId: createSubAccountApiKey
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       requestBody:
@@ -421,7 +394,7 @@ paths:
       summary: Revoke sub-account API key
       operationId: revokeSubAccountApiKey
       tags:
-      - Sub-Accounts
+      - Subaccounts
       parameters:
       - $ref: '#/components/parameters/SubAccountIdParam'
       - $ref: '#/components/parameters/SubAccountApiKeyIdParam'
@@ -450,24 +423,22 @@ paths:
       - bearerAuth: []
       description: Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
 components:
+  parameters:
+    SubAccountIdParam:
+      name: id
+      in: path
+      required: true
+      description: Sub-account ID.
+      schema:
+        type: string
+    SubAccountApiKeyIdParam:
+      name: keyId
+      in: path
+      required: true
+      description: API key ID.
+      schema:
+        type: string
   schemas:
-    SubAccountApiKeyCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        environment:
-          type: string
-          enum:
-          - live
-          - test
-          default: live
-        permissions:
-          type: array
-          items:
-            type: string
     SubAccountCreateRequest:
       type: object
       required:
@@ -486,6 +457,21 @@ components:
           minimum: 0
           description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
         metadata:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
           type: object
           additionalProperties: true
     SubAccountApiKey:
@@ -517,20 +503,15 @@ components:
           items:
             type: string
         lastUsedAt:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         revokedAt:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         createdAt:
           type: number
-    SubAccountResponse:
-      type: object
-      required:
-      - subAccount
-      properties:
-        subAccount:
-          $ref: '#/components/schemas/SubAccount'
     BalanceResponse:
       type: object
       required:
@@ -544,47 +525,35 @@ components:
           type: string
           example: usd
         creditLimit:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Spending cap in cents (only for sub-accounts).
         totalSpent:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Total amount spent by this sub-account in cents (only for sub-accounts).
         isSubAccount:
           type: boolean
           description: Whether this API key belongs to a sub-account.
-    Error:
+    SubAccountApiKeyCreateRequest:
       type: object
       required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    SubAccountUpdateRequest:
-      type: object
+      - name
       properties:
         name:
           type: string
-        externalId:
+        environment:
           type: string
-        creditLimit:
-          type: integer
-          nullable: true
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties: true
-        status:
-          $ref: '#/components/schemas/SubAccountStatus'
+          enum:
+          - live
+          - test
+          default: live
+        permissions:
+          type: array
+          items:
+            type: string
     SubAccount:
       type: object
       required:
@@ -600,8 +569,9 @@ components:
           type: string
           example: Client ABC
         externalId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: External reference ID set by the parent account.
         status:
           $ref: '#/components/schemas/SubAccountStatus'
@@ -609,12 +579,14 @@ components:
           type: integer
           description: Total amount spent by this sub-account in cents.
         creditLimit:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Spending cap in cents. When reached, messages from this sub-account will be blocked.
         metadata:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           additionalProperties: true
         apiKey:
           type: string
@@ -622,26 +594,35 @@ components:
         createdAt:
           type: string
           format: date-time
+    SubAccountUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        externalId:
+          type: string
+        creditLimit:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties: true
+        status:
+          $ref: '#/components/schemas/SubAccountStatus'
     SubAccountStatus:
       type: string
       enum:
       - active
       - inactive
-  parameters:
-    SubAccountApiKeyIdParam:
-      name: keyId
-      in: path
-      required: true
-      description: API key ID.
-      schema:
-        type: string
-    SubAccountIdParam:
-      name: id
-      in: path
-      required: true
-      description: Sub-account ID.
-      schema:
-        type: string
+    SubAccountResponse:
+      type: object
+      required:
+      - subAccount
+      properties:
+        subAccount:
+          $ref: '#/components/schemas/SubAccount'
   securitySchemes:
     bearerAuth:
       type: http

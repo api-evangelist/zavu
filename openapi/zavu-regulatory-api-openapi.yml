@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Regulatory API
+  title: Zavu Unified Messaging Layer Regulatory API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -111,8 +83,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Address'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -254,8 +227,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/RegulatoryDocument'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -349,142 +323,15 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    AddressResponse:
+    UploadUrlResponse:
       type: object
       required:
-      - address
+      - uploadUrl
       properties:
-        address:
-          $ref: '#/components/schemas/Address'
-    RegulatoryDocument:
-      type: object
-      description: A regulatory document for phone number requirements.
-      required:
-      - id
-      - name
-      - documentType
-      - status
-      - createdAt
-      properties:
-        id:
+        uploadUrl:
           type: string
-        name:
-          type: string
-        documentType:
-          $ref: '#/components/schemas/RegulatoryDocumentType'
-        mimeType:
-          type: string
-        fileSize:
-          type: integer
-        status:
-          $ref: '#/components/schemas/RegulatoryDocumentStatus'
-        rejectionReason:
-          type: string
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    RegulatoryDocumentCreateRequest:
-      type: object
-      required:
-      - name
-      - documentType
-      - storageId
-      - mimeType
-      - fileSize
-      properties:
-        name:
-          type: string
-          maxLength: 200
-        documentType:
-          $ref: '#/components/schemas/RegulatoryDocumentType'
-        storageId:
-          type: string
-          description: Storage ID from the upload-url endpoint.
-        mimeType:
-          type: string
-        fileSize:
-          type: integer
-    AddressStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-      - rejected
-    RegulatoryDocumentResponse:
-      type: object
-      required:
-      - document
-      properties:
-        document:
-          $ref: '#/components/schemas/RegulatoryDocument'
-    Address:
-      type: object
-      description: A regulatory address for phone number requirements.
-      required:
-      - id
-      - streetAddress
-      - locality
-      - postalCode
-      - countryCode
-      - status
-      - createdAt
-      properties:
-        id:
-          type: string
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        businessName:
-          type: string
-          nullable: true
-        streetAddress:
-          type: string
-        extendedAddress:
-          type: string
-          nullable: true
-        locality:
-          type: string
-        administrativeArea:
-          type: string
-          nullable: true
-        postalCode:
-          type: string
-        countryCode:
-          type: string
-          example: DE
-        status:
-          $ref: '#/components/schemas/AddressStatus'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    RegulatoryDocumentStatus:
-      type: string
-      enum:
-      - pending
-      - uploaded
-      - verified
-      - rejected
-    RegulatoryDocumentType:
-      type: string
-      enum:
-      - passport
-      - national_id
-      - drivers_license
-      - utility_bill
-      - tax_id
-      - business_registration
-      - proof_of_address
-      - other
+          format: uri
+          description: Pre-signed URL for uploading the file.
     Error:
       type: object
       required:
@@ -500,15 +347,23 @@ components:
         details:
           type: object
           additionalProperties: true
-    UploadUrlResponse:
-      type: object
-      required:
-      - uploadUrl
-      properties:
-        uploadUrl:
-          type: string
-          format: uri
-          description: Pre-signed URL for uploading the file.
+    AddressStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+      - rejected
+    RegulatoryDocumentType:
+      type: string
+      enum:
+      - passport
+      - national_id
+      - drivers_license
+      - utility_bill
+      - tax_id
+      - business_registration
+      - proof_of_address
+      - other
     AddressCreateRequest:
       type: object
       required:
@@ -546,6 +401,131 @@ components:
           minLength: 2
           maxLength: 2
           example: DE
+    RegulatoryDocumentCreateRequest:
+      type: object
+      required:
+      - name
+      - documentType
+      - storageId
+      - mimeType
+      - fileSize
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        storageId:
+          type: string
+          description: Storage ID from the upload-url endpoint.
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+    RegulatoryDocument:
+      type: object
+      description: A regulatory document for phone number requirements.
+      required:
+      - id
+      - name
+      - documentType
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+        status:
+          $ref: '#/components/schemas/RegulatoryDocumentStatus'
+        rejectionReason:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    AddressResponse:
+      type: object
+      required:
+      - address
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      type: object
+      description: A regulatory address for phone number requirements.
+      required:
+      - id
+      - streetAddress
+      - locality
+      - postalCode
+      - countryCode
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        firstName:
+          type:
+          - string
+          - 'null'
+        lastName:
+          type:
+          - string
+          - 'null'
+        businessName:
+          type:
+          - string
+          - 'null'
+        streetAddress:
+          type: string
+        extendedAddress:
+          type:
+          - string
+          - 'null'
+        locality:
+          type: string
+        administrativeArea:
+          type:
+          - string
+          - 'null'
+        postalCode:
+          type: string
+        countryCode:
+          type: string
+          example: DE
+        status:
+          $ref: '#/components/schemas/AddressStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegulatoryDocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/RegulatoryDocument'
+    RegulatoryDocumentStatus:
+      type: string
+      enum:
+      - pending
+      - uploaded
+      - verified
+      - rejected
   parameters:
     AddressIdParam:
       name: addressId

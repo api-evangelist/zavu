@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Agent Knowledge Bases API
+  title: Zavu Unified Messaging Layer Agent Knowledge Bases API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -72,8 +44,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/AgentKnowledgeBase'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -266,8 +239,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/AgentDocument'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -430,33 +404,101 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+    DocumentIdParam:
+      name: docId
+      in: path
+      required: true
+      schema:
+        type: string
+    KnowledgeBaseIdParam:
+      name: kbId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
-    KnowledgeBaseResponse:
+    DocumentCreateRequest:
       type: object
       required:
-      - knowledgeBase
+      - title
+      - content
       properties:
-        knowledgeBase:
-          $ref: '#/components/schemas/AgentKnowledgeBase'
-    KnowledgeBaseCreateRequest:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 100000
+    DocumentResponse:
       type: object
       required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/AgentDocument'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    DocumentUpdateRequest:
+      type: object
+      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 500000
+    AgentKnowledgeBase:
+      type: object
+      required:
+      - id
+      - agentId
       - name
+      - documentCount
+      - totalChunks
+      - createdAt
+      - updatedAt
       properties:
+        id:
+          type: string
+        agentId:
+          type: string
         name:
           type: string
-          maxLength: 100
         description:
+          type:
+          - string
+          - 'null'
+        documentCount:
+          type: integer
+        totalChunks:
+          type: integer
+        createdAt:
           type: string
-    KnowledgeBaseUpdateRequest:
-      type: object
-      properties:
-        name:
+          format: date-time
+        updatedAt:
           type: string
-          maxLength: 100
-        description:
-          type: string
-          nullable: true
+          format: date-time
     AgentDocument:
       type: object
       required:
@@ -490,99 +532,33 @@ components:
         updatedAt:
           type: string
           format: date-time
-    DocumentCreateRequest:
+    KnowledgeBaseUpdateRequest:
       type: object
-      required:
-      - title
-      - content
       properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 100000
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    DocumentResponse:
-      type: object
-      required:
-      - document
-      properties:
-        document:
-          $ref: '#/components/schemas/AgentDocument'
-    AgentKnowledgeBase:
-      type: object
-      required:
-      - id
-      - agentId
-      - name
-      - documentCount
-      - totalChunks
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-        agentId:
-          type: string
         name:
           type: string
+          maxLength: 100
+        description:
+          type:
+          - string
+          - 'null'
+    KnowledgeBaseCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 100
         description:
           type: string
-          nullable: true
-        documentCount:
-          type: integer
-        totalChunks:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    DocumentUpdateRequest:
+    KnowledgeBaseResponse:
       type: object
-      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
+      required:
+      - knowledgeBase
       properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 500000
-  parameters:
-    KnowledgeBaseIdParam:
-      name: kbId
-      in: path
-      required: true
-      schema:
-        type: string
-    DocumentIdParam:
-      name: docId
-      in: path
-      required: true
-      schema:
-        type: string
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
+        knowledgeBase:
+          $ref: '#/components/schemas/AgentKnowledgeBase'
   securitySchemes:
     bearerAuth:
       type: http

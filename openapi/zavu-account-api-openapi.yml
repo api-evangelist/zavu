@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Account API
+  title: Zavu Unified Messaging Layer Account API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -68,8 +40,9 @@ paths:
                       id:
                         type: string
                       name:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                       isSubAccount:
                         type: boolean
                   team:
@@ -81,8 +54,9 @@ paths:
                       id:
                         type: string
                       name:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                   apiKey:
                     type: object
                     required:

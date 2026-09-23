@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Broadcasts API
+  title: Zavu Unified Messaging Layer Broadcasts API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -140,8 +112,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Broadcast'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -340,8 +313,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/BroadcastContact'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -667,17 +641,6 @@ paths:
       - Broadcasts
 components:
   schemas:
-    BroadcastContactsAddRequest:
-      type: object
-      required:
-      - contacts
-      properties:
-        contacts:
-          type: array
-          description: List of contacts to add (max 1000 per request).
-          maxItems: 1000
-          items:
-            $ref: '#/components/schemas/BroadcastContactInput'
     BroadcastChannel:
       type: string
       description: Broadcast delivery channel. Use 'smart' for per-contact intelligent routing.
@@ -688,22 +651,6 @@ components:
       - whatsapp
       - telegram
       - email
-    BroadcastRescheduleRequest:
-      type: object
-      required:
-      - scheduledAt
-      properties:
-        scheduledAt:
-          type: string
-          format: date-time
-          description: New scheduled time for the broadcast.
-    BroadcastSendRequest:
-      type: object
-      properties:
-        scheduledAt:
-          type: string
-          format: date-time
-          description: Schedule for future delivery. Omit to send immediately.
     BroadcastProgress:
       type: object
       required:
@@ -743,16 +690,19 @@ components:
           type: number
           description: Percentage complete (0-100).
         estimatedCost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Estimated total cost in USD.
         reservedAmount:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Amount reserved from balance in USD.
         actualCost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Actual cost so far in USD.
         startedAt:
           type: string
@@ -760,6 +710,37 @@ components:
         estimatedCompletionAt:
           type: string
           format: date-time
+    BroadcastContactInput:
+      type: object
+      required:
+      - recipient
+      properties:
+        recipient:
+          type: string
+          description: Phone number (E.164) or email address.
+          example: '+14155551234'
+        templateVariables:
+          type: object
+          description: 'Per-contact body variables. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template''s format and sends the correct payload to Meta. Do not mix positional and named keys.'
+          additionalProperties:
+            type: string
+          example:
+            '1': John
+            '2': ORD-12345
+        templateButtonVariables:
+          type: object
+          description: Per-contact button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2).
+          additionalProperties:
+            type: string
+          example:
+            '0': abc-report-token
+        templateHeaderVariables:
+          type: object
+          description: Per-contact value for a text-header variable, keyed by `1`. If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+          additionalProperties:
+            type: string
+          example:
+            '1': Jorge y Laura
     BroadcastContactStatus:
       type: string
       description: Status of a contact within a broadcast.
@@ -770,6 +751,41 @@ components:
       - delivered
       - failed
       - skipped
+    BroadcastContactsAddRequest:
+      type: object
+      required:
+      - contacts
+      properties:
+        contacts:
+          type: array
+          description: List of contacts to add (max 1000 per request).
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/BroadcastContactInput'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    BroadcastRescheduleRequest:
+      type: object
+      required:
+      - scheduledAt
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: New scheduled time for the broadcast.
     Broadcast:
       type: object
       required:
@@ -812,16 +828,19 @@ components:
         failedCount:
           type: integer
         estimatedCost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Estimated total cost in USD.
         reservedAmount:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Amount reserved from balance in USD.
         actualCost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Actual cost so far in USD.
         scheduledAt:
           type: string
@@ -843,8 +862,9 @@ components:
           type: string
           format: date-time
         reviewResult:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           description: AI content review result.
           properties:
             score:
@@ -862,15 +882,34 @@ components:
               type: string
               format: date-time
             flaggedContent:
-              type: array
+              type:
+              - array
+              - 'null'
               items:
                 type: string
-              nullable: true
               description: Problematic text fragments, if any.
         reviewAttempts:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Number of review attempts (max 3).
+    BroadcastUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        text:
+          type: string
+        content:
+          $ref: '#/components/schemas/BroadcastContent'
+        emailSubject:
+          type: string
+        emailHtmlBody:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
     BroadcastMessageType:
       type: string
       description: Type of message for broadcast.
@@ -921,8 +960,9 @@ components:
         errorMessage:
           type: string
         cost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         processedAt:
           type: string
           format: date-time
@@ -970,6 +1010,29 @@ components:
         idempotencyKey:
           type: string
           description: Idempotency key to prevent duplicate broadcasts.
+    BroadcastStatus:
+      type: string
+      description: Current status of the broadcast.
+      enum:
+      - draft
+      - pending_review
+      - approved
+      - rejected
+      - escalated
+      - rejected_final
+      - scheduled
+      - sending
+      - paused
+      - completed
+      - cancelled
+      - failed
+    BroadcastSendRequest:
+      type: object
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: Schedule for future delivery. Omit to send immediately.
     BroadcastContent:
       type: object
       description: Content for non-text broadcast message types.
@@ -1004,85 +1067,6 @@ components:
           description: Default value for a text-header variable, keyed by `1` (can be overridden per contact). If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
           additionalProperties:
             type: string
-    BroadcastStatus:
-      type: string
-      description: Current status of the broadcast.
-      enum:
-      - draft
-      - pending_review
-      - approved
-      - rejected
-      - escalated
-      - rejected_final
-      - scheduled
-      - sending
-      - paused
-      - completed
-      - cancelled
-      - failed
-    BroadcastUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        text:
-          type: string
-        content:
-          $ref: '#/components/schemas/BroadcastContent'
-        emailSubject:
-          type: string
-        emailHtmlBody:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-    BroadcastContactInput:
-      type: object
-      required:
-      - recipient
-      properties:
-        recipient:
-          type: string
-          description: Phone number (E.164) or email address.
-          example: '+14155551234'
-        templateVariables:
-          type: object
-          description: 'Per-contact body variables. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template''s format and sends the correct payload to Meta. Do not mix positional and named keys.'
-          additionalProperties:
-            type: string
-          example:
-            '1': John
-            '2': ORD-12345
-        templateButtonVariables:
-          type: object
-          description: Per-contact button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2).
-          additionalProperties:
-            type: string
-          example:
-            '0': abc-report-token
-        templateHeaderVariables:
-          type: object
-          description: Per-contact value for a text-header variable, keyed by `1`. If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
-          additionalProperties:
-            type: string
-          example:
-            '1': Jorge y Laura
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     BroadcastContactsAddResponse:
       type: object
       required:
@@ -1117,17 +1101,17 @@ components:
         broadcast:
           $ref: '#/components/schemas/Broadcast'
   parameters:
-    BroadcastIdParam:
-      name: broadcastId
-      in: path
-      required: true
-      schema:
-        type: string
     BroadcastContactIdParam:
       name: contactId
       in: path
       required: true
       description: Broadcast contact ID (not the global contact ID)
+      schema:
+        type: string
+    BroadcastIdParam:
+      name: broadcastId
+      in: path
+      required: true
       schema:
         type: string
   securitySchemes:

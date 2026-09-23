@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Messages API
+  title: Zavu Unified Messaging Layer Messages API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -374,8 +346,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Message'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -526,6 +499,20 @@ paths:
       - Messages
 components:
   schemas:
+    Channel:
+      type: string
+      description: Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+      enum:
+      - auto
+      - sms
+      - sms_oneway
+      - whatsapp
+      - whatsapp_alt
+      - telegram
+      - email
+      - instagram
+      - messenger
+      - voice
     Message:
       type: object
       required:
@@ -563,22 +550,27 @@ components:
           type: string
           description: Message ID from the delivery provider.
         errorCode:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         errorMessage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         cost:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
         costProvider:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Carrier and delivery cost in USD.
         costTotal:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Total cost in USD (platform charge + delivery cost).
         metadata:
           type: object
@@ -590,6 +582,67 @@ components:
         updatedAt:
           type: string
           format: date-time
+    MessageRequest:
+      type: object
+      description: Request body to send a message.
+      required:
+      - to
+      properties:
+        to:
+          type: string
+          description: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), WhatsApp group JID (`<id>@g.us`, e.g. `120363000000000000@g.us`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden. A group JID is only valid on the `whatsapp_alt` channel and supports text and media (image, video, audio, document, sticker, location, contact).
+          example: '+56912345678'
+        channel:
+          $ref: '#/components/schemas/Channel'
+          description: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
+          default: auto
+        messageType:
+          $ref: '#/components/schemas/MessageType'
+          description: Type of message. Defaults to 'text'.
+          default: text
+        text:
+          type: string
+          description: Text body for text messages or caption for media messages.
+          example: Your verification code is 123456.
+        content:
+          $ref: '#/components/schemas/MessageContent'
+          description: Additional content for non-text message types.
+        subject:
+          type: string
+          description: Email subject line. Required when channel is 'email' or recipient is an email address.
+          maxLength: 998
+          example: Your order confirmation
+        htmlBody:
+          type: string
+          description: HTML body for email messages. If provided, email will be sent as multipart with both text and HTML.
+        replyTo:
+          type: string
+          format: email
+          description: Reply-To email address for email messages.
+          example: support@example.com
+        idempotencyKey:
+          type: string
+          description: Optional idempotency key to avoid duplicate sends.
+          example: msg_01HZY4ZP7VQY2J3BRW7Z6G0QGE
+        metadata:
+          type: object
+          description: Arbitrary metadata to associate with the message.
+          additionalProperties:
+            type: string
+        fallbackEnabled:
+          type: boolean
+          description: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
+          default: true
+        voiceLanguage:
+          type: string
+          description: Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
+          example: es-ES
+        attachments:
+          type: array
+          description: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/EmailAttachmentInput'
     MessageContent:
       type: object
       description: Content for non-text message types (WhatsApp and Telegram).
@@ -769,40 +822,21 @@ components:
             type: string
           example:
             '1': Jorge y Laura
-    Channel:
-      type: string
-      description: Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
-      enum:
-      - auto
-      - sms
-      - sms_oneway
-      - whatsapp
-      - whatsapp_alt
-      - telegram
-      - email
-      - instagram
-      - messenger
-      - voice
-    ReactionRequest:
+    Error:
       type: object
       required:
-      - emoji
+      - code
+      - message
       properties:
-        emoji:
+        code:
           type: string
-          description: Single emoji character to react with.
-          example: 👍
-    MessageStatus:
-      type: string
-      enum:
-      - queued
-      - sending
-      - sent
-      - delivered
-      - read
-      - failed
-      - received
-      - pending_url_verification
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     EmailAttachmentInput:
       type: object
       description: Email attachment. Provide either `content` (base64) or `path` (URL), not both.
@@ -830,6 +864,33 @@ components:
           description: Content ID for inline images. Reference in HTML as `<img src="cid:your_content_id">`.
           maxLength: 100
           example: logo
+    MessageStatus:
+      type: string
+      enum:
+      - queued
+      - sending
+      - sent
+      - delivered
+      - read
+      - failed
+      - received
+      - pending_url_verification
+    ReactionRequest:
+      type: object
+      required:
+      - emoji
+      properties:
+        emoji:
+          type: string
+          description: Single emoji character to react with.
+          example: 👍
+    MessageResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          $ref: '#/components/schemas/Message'
     MessageType:
       type: string
       description: Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
@@ -847,89 +908,6 @@ components:
       - cta_url
       - reaction
       - template
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    MessageResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          $ref: '#/components/schemas/Message'
-    MessageRequest:
-      type: object
-      description: Request body to send a message.
-      required:
-      - to
-      properties:
-        to:
-          type: string
-          description: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), WhatsApp group JID (`<id>@g.us`, e.g. `120363000000000000@g.us`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden. A group JID is only valid on the `whatsapp_alt` channel and supports text and media (image, video, audio, document, sticker, location, contact).
-          example: '+56912345678'
-        channel:
-          $ref: '#/components/schemas/Channel'
-          description: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
-          default: auto
-        messageType:
-          $ref: '#/components/schemas/MessageType'
-          description: Type of message. Defaults to 'text'.
-          default: text
-        text:
-          type: string
-          description: Text body for text messages or caption for media messages.
-          example: Your verification code is 123456.
-        content:
-          $ref: '#/components/schemas/MessageContent'
-          description: Additional content for non-text message types.
-        subject:
-          type: string
-          description: Email subject line. Required when channel is 'email' or recipient is an email address.
-          maxLength: 998
-          example: Your order confirmation
-        htmlBody:
-          type: string
-          description: HTML body for email messages. If provided, email will be sent as multipart with both text and HTML.
-        replyTo:
-          type: string
-          format: email
-          description: Reply-To email address for email messages.
-          example: support@example.com
-        idempotencyKey:
-          type: string
-          description: Optional idempotency key to avoid duplicate sends.
-          example: msg_01HZY4ZP7VQY2J3BRW7Z6G0QGE
-        metadata:
-          type: object
-          description: Arbitrary metadata to associate with the message.
-          additionalProperties:
-            type: string
-        fallbackEnabled:
-          type: boolean
-          description: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
-          default: true
-        voiceLanguage:
-          type: string
-          description: Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
-          example: es-ES
-        attachments:
-          type: array
-          description: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
-          maxItems: 50
-          items:
-            $ref: '#/components/schemas/EmailAttachmentInput'
   parameters:
     MessageIdParam:
       name: messageId

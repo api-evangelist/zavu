@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Contacts API
+  title: Zavu Unified Messaging Layer Contacts API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -73,8 +45,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Contact'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -524,22 +497,6 @@ paths:
       - Contacts
 components:
   schemas:
-    UpdateChannelRequest:
-      type: object
-      description: Request body to update a channel.
-      properties:
-        label:
-          type: string
-          maxLength: 50
-          nullable: true
-          description: Optional label for the channel. Set to null to clear.
-        verified:
-          type: boolean
-          description: Whether the channel is verified.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     ContactChannelInput:
       type: object
       description: Input for creating a contact channel.
@@ -577,13 +534,21 @@ components:
           type: boolean
           description: Whether this should be the primary channel for its type.
           default: false
-    ContactChannelResponse:
+    Error:
       type: object
       required:
-      - channel
+      - code
+      - message
       properties:
-        channel:
-          $ref: '#/components/schemas/ContactChannel'
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     MergeContactsRequest:
       type: object
       description: Request body to merge contacts.
@@ -593,9 +558,78 @@ components:
         sourceContactId:
           type: string
           description: ID of the contact to merge into the target contact. The source contact will be marked as merged.
-    ContactUpdateRequest:
+    ContactCreateRequest:
       type: object
+      description: Request body to create a contact with channels.
+      required:
+      - channels
       properties:
+        displayName:
+          type: string
+          maxLength: 200
+          description: Display name for the contact.
+          example: John Doe
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactChannelInput'
+          minItems: 1
+          maxItems: 20
+          description: Communication channels for the contact.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Arbitrary metadata to associate with the contact.
+    ContactChannelResponse:
+      type: object
+      required:
+      - channel
+      properties:
+        channel:
+          $ref: '#/components/schemas/ContactChannel'
+    Contact:
+      type: object
+      required:
+      - id
+      - availableChannels
+      - verified
+      - metadata
+      - createdAt
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+          description: Display name for the contact.
+          example: John Doe
+        phoneNumber:
+          type: string
+          description: 'DEPRECATED: Use primaryPhone instead. Primary phone number in E.164 format.'
+          example: '+56912345678'
+        primaryPhone:
+          type: string
+          description: Primary phone number in E.164 format.
+          example: '+56912345678'
+        primaryEmail:
+          type: string
+          format: email
+          description: Primary email address.
+          example: john@example.com
+        countryCode:
+          type: string
+          example: CL
+        profileName:
+          type:
+          - string
+          - 'null'
+          description: Contact's WhatsApp profile name. Only available for WhatsApp contacts.
+          example: John Doe
+        availableChannels:
+          type: array
+          items:
+            type: string
+          description: List of available messaging channels for this contact.
         defaultChannel:
           type: string
           enum:
@@ -606,12 +640,85 @@ components:
           - instagram
           - messenger
           - voice
-          nullable: true
+          description: Preferred channel for this contact.
+        verified:
+          type: boolean
+          description: Whether this contact has been verified.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactChannel'
+          description: All communication channels for this contact.
+        suggestedMergeWith:
+          type: string
+          description: ID of a contact suggested for merging.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ContactUpdateRequest:
+      type: object
+      properties:
+        defaultChannel:
+          type:
+          - string
+          - 'null'
+          enum:
+          - sms
+          - whatsapp
+          - telegram
+          - email
+          - instagram
+          - messenger
+          - voice
           description: Preferred channel for this contact. Set to null to clear.
         metadata:
           type: object
           additionalProperties:
             type: string
+    AddChannelRequest:
+      type: object
+      description: Request body to add a channel to a contact.
+      required:
+      - channel
+      - identifier
+      properties:
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+          description: Channel type.
+        identifier:
+          type: string
+          description: Channel identifier (phone number in E.164 format or email address).
+          example: '+14155551234'
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO country code for phone numbers.
+          example: US
+        label:
+          type: string
+          maxLength: 50
+          description: Optional label for the channel.
+          example: work
+        isPrimary:
+          type: boolean
+          description: Whether this should be the primary channel for its type.
+          default: false
     ContactChannel:
       type: object
       description: A communication channel for a contact.
@@ -683,154 +790,23 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Contact:
+    UpdateChannelRequest:
       type: object
-      required:
-      - id
-      - availableChannels
-      - verified
-      - metadata
-      - createdAt
+      description: Request body to update a channel.
       properties:
-        id:
-          type: string
-        displayName:
-          type: string
-          description: Display name for the contact.
-          example: John Doe
-        phoneNumber:
-          type: string
-          description: 'DEPRECATED: Use primaryPhone instead. Primary phone number in E.164 format.'
-          example: '+56912345678'
-        primaryPhone:
-          type: string
-          description: Primary phone number in E.164 format.
-          example: '+56912345678'
-        primaryEmail:
-          type: string
-          format: email
-          description: Primary email address.
-          example: john@example.com
-        countryCode:
-          type: string
-          example: CL
-        profileName:
-          type: string
-          nullable: true
-          description: Contact's WhatsApp profile name. Only available for WhatsApp contacts.
-          example: John Doe
-        availableChannels:
-          type: array
-          items:
-            type: string
-          description: List of available messaging channels for this contact.
-        defaultChannel:
-          type: string
-          enum:
-          - sms
-          - whatsapp
-          - telegram
-          - email
-          - instagram
-          - messenger
-          - voice
-          description: Preferred channel for this contact.
+        label:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Optional label for the channel. Set to null to clear.
         verified:
           type: boolean
-          description: Whether this contact has been verified.
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactChannel'
-          description: All communication channels for this contact.
-        suggestedMergeWith:
-          type: string
-          description: ID of a contact suggested for merging.
+          description: Whether the channel is verified.
         metadata:
           type: object
           additionalProperties:
             type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    ContactCreateRequest:
-      type: object
-      description: Request body to create a contact with channels.
-      required:
-      - channels
-      properties:
-        displayName:
-          type: string
-          maxLength: 200
-          description: Display name for the contact.
-          example: John Doe
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactChannelInput'
-          minItems: 1
-          maxItems: 20
-          description: Communication channels for the contact.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: Arbitrary metadata to associate with the contact.
-    AddChannelRequest:
-      type: object
-      description: Request body to add a channel to a contact.
-      required:
-      - channel
-      - identifier
-      properties:
-        channel:
-          type: string
-          enum:
-          - sms
-          - whatsapp
-          - email
-          - telegram
-          - instagram
-          - messenger
-          - voice
-          description: Channel type.
-        identifier:
-          type: string
-          description: Channel identifier (phone number in E.164 format or email address).
-          example: '+14155551234'
-        countryCode:
-          type: string
-          minLength: 2
-          maxLength: 2
-          description: ISO country code for phone numbers.
-          example: US
-        label:
-          type: string
-          maxLength: 50
-          description: Optional label for the channel.
-          example: work
-        isPrimary:
-          type: boolean
-          description: Whether this should be the primary channel for its type.
-          default: false
   parameters:
     ContactIdParam:
       name: contactId

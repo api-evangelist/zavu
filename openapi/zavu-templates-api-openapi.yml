@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Templates API
+  title: Zavu Unified Messaging Layer Templates API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -69,8 +41,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Template'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -242,123 +215,6 @@ paths:
       - Templates
 components:
   schemas:
-    Template:
-      type: object
-      required:
-      - id
-      - name
-      - language
-      - body
-      - category
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-          description: Template name. For WhatsApp, must match the approved template name in Meta.
-          example: order_confirmation
-        language:
-          type: string
-          description: Language code.
-          example: en
-        body:
-          type: string
-          description: 'Default template body with variables: positional ({{1}}, {{2}}) or named ({{customer_name}}, {{contact.first_name}}). Templates created in Zavu are submitted to Meta as positional; templates imported from a WhatsApp Business Account keep their original format (named or positional). Used when no channel-specific body is set.'
-          example: Hi {{1}}, your order {{2}} has shipped.
-        smsBody:
-          type: string
-          description: Channel-specific body for SMS messages. Falls back to `body` if not set.
-        telegramBody:
-          type: string
-          description: Channel-specific body for Telegram messages. Falls back to `body` if not set.
-        instagramBody:
-          type: string
-          description: Channel-specific body for Instagram messages. Falls back to `body` if not set.
-        category:
-          $ref: '#/components/schemas/WhatsAppCategory'
-        status:
-          type: string
-          enum:
-          - draft
-          - pending
-          - approved
-          - rejected
-          default: draft
-        variables:
-          type: array
-          items:
-            type: string
-          description: List of variable names for documentation.
-        headerType:
-          type: string
-          description: Type of header (text, image, video, document).
-        headerContent:
-          type: string
-          description: Header content (text or media URL).
-        footer:
-          type: string
-          description: Footer text for the template.
-        buttons:
-          type: array
-          description: Template buttons.
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - quick_reply
-                - url
-                - phone
-                - otp
-              text:
-                type: string
-              url:
-                type: string
-              example:
-                type: string
-                description: Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.
-              phoneNumber:
-                type: string
-              otpType:
-                type: string
-                enum:
-                - COPY_CODE
-                - ONE_TAP
-                description: OTP button type. Required when type is 'otp'.
-              packageName:
-                type: string
-                description: Android package name. Required for ONE_TAP buttons.
-              signatureHash:
-                type: string
-                description: Android app signature hash. Required for ONE_TAP buttons.
-        addSecurityRecommendation:
-          type: boolean
-          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
-        codeExpirationMinutes:
-          type: integer
-          minimum: 1
-          maximum: 90
-          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
-        whatsapp:
-          type: object
-          description: WhatsApp-specific template information.
-          properties:
-            templateName:
-              type: string
-              description: WhatsApp template name.
-            namespace:
-              type: string
-              description: WhatsApp Business Account namespace.
-            status:
-              type: string
-              description: WhatsApp approval status.
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     WhatsAppCategory:
       type: string
       description: WhatsApp template category.
@@ -476,6 +332,123 @@ components:
         details:
           type: object
           additionalProperties: true
+    Template:
+      type: object
+      required:
+      - id
+      - name
+      - language
+      - body
+      - category
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Template name. For WhatsApp, must match the approved template name in Meta.
+          example: order_confirmation
+        language:
+          type: string
+          description: Language code.
+          example: en
+        body:
+          type: string
+          description: 'Default template body with variables: positional ({{1}}, {{2}}) or named ({{customer_name}}, {{contact.first_name}}). Templates created in Zavu are submitted to Meta as positional; templates imported from a WhatsApp Business Account keep their original format (named or positional). Used when no channel-specific body is set.'
+          example: Hi {{1}}, your order {{2}} has shipped.
+        smsBody:
+          type: string
+          description: Channel-specific body for SMS messages. Falls back to `body` if not set.
+        telegramBody:
+          type: string
+          description: Channel-specific body for Telegram messages. Falls back to `body` if not set.
+        instagramBody:
+          type: string
+          description: Channel-specific body for Instagram messages. Falls back to `body` if not set.
+        category:
+          $ref: '#/components/schemas/WhatsAppCategory'
+        status:
+          type: string
+          enum:
+          - draft
+          - pending
+          - approved
+          - rejected
+          default: draft
+        variables:
+          type: array
+          items:
+            type: string
+          description: List of variable names for documentation.
+        headerType:
+          type: string
+          description: Type of header (text, image, video, document).
+        headerContent:
+          type: string
+          description: Header content (text or media URL).
+        footer:
+          type: string
+          description: Footer text for the template.
+        buttons:
+          type: array
+          description: Template buttons.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - quick_reply
+                - url
+                - phone
+                - otp
+              text:
+                type: string
+              url:
+                type: string
+              example:
+                type: string
+                description: Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.
+              phoneNumber:
+                type: string
+              otpType:
+                type: string
+                enum:
+                - COPY_CODE
+                - ONE_TAP
+                description: OTP button type. Required when type is 'otp'.
+              packageName:
+                type: string
+                description: Android package name. Required for ONE_TAP buttons.
+              signatureHash:
+                type: string
+                description: Android app signature hash. Required for ONE_TAP buttons.
+        addSecurityRecommendation:
+          type: boolean
+          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+        codeExpirationMinutes:
+          type: integer
+          minimum: 1
+          maximum: 90
+          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
+        whatsapp:
+          type: object
+          description: WhatsApp-specific template information.
+          properties:
+            templateName:
+              type: string
+              description: WhatsApp template name.
+            namespace:
+              type: string
+              description: WhatsApp Business Account namespace.
+            status:
+              type: string
+              description: WhatsApp approval status.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
   parameters:
     TemplateIdParam:
       name: templateId

@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC WhatsApp Sync API
+  title: Zavu Unified Messaging Layer WhatsApp Sync API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -251,7 +223,60 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    WhatsAppSyncHistory:
+      type: object
+      description: History sync status details.
+      required:
+      - status
+      - canSync
+      properties:
+        status:
+          $ref: '#/components/schemas/WhatsAppSyncHistoryStatus'
+        canSync:
+          type: boolean
+          description: Whether history sync can be initiated.
+        requestedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the sync was last requested.
+        completedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the sync was completed.
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    WhatsAppSyncStatusResponse:
+      type: object
+      required:
+      - sync
+      properties:
+        sync:
+          $ref: '#/components/schemas/WhatsAppSyncStatus'
     WhatsAppSyncStatus:
       type: object
       description: WhatsApp coexistence sync status.
@@ -277,23 +302,6 @@ components:
           $ref: '#/components/schemas/WhatsAppSyncHistory'
         contacts:
           $ref: '#/components/schemas/WhatsAppSyncContacts'
-    WhatsAppSyncContacts:
-      type: object
-      description: Contacts sync status details.
-      required:
-      - status
-      - canSync
-      properties:
-        status:
-          $ref: '#/components/schemas/WhatsAppSyncContactsStatus'
-        canSync:
-          type: boolean
-          description: Whether contacts sync can be initiated.
-        requestedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: When the sync was last requested.
     WhatsAppSyncContactsStatus:
       type: string
       description: Status of WhatsApp contacts sync.
@@ -314,50 +322,24 @@ components:
           example: History sync initiated
         sync:
           $ref: '#/components/schemas/WhatsAppSyncStatus'
-    WhatsAppSyncStatusResponse:
+    WhatsAppSyncContacts:
       type: object
-      required:
-      - sync
-      properties:
-        sync:
-          $ref: '#/components/schemas/WhatsAppSyncStatus'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    WhatsAppSyncHistory:
-      type: object
-      description: History sync status details.
+      description: Contacts sync status details.
       required:
       - status
       - canSync
       properties:
         status:
-          $ref: '#/components/schemas/WhatsAppSyncHistoryStatus'
+          $ref: '#/components/schemas/WhatsAppSyncContactsStatus'
         canSync:
           type: boolean
-          description: Whether history sync can be initiated.
+          description: Whether contacts sync can be initiated.
         requestedAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: When the sync was last requested.
-        completedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: When the sync was completed.
     WhatsAppSyncHistoryStatus:
       type: string
       description: Status of WhatsApp message history sync.
@@ -367,13 +349,6 @@ components:
       - syncing
       - completed
       - rejected
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

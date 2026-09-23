@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Invitations API
+  title: Zavu Unified Messaging Layer Invitations API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -134,8 +106,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Invitation'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -212,7 +185,111 @@ paths:
       tags:
       - Invitations
 components:
+  parameters:
+    InvitationIdParam:
+      name: invitationId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    Invitation:
+      type: object
+      required:
+      - id
+      - url
+      - token
+      - status
+      - expiresAt
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: inv_abc123
+        url:
+          type: string
+          description: Full URL to share with the client.
+          example: https://dashboard.zavu.dev/invite/abc123xyz
+        token:
+          type: string
+          description: Unique invitation token.
+        clientName:
+          type:
+          - string
+          - 'null'
+        clientEmail:
+          type:
+          - string
+          - 'null'
+        clientPhone:
+          type:
+          - string
+          - 'null'
+        phoneNumberId:
+          type:
+          - string
+          - 'null'
+          description: ID of a pre-assigned Zavu phone number for WhatsApp registration.
+        connectionType:
+          type: string
+          enum:
+          - whatsapp_waba
+          - whatsapp_alt
+          description: 'How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).'
+        status:
+          $ref: '#/components/schemas/InvitationStatus'
+        senderId:
+          type:
+          - string
+          - 'null'
+          description: ID of the sender created when invitation is completed.
+        expiresAt:
+          type: string
+          format: date-time
+        viewedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        startedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    InvitationResponse:
+      type: object
+      required:
+      - invitation
+      properties:
+        invitation:
+          $ref: '#/components/schemas/Invitation'
     InvitationStatus:
       type: string
       description: Current status of the partner invitation.
@@ -266,102 +343,6 @@ components:
           - whatsapp_alt
           default: whatsapp_waba
           description: How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    Invitation:
-      type: object
-      required:
-      - id
-      - url
-      - token
-      - status
-      - expiresAt
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-          example: inv_abc123
-        url:
-          type: string
-          description: Full URL to share with the client.
-          example: https://dashboard.zavu.dev/invite/abc123xyz
-        token:
-          type: string
-          description: Unique invitation token.
-        clientName:
-          type: string
-          nullable: true
-        clientEmail:
-          type: string
-          nullable: true
-        clientPhone:
-          type: string
-          nullable: true
-        phoneNumberId:
-          type: string
-          nullable: true
-          description: ID of a pre-assigned Zavu phone number for WhatsApp registration.
-        connectionType:
-          type: string
-          enum:
-          - whatsapp_waba
-          - whatsapp_alt
-          description: 'How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).'
-        status:
-          $ref: '#/components/schemas/InvitationStatus'
-        senderId:
-          type: string
-          nullable: true
-          description: ID of the sender created when invitation is completed.
-        expiresAt:
-          type: string
-          format: date-time
-        viewedAt:
-          type: string
-          format: date-time
-          nullable: true
-        startedAt:
-          type: string
-          format: date-time
-          nullable: true
-        completedAt:
-          type: string
-          format: date-time
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    InvitationResponse:
-      type: object
-      required:
-      - invitation
-      properties:
-        invitation:
-          $ref: '#/components/schemas/Invitation'
-  parameters:
-    InvitationIdParam:
-      name: invitationId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

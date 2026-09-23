@@ -1,36 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zavu Unified Messaging Layer 10DLC Agent Flows API
+  title: Zavu Unified Messaging Layer Agent Flows API
   version: 0.2.0
-  description: 'Unified multi-channel messaging API for Zavu.
-
-
-    Supported channels:
-
-    - **SMS**: Simple text messages
-
-    - **WhatsApp**: Rich messaging with media, buttons, lists, CTA URL buttons, and templates
-
-    - **Telegram**: Bot messaging with text, media, and interactive elements
-
-    - **Email**: Transactional emails via Amazon SES
-
-
-    Design goals:
-
-    - Simple `send()` entrypoint for developers
-
-    - Project-level authentication via Bearer token
-
-    - Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, cta_url, reaction, template)
-
-    - If a non-text message type is sent, WhatsApp channel is used automatically
-
-    - 24-hour WhatsApp conversation window enforcement
-
-    - Universal `to` field accepts phone numbers (E.164), email addresses, or numeric chat IDs (Telegram/Instagram/Messenger)
-
-    '
+  description: Unified multi-channel messaging API for Zavu.
 servers:
 - url: https://api.zavu.dev
 security:
@@ -76,8 +48,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/AgentFlow'
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
         '401':
           description: Unauthorized.
           content:
@@ -304,7 +277,51 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+    FlowIdParam:
+      name: flowId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    FlowDuplicateRequest:
+      type: object
+      required:
+      - newName
+      properties:
+        newName:
+          type: string
+          maxLength: 100
+    FlowTriggerType:
+      type: string
+      description: Type of trigger for a flow.
+      enum:
+      - keyword
+      - intent
+      - always
+      - manual
     FlowStep:
       type: object
       required:
@@ -322,111 +339,10 @@ components:
           description: Step configuration (varies by type).
           additionalProperties: true
         nextStepId:
-          type: string
+          type:
+          - string
+          - 'null'
           description: ID of the next step to execute.
-          nullable: true
-    FlowTriggerType:
-      type: string
-      description: Type of trigger for a flow.
-      enum:
-      - keyword
-      - intent
-      - always
-      - manual
-    FlowStepType:
-      type: string
-      description: Type of flow step.
-      enum:
-      - message
-      - collect
-      - condition
-      - tool
-      - llm
-      - transfer
-    FlowTrigger:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          $ref: '#/components/schemas/FlowTriggerType'
-        keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords that trigger the flow (for keyword type).
-        intent:
-          type: string
-          description: Intent that triggers the flow (for intent type).
-    FlowResponse:
-      type: object
-      required:
-      - flow
-      properties:
-        flow:
-          $ref: '#/components/schemas/AgentFlow'
-    AgentFlow:
-      type: object
-      required:
-      - id
-      - agentId
-      - name
-      - trigger
-      - steps
-      - enabled
-      - priority
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-        agentId:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-          nullable: true
-        trigger:
-          $ref: '#/components/schemas/FlowTrigger'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlowStep'
-        enabled:
-          type: boolean
-        priority:
-          type: integer
-          description: Priority when multiple flows match (higher = more priority).
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    FlowDuplicateRequest:
-      type: object
-      required:
-      - newName
-      properties:
-        newName:
-          type: string
-          maxLength: 100
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     FlowCreateRequest:
       type: object
       required:
@@ -471,19 +387,78 @@ components:
           type: boolean
         priority:
           type: integer
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
-    FlowIdParam:
-      name: flowId
-      in: path
-      required: true
-      schema:
-        type: string
+    FlowResponse:
+      type: object
+      required:
+      - flow
+      properties:
+        flow:
+          $ref: '#/components/schemas/AgentFlow'
+    AgentFlow:
+      type: object
+      required:
+      - id
+      - agentId
+      - name
+      - trigger
+      - steps
+      - enabled
+      - priority
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+        enabled:
+          type: boolean
+        priority:
+          type: integer
+          description: Priority when multiple flows match (higher = more priority).
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FlowStepType:
+      type: string
+      description: Type of flow step.
+      enum:
+      - message
+      - collect
+      - condition
+      - tool
+      - llm
+      - transfer
+    FlowTrigger:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/FlowTriggerType'
+        keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords that trigger the flow (for keyword type).
+        intent:
+          type: string
+          description: Intent that triggers the flow (for intent type).
   securitySchemes:
     bearerAuth:
       type: http
