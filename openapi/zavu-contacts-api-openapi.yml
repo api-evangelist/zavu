@@ -497,6 +497,121 @@ paths:
       - Contacts
 components:
   schemas:
+    MergeContactsRequest:
+      type: object
+      description: Request body to merge contacts.
+      required:
+      - sourceContactId
+      properties:
+        sourceContactId:
+          type: string
+          description: ID of the contact to merge into the target contact. The source contact will be marked as merged.
+    ContactUpdateRequest:
+      type: object
+      properties:
+        defaultChannel:
+          type:
+          - string
+          - 'null'
+          enum:
+          - sms
+          - whatsapp
+          - telegram
+          - email
+          - instagram
+          - messenger
+          - voice
+          description: Preferred channel for this contact. Set to null to clear.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ContactChannel:
+      type: object
+      description: A communication channel for a contact.
+      required:
+      - id
+      - channel
+      - identifier
+      - isPrimary
+      - verified
+      - createdAt
+      properties:
+        id:
+          type: string
+        channel:
+          type: string
+          enum:
+          - sms
+          - whatsapp
+          - email
+          - telegram
+          - instagram
+          - messenger
+          - voice
+          description: Channel type.
+        identifier:
+          type: string
+          description: Channel identifier (phone number or email address).
+          example: '+14155551234'
+        countryCode:
+          type: string
+          description: ISO country code for phone numbers.
+          example: US
+        label:
+          type: string
+          description: Optional label for the channel.
+          example: work
+        isPrimary:
+          type: boolean
+          description: Whether this is the primary channel for its type.
+        verified:
+          type: boolean
+          description: Whether this channel has been verified.
+        metrics:
+          type: object
+          description: Delivery metrics for this channel.
+          properties:
+            successCount:
+              type: integer
+            failureCount:
+              type: integer
+            totalAttempts:
+              type: integer
+            avgDeliveryTimeMs:
+              type: number
+            lastSuccessAt:
+              type: string
+              format: date-time
+        lastInboundAt:
+          type: string
+          format: date-time
+          description: Last time a message was received on this channel.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     ContactChannelInput:
       type: object
       description: Input for creating a contact channel.
@@ -534,60 +649,23 @@ components:
           type: boolean
           description: Whether this should be the primary channel for its type.
           default: false
-    Error:
+    UpdateChannelRequest:
       type: object
-      required:
-      - code
-      - message
+      description: Request body to update a channel.
       properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    MergeContactsRequest:
-      type: object
-      description: Request body to merge contacts.
-      required:
-      - sourceContactId
-      properties:
-        sourceContactId:
-          type: string
-          description: ID of the contact to merge into the target contact. The source contact will be marked as merged.
-    ContactCreateRequest:
-      type: object
-      description: Request body to create a contact with channels.
-      required:
-      - channels
-      properties:
-        displayName:
-          type: string
-          maxLength: 200
-          description: Display name for the contact.
-          example: John Doe
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactChannelInput'
-          minItems: 1
-          maxItems: 20
-          description: Communication channels for the contact.
+        label:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Optional label for the channel. Set to null to clear.
+        verified:
+          type: boolean
+          description: Whether the channel is verified.
         metadata:
           type: object
           additionalProperties:
             type: string
-          description: Arbitrary metadata to associate with the contact.
-    ContactChannelResponse:
-      type: object
-      required:
-      - channel
-      properties:
-        channel:
-          $ref: '#/components/schemas/ContactChannel'
     Contact:
       type: object
       required:
@@ -662,26 +740,36 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ContactUpdateRequest:
+    ContactChannelResponse:
       type: object
+      required:
+      - channel
       properties:
-        defaultChannel:
-          type:
-          - string
-          - 'null'
-          enum:
-          - sms
-          - whatsapp
-          - telegram
-          - email
-          - instagram
-          - messenger
-          - voice
-          description: Preferred channel for this contact. Set to null to clear.
+        channel:
+          $ref: '#/components/schemas/ContactChannel'
+    ContactCreateRequest:
+      type: object
+      description: Request body to create a contact with channels.
+      required:
+      - channels
+      properties:
+        displayName:
+          type: string
+          maxLength: 200
+          description: Display name for the contact.
+          example: John Doe
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactChannelInput'
+          minItems: 1
+          maxItems: 20
+          description: Communication channels for the contact.
         metadata:
           type: object
           additionalProperties:
             type: string
+          description: Arbitrary metadata to associate with the contact.
     AddChannelRequest:
       type: object
       description: Request body to add a channel to a contact.
@@ -719,94 +807,6 @@ components:
           type: boolean
           description: Whether this should be the primary channel for its type.
           default: false
-    ContactChannel:
-      type: object
-      description: A communication channel for a contact.
-      required:
-      - id
-      - channel
-      - identifier
-      - isPrimary
-      - verified
-      - createdAt
-      properties:
-        id:
-          type: string
-        channel:
-          type: string
-          enum:
-          - sms
-          - whatsapp
-          - email
-          - telegram
-          - instagram
-          - messenger
-          - voice
-          description: Channel type.
-        identifier:
-          type: string
-          description: Channel identifier (phone number or email address).
-          example: '+14155551234'
-        countryCode:
-          type: string
-          description: ISO country code for phone numbers.
-          example: US
-        label:
-          type: string
-          description: Optional label for the channel.
-          example: work
-        isPrimary:
-          type: boolean
-          description: Whether this is the primary channel for its type.
-        verified:
-          type: boolean
-          description: Whether this channel has been verified.
-        metrics:
-          type: object
-          description: Delivery metrics for this channel.
-          properties:
-            successCount:
-              type: integer
-            failureCount:
-              type: integer
-            totalAttempts:
-              type: integer
-            avgDeliveryTimeMs:
-              type: number
-            lastSuccessAt:
-              type: string
-              format: date-time
-        lastInboundAt:
-          type: string
-          format: date-time
-          description: Last time a message was received on this channel.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    UpdateChannelRequest:
-      type: object
-      description: Request body to update a channel.
-      properties:
-        label:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          description: Optional label for the channel. Set to null to clear.
-        verified:
-          type: boolean
-          description: Whether the channel is verified.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
   parameters:
     ContactIdParam:
       name: contactId

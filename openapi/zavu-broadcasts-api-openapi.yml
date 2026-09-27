@@ -640,7 +640,31 @@ paths:
       tags:
       - Broadcasts
 components:
+  parameters:
+    BroadcastContactIdParam:
+      name: contactId
+      in: path
+      required: true
+      description: Broadcast contact ID (not the global contact ID)
+      schema:
+        type: string
+    BroadcastIdParam:
+      name: broadcastId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    BroadcastContactStatus:
+      type: string
+      description: Status of a contact within a broadcast.
+      enum:
+      - pending
+      - queued
+      - sending
+      - delivered
+      - failed
+      - skipped
     BroadcastChannel:
       type: string
       description: Broadcast delivery channel. Use 'smart' for per-contact intelligent routing.
@@ -651,65 +675,62 @@ components:
       - whatsapp
       - telegram
       - email
-    BroadcastProgress:
+    BroadcastContact:
       type: object
       required:
-      - broadcastId
+      - id
+      - recipient
+      - recipientType
       - status
-      - total
-      - pending
-      - sending
-      - delivered
-      - failed
-      - skipped
-      - percentComplete
+      - createdAt
       properties:
-        broadcastId:
+        id:
           type: string
+        recipient:
+          type: string
+        recipientType:
+          type: string
+          enum:
+          - phone
+          - email
         status:
-          $ref: '#/components/schemas/BroadcastStatus'
-        total:
-          type: integer
-          description: Total contacts in broadcast.
-        pending:
-          type: integer
-          description: Not yet queued for sending.
-        sending:
-          type: integer
-          description: Currently being sent.
-        delivered:
-          type: integer
-          description: Successfully delivered.
-        failed:
-          type: integer
-          description: Failed to deliver.
-        skipped:
-          type: integer
-          description: Skipped (broadcast cancelled).
-        percentComplete:
-          type: number
-          description: Percentage complete (0-100).
-        estimatedCost:
+          $ref: '#/components/schemas/BroadcastContactStatus'
+        templateVariables:
+          type: object
+          additionalProperties:
+            type: string
+        templateButtonVariables:
+          type: object
+          additionalProperties:
+            type: string
+        templateHeaderVariables:
+          type: object
+          additionalProperties:
+            type: string
+        messageId:
+          type: string
+          description: Associated message ID after processing.
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        cost:
           type:
           - number
           - 'null'
-          description: Estimated total cost in USD.
-        reservedAmount:
-          type:
-          - number
-          - 'null'
-          description: Amount reserved from balance in USD.
-        actualCost:
-          type:
-          - number
-          - 'null'
-          description: Actual cost so far in USD.
-        startedAt:
+        processedAt:
           type: string
           format: date-time
-        estimatedCompletionAt:
+        createdAt:
           type: string
           format: date-time
+    BroadcastSendRequest:
+      type: object
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: Schedule for future delivery. Omit to send immediately.
     BroadcastContactInput:
       type: object
       required:
@@ -741,51 +762,23 @@ components:
             type: string
           example:
             '1': Jorge y Laura
-    BroadcastContactStatus:
-      type: string
-      description: Status of a contact within a broadcast.
-      enum:
-      - pending
-      - queued
-      - sending
-      - delivered
-      - failed
-      - skipped
-    BroadcastContactsAddRequest:
+    BroadcastUpdateRequest:
       type: object
-      required:
-      - contacts
       properties:
-        contacts:
-          type: array
-          description: List of contacts to add (max 1000 per request).
-          maxItems: 1000
-          items:
-            $ref: '#/components/schemas/BroadcastContactInput'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
+        name:
           type: string
-          example: invalid_request
-        message:
+        text:
           type: string
-          example: Phone number is invalid
-        details:
+        content:
+          $ref: '#/components/schemas/BroadcastContent'
+        emailSubject:
+          type: string
+        emailHtmlBody:
+          type: string
+        metadata:
           type: object
-          additionalProperties: true
-    BroadcastRescheduleRequest:
-      type: object
-      required:
-      - scheduledAt
-      properties:
-        scheduledAt:
-          type: string
-          format: date-time
-          description: New scheduled time for the broadcast.
+          additionalProperties:
+            type: string
     Broadcast:
       type: object
       required:
@@ -893,82 +886,138 @@ components:
           - integer
           - 'null'
           description: Number of review attempts (max 3).
-    BroadcastUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        text:
-          type: string
-        content:
-          $ref: '#/components/schemas/BroadcastContent'
-        emailSubject:
-          type: string
-        emailHtmlBody:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-    BroadcastMessageType:
-      type: string
-      description: Type of message for broadcast.
-      enum:
-      - text
-      - image
-      - video
-      - audio
-      - document
-      - template
-    BroadcastContact:
+    BroadcastProgress:
       type: object
       required:
-      - id
-      - recipient
-      - recipientType
+      - broadcastId
       - status
-      - createdAt
+      - total
+      - pending
+      - sending
+      - delivered
+      - failed
+      - skipped
+      - percentComplete
       properties:
-        id:
+        broadcastId:
           type: string
-        recipient:
-          type: string
-        recipientType:
-          type: string
-          enum:
-          - phone
-          - email
         status:
-          $ref: '#/components/schemas/BroadcastContactStatus'
-        templateVariables:
-          type: object
-          additionalProperties:
-            type: string
-        templateButtonVariables:
-          type: object
-          additionalProperties:
-            type: string
-        templateHeaderVariables:
-          type: object
-          additionalProperties:
-            type: string
-        messageId:
-          type: string
-          description: Associated message ID after processing.
-        errorCode:
-          type: string
-        errorMessage:
-          type: string
-        cost:
+          $ref: '#/components/schemas/BroadcastStatus'
+        total:
+          type: integer
+          description: Total contacts in broadcast.
+        pending:
+          type: integer
+          description: Not yet queued for sending.
+        sending:
+          type: integer
+          description: Currently being sent.
+        delivered:
+          type: integer
+          description: Successfully delivered.
+        failed:
+          type: integer
+          description: Failed to deliver.
+        skipped:
+          type: integer
+          description: Skipped (broadcast cancelled).
+        percentComplete:
+          type: number
+          description: Percentage complete (0-100).
+        estimatedCost:
           type:
           - number
           - 'null'
-        processedAt:
+          description: Estimated total cost in USD.
+        reservedAmount:
+          type:
+          - number
+          - 'null'
+          description: Amount reserved from balance in USD.
+        actualCost:
+          type:
+          - number
+          - 'null'
+          description: Actual cost so far in USD.
+        startedAt:
           type: string
           format: date-time
-        createdAt:
+        estimatedCompletionAt:
           type: string
           format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    BroadcastContactsAddResponse:
+      type: object
+      required:
+      - added
+      - duplicates
+      - invalid
+      properties:
+        added:
+          type: integer
+          description: Number of contacts successfully added.
+        duplicates:
+          type: integer
+          description: Number of duplicate contacts skipped.
+        invalid:
+          type: integer
+          description: Number of invalid contacts rejected.
+        errors:
+          type: array
+          description: Details about invalid contacts.
+          items:
+            type: object
+            properties:
+              recipient:
+                type: string
+              reason:
+                type: string
+    BroadcastStatus:
+      type: string
+      description: Current status of the broadcast.
+      enum:
+      - draft
+      - pending_review
+      - approved
+      - rejected
+      - escalated
+      - rejected_final
+      - scheduled
+      - sending
+      - paused
+      - completed
+      - cancelled
+      - failed
+    BroadcastRescheduleRequest:
+      type: object
+      required:
+      - scheduledAt
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: New scheduled time for the broadcast.
+    BroadcastResponse:
+      type: object
+      required:
+      - broadcast
+      properties:
+        broadcast:
+          $ref: '#/components/schemas/Broadcast'
     BroadcastCreateRequest:
       type: object
       required:
@@ -1010,29 +1059,27 @@ components:
         idempotencyKey:
           type: string
           description: Idempotency key to prevent duplicate broadcasts.
-    BroadcastStatus:
+    BroadcastMessageType:
       type: string
-      description: Current status of the broadcast.
+      description: Type of message for broadcast.
       enum:
-      - draft
-      - pending_review
-      - approved
-      - rejected
-      - escalated
-      - rejected_final
-      - scheduled
-      - sending
-      - paused
-      - completed
-      - cancelled
-      - failed
-    BroadcastSendRequest:
+      - text
+      - image
+      - video
+      - audio
+      - document
+      - template
+    BroadcastContactsAddRequest:
       type: object
+      required:
+      - contacts
       properties:
-        scheduledAt:
-          type: string
-          format: date-time
-          description: Schedule for future delivery. Omit to send immediately.
+        contacts:
+          type: array
+          description: List of contacts to add (max 1000 per request).
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/BroadcastContactInput'
     BroadcastContent:
       type: object
       description: Content for non-text broadcast message types.
@@ -1067,53 +1114,6 @@ components:
           description: Default value for a text-header variable, keyed by `1` (can be overridden per contact). If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
           additionalProperties:
             type: string
-    BroadcastContactsAddResponse:
-      type: object
-      required:
-      - added
-      - duplicates
-      - invalid
-      properties:
-        added:
-          type: integer
-          description: Number of contacts successfully added.
-        duplicates:
-          type: integer
-          description: Number of duplicate contacts skipped.
-        invalid:
-          type: integer
-          description: Number of invalid contacts rejected.
-        errors:
-          type: array
-          description: Details about invalid contacts.
-          items:
-            type: object
-            properties:
-              recipient:
-                type: string
-              reason:
-                type: string
-    BroadcastResponse:
-      type: object
-      required:
-      - broadcast
-      properties:
-        broadcast:
-          $ref: '#/components/schemas/Broadcast'
-  parameters:
-    BroadcastContactIdParam:
-      name: contactId
-      in: path
-      required: true
-      description: Broadcast contact ID (not the global contact ID)
-      schema:
-        type: string
-    BroadcastIdParam:
-      name: broadcastId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -73,6 +73,14 @@ components:
           items:
             type: string
           description: List of available messaging channels for this phone number.
+    PhoneIntrospectionRequest:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          example: '+56912345678'
     Error:
       type: object
       required:
@@ -88,14 +96,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    PhoneIntrospectionRequest:
-      type: object
-      required:
-      - phoneNumber
-      properties:
-        phoneNumber:
-          type: string
-          example: '+56912345678'
     Carrier:
       type: object
       description: Carrier information for the phone number.

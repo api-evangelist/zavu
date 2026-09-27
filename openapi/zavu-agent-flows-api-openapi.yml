@@ -277,20 +277,59 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
-    FlowIdParam:
-      name: flowId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
+    FlowTriggerType:
+      type: string
+      description: Type of trigger for a flow.
+      enum:
+      - keyword
+      - intent
+      - always
+      - manual
+    FlowUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+        priority:
+          type: integer
+    FlowStepType:
+      type: string
+      description: Type of flow step.
+      enum:
+      - message
+      - collect
+      - condition
+      - tool
+      - llm
+      - transfer
+    FlowDuplicateRequest:
+      type: object
+      required:
+      - newName
+      properties:
+        newName:
+          type: string
+          maxLength: 100
+    FlowResponse:
+      type: object
+      required:
+      - flow
+      properties:
+        flow:
+          $ref: '#/components/schemas/AgentFlow'
     Error:
       type: object
       required:
@@ -306,22 +345,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    FlowDuplicateRequest:
-      type: object
-      required:
-      - newName
-      properties:
-        newName:
-          type: string
-          maxLength: 100
-    FlowTriggerType:
-      type: string
-      description: Type of trigger for a flow.
-      enum:
-      - keyword
-      - intent
-      - always
-      - manual
     FlowStep:
       type: object
       required:
@@ -343,57 +366,6 @@ components:
           - string
           - 'null'
           description: ID of the next step to execute.
-    FlowCreateRequest:
-      type: object
-      required:
-      - name
-      - trigger
-      - steps
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-        trigger:
-          $ref: '#/components/schemas/FlowTrigger'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlowStep'
-          minItems: 1
-        enabled:
-          type: boolean
-          default: false
-        priority:
-          type: integer
-          default: 0
-    FlowUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-        trigger:
-          $ref: '#/components/schemas/FlowTrigger'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlowStep'
-          minItems: 1
-        enabled:
-          type: boolean
-        priority:
-          type: integer
-    FlowResponse:
-      type: object
-      required:
-      - flow
-      properties:
-        flow:
-          $ref: '#/components/schemas/AgentFlow'
     AgentFlow:
       type: object
       required:
@@ -434,16 +406,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    FlowStepType:
-      type: string
-      description: Type of flow step.
-      enum:
-      - message
-      - collect
-      - condition
-      - tool
-      - llm
-      - transfer
     FlowTrigger:
       type: object
       required:
@@ -459,6 +421,44 @@ components:
         intent:
           type: string
           description: Intent that triggers the flow (for intent type).
+    FlowCreateRequest:
+      type: object
+      required:
+      - name
+      - trigger
+      - steps
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+          default: false
+        priority:
+          type: integer
+          default: 0
+  parameters:
+    FlowIdParam:
+      name: flowId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

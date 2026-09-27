@@ -215,13 +215,6 @@ paths:
       - Templates
 components:
   schemas:
-    WhatsAppCategory:
-      type: string
-      description: WhatsApp template category.
-      enum:
-      - UTILITY
-      - MARKETING
-      - AUTHENTICATION
     TemplateCreateRequest:
       type: object
       required:
@@ -332,6 +325,13 @@ components:
         details:
           type: object
           additionalProperties: true
+    WhatsAppCategory:
+      type: string
+      description: WhatsApp template category.
+      enum:
+      - UTILITY
+      - MARKETING
+      - AUTHENTICATION
     Template:
       type: object
       required:

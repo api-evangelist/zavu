@@ -423,137 +423,7 @@ paths:
       - bearerAuth: []
       description: Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
 components:
-  parameters:
-    SubAccountIdParam:
-      name: id
-      in: path
-      required: true
-      description: Sub-account ID.
-      schema:
-        type: string
-    SubAccountApiKeyIdParam:
-      name: keyId
-      in: path
-      required: true
-      description: API key ID.
-      schema:
-        type: string
   schemas:
-    SubAccountCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          maxLength: 200
-          description: Name of the sub-account.
-          example: Client ABC
-        externalId:
-          type: string
-          description: External reference ID for your own tracking.
-        creditLimit:
-          type: integer
-          minimum: 0
-          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
-        metadata:
-          type: object
-          additionalProperties: true
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    SubAccountApiKey:
-      type: object
-      required:
-      - id
-      - name
-      - keyPrefix
-      - environment
-      - createdAt
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        key:
-          type: string
-          description: Full API key. Only returned on creation.
-        keyPrefix:
-          type: string
-          description: First characters of the key for identification.
-        environment:
-          type: string
-          enum:
-          - live
-          - test
-        permissions:
-          type: array
-          items:
-            type: string
-        lastUsedAt:
-          type:
-          - number
-          - 'null'
-        revokedAt:
-          type:
-          - number
-          - 'null'
-        createdAt:
-          type: number
-    BalanceResponse:
-      type: object
-      required:
-      - balance
-      - currency
-      properties:
-        balance:
-          type: integer
-          description: Team balance in cents. All charges are billed to the parent team.
-        currency:
-          type: string
-          example: usd
-        creditLimit:
-          type:
-          - integer
-          - 'null'
-          description: Spending cap in cents (only for sub-accounts).
-        totalSpent:
-          type:
-          - integer
-          - 'null'
-          description: Total amount spent by this sub-account in cents (only for sub-accounts).
-        isSubAccount:
-          type: boolean
-          description: Whether this API key belongs to a sub-account.
-    SubAccountApiKeyCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        environment:
-          type: string
-          enum:
-          - live
-          - test
-          default: live
-        permissions:
-          type: array
-          items:
-            type: string
     SubAccount:
       type: object
       required:
@@ -611,11 +481,6 @@ components:
           additionalProperties: true
         status:
           $ref: '#/components/schemas/SubAccountStatus'
-    SubAccountStatus:
-      type: string
-      enum:
-      - active
-      - inactive
     SubAccountResponse:
       type: object
       required:
@@ -623,6 +488,141 @@ components:
       properties:
         subAccount:
           $ref: '#/components/schemas/SubAccount'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    BalanceResponse:
+      type: object
+      required:
+      - balance
+      - currency
+      properties:
+        balance:
+          type: integer
+          description: Team balance in cents. All charges are billed to the parent team.
+        currency:
+          type: string
+          example: usd
+        creditLimit:
+          type:
+          - integer
+          - 'null'
+          description: Spending cap in cents (only for sub-accounts).
+        totalSpent:
+          type:
+          - integer
+          - 'null'
+          description: Total amount spent by this sub-account in cents (only for sub-accounts).
+        isSubAccount:
+          type: boolean
+          description: Whether this API key belongs to a sub-account.
+    SubAccountStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+    SubAccountCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          description: Name of the sub-account.
+          example: Client ABC
+        externalId:
+          type: string
+          description: External reference ID for your own tracking.
+        creditLimit:
+          type: integer
+          minimum: 0
+          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
+        metadata:
+          type: object
+          additionalProperties: true
+    SubAccountApiKey:
+      type: object
+      required:
+      - id
+      - name
+      - keyPrefix
+      - environment
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        key:
+          type: string
+          description: Full API key. Only returned on creation.
+        keyPrefix:
+          type: string
+          description: First characters of the key for identification.
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+        permissions:
+          type: array
+          items:
+            type: string
+        lastUsedAt:
+          type:
+          - number
+          - 'null'
+        revokedAt:
+          type:
+          - number
+          - 'null'
+        createdAt:
+          type: number
+    SubAccountApiKeyCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+          default: live
+        permissions:
+          type: array
+          items:
+            type: string
+  parameters:
+    SubAccountApiKeyIdParam:
+      name: keyId
+      in: path
+      required: true
+      description: API key ID.
+      schema:
+        type: string
+    SubAccountIdParam:
+      name: id
+      in: path
+      required: true
+      description: Sub-account ID.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

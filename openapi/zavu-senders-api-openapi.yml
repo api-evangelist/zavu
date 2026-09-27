@@ -366,74 +366,36 @@ paths:
       tags:
       - Senders
 components:
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
-    WhatsAppBusinessProfileResponse:
+    WhatsAppBusinessProfileUpdateRequest:
       type: object
-      required:
-      - profile
+      description: Request body to update WhatsApp Business profile.
       properties:
-        profile:
-          $ref: '#/components/schemas/WhatsAppBusinessProfile'
-    SenderCreateRequest:
-      type: object
-      description: Create a sender. Provide `phoneNumber` for an SMS/WhatsApp sender, or `emailAddress` (with a verified email domain) for an email sender — at least one is required.
-      required:
-      - name
-      properties:
-        name:
+        about:
           type: string
-        phoneNumber:
+          description: Short description of the business (max 139 characters).
+          maxLength: 139
+        address:
           type: string
-          description: Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
-        setAsDefault:
-          type: boolean
-          default: false
-        webhookUrl:
+          description: Physical address of the business (max 256 characters).
+          maxLength: 256
+        description:
           type: string
-          format: uri
-          description: HTTPS URL for webhook events.
-        webhookEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-          description: Events to subscribe to.
-        emailAddress:
+          description: Extended description of the business (max 512 characters).
+          maxLength: 512
+        email:
           type: string
           format: email
-          description: From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
-          example: noreply@yourdomain.com
-        emailDomainId:
-          type: string
-          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
-        emailFromName:
-          type: string
-          maxLength: 100
-          description: Display name shown in the recipient's inbox for the email channel.
-        emailReceivingEnabled:
-          type: boolean
-          description: Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
+          description: Business email address.
+        websites:
+          type: array
+          description: Business website URLs (maximum 2).
+          maxItems: 2
+          items:
+            type: string
+            format: uri
+        vertical:
+          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
     WhatsAppBusinessProfile:
       type: object
       description: WhatsApp Business profile information.
@@ -474,6 +436,77 @@ components:
           - https://www.example.com/
         vertical:
           $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
+    WebhookEvent:
+      type: string
+      description: 'Type of event that triggers the webhook.
+
+
+        **Message lifecycle events:**
+
+        - `message.queued`: Message created and queued for sending. `data.status` = `queued`
+
+        - `message.sent`: Message accepted by the provider. `data.status` = `sent`
+
+        - `message.delivered`: Message delivered to recipient. `data.status` = `delivered`
+
+        - `message.read`: Message was read by the recipient (WhatsApp only). `data.status` = `read`
+
+        - `message.failed`: Message failed to send. `data.status` = `failed`
+
+
+        **Inbound events:**
+
+        - `message.inbound`: New message received from a contact. Reactions are delivered as `message.inbound` with `messageType=''reaction''`. When the contact replied to (quoted) an earlier message, `data.content` carries the reply context: `replyToMessageId`, `replyToProviderMessageId`, `replyToFrom`, `replyToText`, and `replyToMessageType`. `data.providerTimestamp` is the provider''s original receive time in Unix milliseconds (the moment the channel received the message from the contact — WhatsApp, Telegram, Instagram, Messenger; `null` for SMS and email). Compare it against the top-level `timestamp` (when Zavu dispatched the webhook) to detect and ignore delayed deliveries.
+
+        - `message.status`: A contact posted a WhatsApp status/story (currently WhatsApp Alternative only). It is NOT a conversation message and never enters the inbox — it is delivered only if you subscribe to `message.status`. `data` carries `from` (the author in E.164), `messageType` (`text`, `image`, `video`, `audio`), `text` (caption/text when present), `mimetype` (for media stories), and `providerTimestamp`. Media bytes are not included.
+
+        - `message.unsupported`: Received a message type that is not supported
+
+
+        **Broadcast events:**
+
+        - `broadcast.status_changed`: Broadcast status changed (pending_review, approved, rejected, sending, completed, cancelled)
+
+
+        **Other events:**
+
+        - `conversation.new`: New conversation started with a contact
+
+        - `template.status_changed`: WhatsApp template approval status changed
+
+
+        **Partner events:**
+
+        - `invitation.status_changed`: A partner invitation status changed (pending, in_progress, completed, cancelled)
+
+
+        **Custom domain events:**
+
+        - `domain.verified`: A custom email domain passed verification (DKIM, and SPF/DMARC/MAIL FROM if enhanced records are enabled)
+
+        - `domain.failed`: A custom email domain failed verification or is partially verified'
+      enum:
+      - message.queued
+      - message.sent
+      - message.delivered
+      - message.read
+      - message.failed
+      - message.inbound
+      - message.status
+      - message.unsupported
+      - broadcast.status_changed
+      - conversation.new
+      - template.status_changed
+      - invitation.status_changed
+      - domain.verified
+      - domain.failed
+    WhatsAppBusinessProfileResponse:
+      type: object
+      required:
+      - profile
+      properties:
+        profile:
+          $ref: '#/components/schemas/WhatsAppBusinessProfile'
     Sender:
       type: object
       required:
@@ -541,6 +574,59 @@ components:
         updatedAt:
           type: string
           format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    SenderCreateRequest:
+      type: object
+      description: Create a sender. Provide `phoneNumber` for an SMS/WhatsApp sender, or `emailAddress` (with a verified email domain) for an email sender — at least one is required.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
+        setAsDefault:
+          type: boolean
+          default: false
+        webhookUrl:
+          type: string
+          format: uri
+          description: HTTPS URL for webhook events.
+        webhookEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+          description: Events to subscribe to.
+        emailAddress:
+          type: string
+          format: email
+          description: From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
+          example: noreply@yourdomain.com
+        emailDomainId:
+          type: string
+          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+        emailFromName:
+          type: string
+          maxLength: 100
+          description: Display name shown in the recipient's inbox for the email channel.
+        emailReceivingEnabled:
+          type: boolean
+          description: Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
     SenderUpdateRequest:
       type: object
       properties:
@@ -580,6 +666,15 @@ components:
           type: string
           maxLength: 100
           description: Display name shown in the recipient's inbox for the email channel.
+    WebhookSecretResponse:
+      type: object
+      required:
+      - secret
+      properties:
+        secret:
+          type: string
+          description: The new webhook secret.
+          example: whsec_abc123...
     WhatsAppBusinessProfileVertical:
       type: string
       description: Business category for WhatsApp Business profile.
@@ -646,108 +741,13 @@ components:
           enum:
           - image/jpeg
           - image/png
-    WhatsAppBusinessProfileUpdateRequest:
-      type: object
-      description: Request body to update WhatsApp Business profile.
-      properties:
-        about:
-          type: string
-          description: Short description of the business (max 139 characters).
-          maxLength: 139
-        address:
-          type: string
-          description: Physical address of the business (max 256 characters).
-          maxLength: 256
-        description:
-          type: string
-          description: Extended description of the business (max 512 characters).
-          maxLength: 512
-        email:
-          type: string
-          format: email
-          description: Business email address.
-        websites:
-          type: array
-          description: Business website URLs (maximum 2).
-          maxItems: 2
-          items:
-            type: string
-            format: uri
-        vertical:
-          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
-    WebhookEvent:
-      type: string
-      description: 'Type of event that triggers the webhook.
-
-
-        **Message lifecycle events:**
-
-        - `message.queued`: Message created and queued for sending. `data.status` = `queued`
-
-        - `message.sent`: Message accepted by the provider. `data.status` = `sent`
-
-        - `message.delivered`: Message delivered to recipient. `data.status` = `delivered`
-
-        - `message.read`: Message was read by the recipient (WhatsApp only). `data.status` = `read`
-
-        - `message.failed`: Message failed to send. `data.status` = `failed`
-
-
-        **Inbound events:**
-
-        - `message.inbound`: New message received from a contact. Reactions are delivered as `message.inbound` with `messageType=''reaction''`. When the contact replied to (quoted) an earlier message, `data.content` carries the reply context: `replyToMessageId`, `replyToProviderMessageId`, `replyToFrom`, `replyToText`, and `replyToMessageType`. `data.providerTimestamp` is the provider''s original receive time in Unix milliseconds (the moment the channel received the message from the contact — WhatsApp, Telegram, Instagram, Messenger; `null` for SMS and email). Compare it against the top-level `timestamp` (when Zavu dispatched the webhook) to detect and ignore delayed deliveries.
-
-        - `message.status`: A contact posted a WhatsApp status/story (currently WhatsApp Alternative only). It is NOT a conversation message and never enters the inbox — it is delivered only if you subscribe to `message.status`. `data` carries `from` (the author in E.164), `messageType` (`text`, `image`, `video`, `audio`), `text` (caption/text when present), `mimetype` (for media stories), and `providerTimestamp`. Media bytes are not included.
-
-        - `message.unsupported`: Received a message type that is not supported
-
-
-        **Broadcast events:**
-
-        - `broadcast.status_changed`: Broadcast status changed (pending_review, approved, rejected, sending, completed, cancelled)
-
-
-        **Other events:**
-
-        - `conversation.new`: New conversation started with a contact
-
-        - `template.status_changed`: WhatsApp template approval status changed
-
-
-        **Partner events:**
-
-        - `invitation.status_changed`: A partner invitation status changed (pending, in_progress, completed, cancelled)
-
-
-        **Custom domain events:**
-
-        - `domain.verified`: A custom email domain passed verification (DKIM, and SPF/DMARC/MAIL FROM if enhanced records are enabled)
-
-        - `domain.failed`: A custom email domain failed verification or is partially verified'
-      enum:
-      - message.queued
-      - message.sent
-      - message.delivered
-      - message.read
-      - message.failed
-      - message.inbound
-      - message.status
-      - message.unsupported
-      - broadcast.status_changed
-      - conversation.new
-      - template.status_changed
-      - invitation.status_changed
-      - domain.verified
-      - domain.failed
-    WebhookSecretResponse:
-      type: object
-      required:
-      - secret
-      properties:
-        secret:
-          type: string
-          description: The new webhook secret.
-          example: whsec_abc123...
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

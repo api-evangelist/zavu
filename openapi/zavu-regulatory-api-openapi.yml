@@ -323,84 +323,6 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    UploadUrlResponse:
-      type: object
-      required:
-      - uploadUrl
-      properties:
-        uploadUrl:
-          type: string
-          format: uri
-          description: Pre-signed URL for uploading the file.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    AddressStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-      - rejected
-    RegulatoryDocumentType:
-      type: string
-      enum:
-      - passport
-      - national_id
-      - drivers_license
-      - utility_bill
-      - tax_id
-      - business_registration
-      - proof_of_address
-      - other
-    AddressCreateRequest:
-      type: object
-      required:
-      - streetAddress
-      - locality
-      - postalCode
-      - countryCode
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-        lastName:
-          type: string
-          maxLength: 100
-        businessName:
-          type: string
-          maxLength: 200
-        streetAddress:
-          type: string
-          maxLength: 200
-        extendedAddress:
-          type: string
-          maxLength: 100
-        locality:
-          type: string
-          maxLength: 100
-        administrativeArea:
-          type: string
-          maxLength: 100
-        postalCode:
-          type: string
-          maxLength: 20
-        countryCode:
-          type: string
-          minLength: 2
-          maxLength: 2
-          example: DE
     RegulatoryDocumentCreateRequest:
       type: object
       required:
@@ -422,6 +344,19 @@ components:
           type: string
         fileSize:
           type: integer
+    AddressStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+      - rejected
+    RegulatoryDocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/RegulatoryDocument'
     RegulatoryDocument:
       type: object
       description: A regulatory document for phone number requirements.
@@ -454,13 +389,32 @@ components:
         updatedAt:
           type: string
           format: date-time
-    AddressResponse:
+    Error:
       type: object
       required:
-      - address
+      - code
+      - message
       properties:
-        address:
-          $ref: '#/components/schemas/Address'
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    RegulatoryDocumentType:
+      type: string
+      enum:
+      - passport
+      - national_id
+      - drivers_license
+      - utility_bill
+      - tax_id
+      - business_registration
+      - proof_of_address
+      - other
     Address:
       type: object
       description: A regulatory address for phone number requirements.
@@ -512,13 +466,13 @@ components:
         updatedAt:
           type: string
           format: date-time
-    RegulatoryDocumentResponse:
+    AddressResponse:
       type: object
       required:
-      - document
+      - address
       properties:
-        document:
-          $ref: '#/components/schemas/RegulatoryDocument'
+        address:
+          $ref: '#/components/schemas/Address'
     RegulatoryDocumentStatus:
       type: string
       enum:
@@ -526,15 +480,61 @@ components:
       - uploaded
       - verified
       - rejected
+    AddressCreateRequest:
+      type: object
+      required:
+      - streetAddress
+      - locality
+      - postalCode
+      - countryCode
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        businessName:
+          type: string
+          maxLength: 200
+        streetAddress:
+          type: string
+          maxLength: 200
+        extendedAddress:
+          type: string
+          maxLength: 100
+        locality:
+          type: string
+          maxLength: 100
+        administrativeArea:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 20
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: DE
+    UploadUrlResponse:
+      type: object
+      required:
+      - uploadUrl
+      properties:
+        uploadUrl:
+          type: string
+          format: uri
+          description: Pre-signed URL for uploading the file.
   parameters:
-    AddressIdParam:
-      name: addressId
+    RegulatoryDocumentIdParam:
+      name: documentId
       in: path
       required: true
       schema:
         type: string
-    RegulatoryDocumentIdParam:
-      name: documentId
+    AddressIdParam:
+      name: addressId
       in: path
       required: true
       schema:

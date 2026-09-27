@@ -279,129 +279,7 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    AgentProvider:
-      type: string
-      description: LLM provider for the AI agent.
-      enum:
-      - openai
-      - anthropic
-      - google
-      - mistral
-      - zavu
-    Agent:
-      type: object
-      description: AI Agent configuration for a sender.
-      required:
-      - id
-      - senderId
-      - name
-      - enabled
-      - provider
-      - model
-      - systemPrompt
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-          example: agent_abc123
-        senderId:
-          type: string
-          example: sender_12345
-        name:
-          type: string
-          example: Customer Support Agent
-        enabled:
-          type: boolean
-          description: Whether the agent is active.
-        provider:
-          $ref: '#/components/schemas/AgentProvider'
-        model:
-          type: string
-          description: Model ID (e.g., gpt-4o-mini, claude-3-5-sonnet).
-          example: gpt-4o-mini
-        systemPrompt:
-          type: string
-          description: System prompt for the agent.
-        contextWindowMessages:
-          type: integer
-          description: Number of previous messages to include as context.
-          default: 10
-        includeContactMetadata:
-          type: boolean
-          description: Whether to include contact metadata in context.
-          default: true
-        maxTokens:
-          type:
-          - integer
-          - 'null'
-          description: Maximum tokens for LLM response.
-        temperature:
-          type:
-          - number
-          - 'null'
-          description: LLM temperature (0-2).
-        triggerOnChannels:
-          type: array
-          items:
-            type: string
-          description: Channels that trigger the agent.
-          example:
-          - sms
-          - whatsapp
-        triggerOnMessageTypes:
-          type: array
-          items:
-            type: string
-          description: Message types that trigger the agent.
-          example:
-          - text
-        stats:
-          type: object
-          properties:
-            totalInvocations:
-              type: integer
-            totalTokensUsed:
-              type: integer
-            totalCost:
-              type: number
-              description: Total cost in USD.
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    AgentResponse:
-      type: object
-      required:
-      - agent
-      properties:
-        agent:
-          $ref: '#/components/schemas/Agent'
     AgentUpdateRequest:
       type: object
       properties:
@@ -498,6 +376,90 @@ components:
       - filtered
       - rate_limited
       - balance_insufficient
+    Agent:
+      type: object
+      description: AI Agent configuration for a sender.
+      required:
+      - id
+      - senderId
+      - name
+      - enabled
+      - provider
+      - model
+      - systemPrompt
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: agent_abc123
+        senderId:
+          type: string
+          example: sender_12345
+        name:
+          type: string
+          example: Customer Support Agent
+        enabled:
+          type: boolean
+          description: Whether the agent is active.
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+          description: Model ID (e.g., gpt-4o-mini, claude-3-5-sonnet).
+          example: gpt-4o-mini
+        systemPrompt:
+          type: string
+          description: System prompt for the agent.
+        contextWindowMessages:
+          type: integer
+          description: Number of previous messages to include as context.
+          default: 10
+        includeContactMetadata:
+          type: boolean
+          description: Whether to include contact metadata in context.
+          default: true
+        maxTokens:
+          type:
+          - integer
+          - 'null'
+          description: Maximum tokens for LLM response.
+        temperature:
+          type:
+          - number
+          - 'null'
+          description: LLM temperature (0-2).
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+          description: Channels that trigger the agent.
+          example:
+          - sms
+          - whatsapp
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
+          description: Message types that trigger the agent.
+          example:
+          - text
+        stats:
+          type: object
+          properties:
+            totalInvocations:
+              type: integer
+            totalTokensUsed:
+              type: integer
+            totalCost:
+              type: number
+              description: Total cost in USD.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     AgentStats:
       type: object
       required:
@@ -522,6 +484,30 @@ components:
           type:
           - number
           - 'null'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    AgentProvider:
+      type: string
+      description: LLM provider for the AI agent.
+      enum:
+      - openai
+      - anthropic
+      - google
+      - mistral
+      - zavu
     AgentCreateRequest:
       type: object
       required:
@@ -571,6 +557,20 @@ components:
             type: string
           default:
           - text
+    AgentResponse:
+      type: object
+      required:
+      - agent
+      properties:
+        agent:
+          $ref: '#/components/schemas/Agent'
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

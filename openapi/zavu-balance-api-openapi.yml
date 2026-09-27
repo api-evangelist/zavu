@@ -40,6 +40,21 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     BalanceResponse:
       type: object
       required:
@@ -65,21 +80,6 @@ components:
         isSubAccount:
           type: boolean
           description: Whether this API key belongs to a sub-account.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http
