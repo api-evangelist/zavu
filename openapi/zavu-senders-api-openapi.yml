@@ -367,75 +367,6 @@ paths:
       - Senders
 components:
   schemas:
-    WhatsAppBusinessProfileUpdateRequest:
-      type: object
-      description: Request body to update WhatsApp Business profile.
-      properties:
-        about:
-          type: string
-          description: Short description of the business (max 139 characters).
-          maxLength: 139
-        address:
-          type: string
-          description: Physical address of the business (max 256 characters).
-          maxLength: 256
-        description:
-          type: string
-          description: Extended description of the business (max 512 characters).
-          maxLength: 512
-        email:
-          type: string
-          format: email
-          description: Business email address.
-        websites:
-          type: array
-          description: Business website URLs (maximum 2).
-          maxItems: 2
-          items:
-            type: string
-            format: uri
-        vertical:
-          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
-    WhatsAppBusinessProfile:
-      type: object
-      description: WhatsApp Business profile information.
-      properties:
-        about:
-          type: string
-          description: Short description of the business (max 139 characters).
-          maxLength: 139
-          example: Succulent specialists!
-        address:
-          type: string
-          description: Physical address of the business (max 256 characters).
-          maxLength: 256
-          example: 1 Hacker Way, Menlo Park, CA 94025
-        description:
-          type: string
-          description: Extended description of the business (max 512 characters).
-          maxLength: 512
-          example: At Lucky Shrub, we specialize in providing a diverse range of high-quality succulents.
-        email:
-          type: string
-          format: email
-          description: Business email address.
-          example: contact@example.com
-        profilePictureUrl:
-          type: string
-          format: uri
-          description: URL of the business profile picture.
-          example: https://pps.whatsapp.net/v/t61.24...
-        websites:
-          type: array
-          description: Business website URLs (maximum 2).
-          maxItems: 2
-          items:
-            type: string
-            format: uri
-          example:
-          - https://www.example.com/
-        vertical:
-          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
     WebhookEvent:
       type: string
       description: 'Type of event that triggers the webhook.
@@ -507,6 +438,156 @@ components:
       properties:
         profile:
           $ref: '#/components/schemas/WhatsAppBusinessProfile'
+    SenderWebhook:
+      type: object
+      description: Webhook configuration for the sender.
+      required:
+      - url
+      - events
+      - active
+      properties:
+        url:
+          type: string
+          format: uri
+          description: HTTPS URL that will receive webhook events.
+          example: https://api.example.com/webhooks/zavu
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+          description: List of events the webhook is subscribed to.
+        secret:
+          type: string
+          description: Webhook secret for signature verification. Only returned on create or regenerate.
+          example: whsec_abc123...
+        active:
+          type: boolean
+          description: Whether the webhook is active.
+          default: true
+    WhatsAppBusinessProfileVertical:
+      type: string
+      description: Business category for WhatsApp Business profile.
+      enum:
+      - UNDEFINED
+      - OTHER
+      - AUTO
+      - BEAUTY
+      - APPAREL
+      - EDU
+      - ENTERTAIN
+      - EVENT_PLAN
+      - FINANCE
+      - GROCERY
+      - GOVT
+      - HOTEL
+      - HEALTH
+      - NONPROFIT
+      - PROF_SERVICES
+      - RETAIL
+      - TRAVEL
+      - RESTAURANT
+      - NOT_A_BIZ
+    SenderUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        setAsDefault:
+          type: boolean
+        webhookUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: HTTPS URL for webhook events. Set to null to remove webhook.
+        webhookEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+          description: Events to subscribe to.
+        webhookActive:
+          type: boolean
+          description: Whether the webhook is active.
+        emailReceivingEnabled:
+          type: boolean
+          description: Enable or disable inbound email receiving for this sender.
+        emailCatchAllEnabled:
+          type: boolean
+          description: Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
+        emailAddress:
+          type: string
+          format: email
+          description: Attach or change the sender's email from-address (e.g. noreply@yourdomain.com). The domain must be a verified email domain in your project.
+          example: noreply@yourdomain.com
+        emailDomainId:
+          type: string
+          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+        emailFromName:
+          type: string
+          maxLength: 100
+          description: Display name shown in the recipient's inbox for the email channel.
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    SenderCreateRequest:
+      type: object
+      description: Create a sender. Provide `phoneNumber` for an SMS/WhatsApp sender, or `emailAddress` (with a verified email domain) for an email sender — at least one is required.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
+        setAsDefault:
+          type: boolean
+          default: false
+        webhookUrl:
+          type: string
+          format: uri
+          description: HTTPS URL for webhook events.
+        webhookEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+          description: Events to subscribe to.
+        emailAddress:
+          type: string
+          format: email
+          description: From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
+          example: noreply@yourdomain.com
+        emailDomainId:
+          type: string
+          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+        emailFromName:
+          type: string
+          maxLength: 100
+          description: Display name shown in the recipient's inbox for the email channel.
+        emailReceivingEnabled:
+          type: boolean
+          description: Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+    WebhookSecretResponse:
+      type: object
+      required:
+      - secret
+      properties:
+        secret:
+          type: string
+          description: The new webhook secret.
+          example: whsec_abc123...
     Sender:
       type: object
       required:
@@ -574,156 +655,75 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
+    WhatsAppBusinessProfileUpdateRequest:
       type: object
-      required:
-      - code
-      - message
+      description: Request body to update WhatsApp Business profile.
       properties:
-        code:
+        about:
           type: string
-          example: invalid_request
-        message:
+          description: Short description of the business (max 139 characters).
+          maxLength: 139
+        address:
           type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    SenderCreateRequest:
-      type: object
-      description: Create a sender. Provide `phoneNumber` for an SMS/WhatsApp sender, or `emailAddress` (with a verified email domain) for an email sender — at least one is required.
-      required:
-      - name
-      properties:
-        name:
+          description: Physical address of the business (max 256 characters).
+          maxLength: 256
+        description:
           type: string
-        phoneNumber:
-          type: string
-          description: Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
-        setAsDefault:
-          type: boolean
-          default: false
-        webhookUrl:
-          type: string
-          format: uri
-          description: HTTPS URL for webhook events.
-        webhookEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-          description: Events to subscribe to.
-        emailAddress:
+          description: Extended description of the business (max 512 characters).
+          maxLength: 512
+        email:
           type: string
           format: email
-          description: From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
-          example: noreply@yourdomain.com
-        emailDomainId:
-          type: string
-          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
-        emailFromName:
-          type: string
-          maxLength: 100
-          description: Display name shown in the recipient's inbox for the email channel.
-        emailReceivingEnabled:
-          type: boolean
-          description: Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
-    SenderUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        setAsDefault:
-          type: boolean
-        webhookUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: HTTPS URL for webhook events. Set to null to remove webhook.
-        webhookEvents:
+          description: Business email address.
+        websites:
           type: array
+          description: Business website URLs (maximum 2).
+          maxItems: 2
           items:
-            $ref: '#/components/schemas/WebhookEvent'
-          description: Events to subscribe to.
-        webhookActive:
-          type: boolean
-          description: Whether the webhook is active.
-        emailReceivingEnabled:
-          type: boolean
-          description: Enable or disable inbound email receiving for this sender.
-        emailCatchAllEnabled:
-          type: boolean
-          description: Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
-        emailAddress:
+            type: string
+            format: uri
+        vertical:
+          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
+    WhatsAppBusinessProfile:
+      type: object
+      description: WhatsApp Business profile information.
+      properties:
+        about:
+          type: string
+          description: Short description of the business (max 139 characters).
+          maxLength: 139
+          example: Succulent specialists!
+        address:
+          type: string
+          description: Physical address of the business (max 256 characters).
+          maxLength: 256
+          example: 1 Hacker Way, Menlo Park, CA 94025
+        description:
+          type: string
+          description: Extended description of the business (max 512 characters).
+          maxLength: 512
+          example: At Lucky Shrub, we specialize in providing a diverse range of high-quality succulents.
+        email:
           type: string
           format: email
-          description: Attach or change the sender's email from-address (e.g. noreply@yourdomain.com). The domain must be a verified email domain in your project.
-          example: noreply@yourdomain.com
-        emailDomainId:
-          type: string
-          description: ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
-        emailFromName:
-          type: string
-          maxLength: 100
-          description: Display name shown in the recipient's inbox for the email channel.
-    WebhookSecretResponse:
-      type: object
-      required:
-      - secret
-      properties:
-        secret:
-          type: string
-          description: The new webhook secret.
-          example: whsec_abc123...
-    WhatsAppBusinessProfileVertical:
-      type: string
-      description: Business category for WhatsApp Business profile.
-      enum:
-      - UNDEFINED
-      - OTHER
-      - AUTO
-      - BEAUTY
-      - APPAREL
-      - EDU
-      - ENTERTAIN
-      - EVENT_PLAN
-      - FINANCE
-      - GROCERY
-      - GOVT
-      - HOTEL
-      - HEALTH
-      - NONPROFIT
-      - PROF_SERVICES
-      - RETAIL
-      - TRAVEL
-      - RESTAURANT
-      - NOT_A_BIZ
-    SenderWebhook:
-      type: object
-      description: Webhook configuration for the sender.
-      required:
-      - url
-      - events
-      - active
-      properties:
-        url:
+          description: Business email address.
+          example: contact@example.com
+        profilePictureUrl:
           type: string
           format: uri
-          description: HTTPS URL that will receive webhook events.
-          example: https://api.example.com/webhooks/zavu
-        events:
+          description: URL of the business profile picture.
+          example: https://pps.whatsapp.net/v/t61.24...
+        websites:
           type: array
+          description: Business website URLs (maximum 2).
+          maxItems: 2
           items:
-            $ref: '#/components/schemas/WebhookEvent'
-          description: List of events the webhook is subscribed to.
-        secret:
-          type: string
-          description: Webhook secret for signature verification. Only returned on create or regenerate.
-          example: whsec_abc123...
-        active:
-          type: boolean
-          description: Whether the webhook is active.
-          default: true
+            type: string
+            format: uri
+          example:
+          - https://www.example.com/
+        vertical:
+          $ref: '#/components/schemas/WhatsAppBusinessProfileVertical'
     WhatsAppBusinessProfilePictureRequest:
       type: object
       description: Request body to upload a profile picture.

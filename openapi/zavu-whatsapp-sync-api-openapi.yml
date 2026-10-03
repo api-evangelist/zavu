@@ -223,7 +223,56 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    WhatsAppSyncStatusResponse:
+      type: object
+      required:
+      - sync
+      properties:
+        sync:
+          $ref: '#/components/schemas/WhatsAppSyncStatus'
+    WhatsAppSyncStartResponse:
+      type: object
+      required:
+      - message
+      - sync
+      properties:
+        message:
+          type: string
+          description: Success message.
+          example: History sync initiated
+        sync:
+          $ref: '#/components/schemas/WhatsAppSyncStatus'
+    WhatsAppSyncContactsStatus:
+      type: string
+      description: Status of WhatsApp contacts sync.
+      enum:
+      - not_requested
+      - pending
+      - syncing
+      - completed
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     WhatsAppSyncContacts:
       type: object
       description: Contacts sync status details.
@@ -266,21 +315,15 @@ components:
           - 'null'
           format: date-time
           description: When the sync was completed.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
+    WhatsAppSyncHistoryStatus:
+      type: string
+      description: Status of WhatsApp message history sync.
+      enum:
+      - not_requested
+      - pending
+      - syncing
+      - completed
+      - rejected
     WhatsAppSyncStatus:
       type: object
       description: WhatsApp coexistence sync status.
@@ -306,49 +349,6 @@ components:
           $ref: '#/components/schemas/WhatsAppSyncHistory'
         contacts:
           $ref: '#/components/schemas/WhatsAppSyncContacts'
-    WhatsAppSyncStatusResponse:
-      type: object
-      required:
-      - sync
-      properties:
-        sync:
-          $ref: '#/components/schemas/WhatsAppSyncStatus'
-    WhatsAppSyncContactsStatus:
-      type: string
-      description: Status of WhatsApp contacts sync.
-      enum:
-      - not_requested
-      - pending
-      - syncing
-      - completed
-    WhatsAppSyncHistoryStatus:
-      type: string
-      description: Status of WhatsApp message history sync.
-      enum:
-      - not_requested
-      - pending
-      - syncing
-      - completed
-      - rejected
-    WhatsAppSyncStartResponse:
-      type: object
-      required:
-      - message
-      - sync
-      properties:
-        message:
-          type: string
-          description: Success message.
-          example: History sync initiated
-        sync:
-          $ref: '#/components/schemas/WhatsAppSyncStatus'
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

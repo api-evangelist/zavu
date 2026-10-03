@@ -404,7 +404,38 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    DocumentIdParam:
+      name: docId
+      in: path
+      required: true
+      schema:
+        type: string
+    KnowledgeBaseIdParam:
+      name: kbId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    DocumentCreateRequest:
+      type: object
+      required:
+      - title
+      - content
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 100000
     DocumentResponse:
       type: object
       required:
@@ -412,16 +443,6 @@ components:
       properties:
         document:
           $ref: '#/components/schemas/AgentDocument'
-    KnowledgeBaseUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type:
-          - string
-          - 'null'
     KnowledgeBaseResponse:
       type: object
       required:
@@ -429,6 +450,16 @@ components:
       properties:
         knowledgeBase:
           $ref: '#/components/schemas/AgentKnowledgeBase'
+    KnowledgeBaseCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
     Error:
       type: object
       required:
@@ -444,61 +475,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    DocumentCreateRequest:
-      type: object
-      required:
-      - title
-      - content
-      properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 100000
-    AgentDocument:
-      type: object
-      required:
-      - id
-      - knowledgeBaseId
-      - title
-      - contentLength
-      - chunkCount
-      - isProcessed
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-        knowledgeBaseId:
-          type: string
-        title:
-          type: string
-        contentLength:
-          type: integer
-          description: Length of the document content in characters.
-        chunkCount:
-          type: integer
-          description: Number of chunks created from this document.
-        isProcessed:
-          type: boolean
-          description: Whether the document has been processed for RAG.
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    KnowledgeBaseCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
     DocumentUpdateRequest:
       type: object
       description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
@@ -540,25 +516,49 @@ components:
         updatedAt:
           type: string
           format: date-time
-  parameters:
-    DocumentIdParam:
-      name: docId
-      in: path
-      required: true
-      schema:
-        type: string
-    KnowledgeBaseIdParam:
-      name: kbId
-      in: path
-      required: true
-      schema:
-        type: string
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
+    AgentDocument:
+      type: object
+      required:
+      - id
+      - knowledgeBaseId
+      - title
+      - contentLength
+      - chunkCount
+      - isProcessed
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        knowledgeBaseId:
+          type: string
+        title:
+          type: string
+        contentLength:
+          type: integer
+          description: Length of the document content in characters.
+        chunkCount:
+          type: integer
+          description: Number of chunks created from this document.
+        isProcessed:
+          type: boolean
+          description: Whether the document has been processed for RAG.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    KnowledgeBaseUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type:
+          - string
+          - 'null'
   securitySchemes:
     bearerAuth:
       type: http

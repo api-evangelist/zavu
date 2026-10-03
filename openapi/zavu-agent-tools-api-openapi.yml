@@ -259,7 +259,92 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
+    ToolIdParam:
+      name: toolId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    ToolCreateRequest:
+      type: object
+      required:
+      - name
+      - description
+      - parameters
+      - webhookUrl
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+          description: Must be HTTPS.
+        webhookSecret:
+          type: string
+          description: Optional secret for webhook signature verification.
+        enabled:
+          type: boolean
+          default: true
+    ToolParameters:
+      type: object
+      required:
+      - type
+      - properties
+      - required
+      properties:
+        type:
+          type: string
+          enum:
+          - object
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              type:
+                type: string
+              description:
+                type: string
+        required:
+          type: array
+          items:
+            type: string
+    ToolTestResponse:
+      type: object
+      required:
+      - scheduled
+      properties:
+        scheduled:
+          type: boolean
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     AgentTool:
       type: object
       required:
@@ -297,30 +382,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ToolParameters:
-      type: object
-      required:
-      - type
-      - properties
-      - required
-      properties:
-        type:
-          type: string
-          enum:
-          - object
-        properties:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              type:
-                type: string
-              description:
-                type: string
-        required:
-          type: array
-          items:
-            type: string
     ToolTestRequest:
       type: object
       required:
@@ -330,6 +391,13 @@ components:
           type: object
           description: Parameters to pass to the tool for testing.
           additionalProperties: true
+    ToolResponse:
+      type: object
+      required:
+      - tool
+      properties:
+        tool:
+          $ref: '#/components/schemas/AgentTool'
     ToolUpdateRequest:
       type: object
       properties:
@@ -350,74 +418,6 @@ components:
           - 'null'
         enabled:
           type: boolean
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    ToolResponse:
-      type: object
-      required:
-      - tool
-      properties:
-        tool:
-          $ref: '#/components/schemas/AgentTool'
-    ToolCreateRequest:
-      type: object
-      required:
-      - name
-      - description
-      - parameters
-      - webhookUrl
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-          maxLength: 500
-        parameters:
-          $ref: '#/components/schemas/ToolParameters'
-        webhookUrl:
-          type: string
-          format: uri
-          description: Must be HTTPS.
-        webhookSecret:
-          type: string
-          description: Optional secret for webhook signature verification.
-        enabled:
-          type: boolean
-          default: true
-    ToolTestResponse:
-      type: object
-      required:
-      - scheduled
-      properties:
-        scheduled:
-          type: boolean
-  parameters:
-    ToolIdParam:
-      name: toolId
-      in: path
-      required: true
-      schema:
-        type: string
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
