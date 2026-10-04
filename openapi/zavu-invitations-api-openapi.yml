@@ -186,6 +186,81 @@ paths:
       - Invitations
 components:
   schemas:
+    InvitationResponse:
+      type: object
+      required:
+      - invitation
+      properties:
+        invitation:
+          $ref: '#/components/schemas/Invitation'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    InvitationStatus:
+      type: string
+      description: Current status of the partner invitation.
+      enum:
+      - pending
+      - in_progress
+      - completed
+      - expired
+      - cancelled
+    InvitationCreateRequest:
+      type: object
+      properties:
+        clientName:
+          type: string
+          maxLength: 100
+          description: Name of the client being invited.
+          example: Acme Corp
+        clientEmail:
+          type: string
+          format: email
+          description: Email of the client being invited.
+          example: contact@acme.com
+        clientPhone:
+          type: string
+          description: Phone number of the client in E.164 format.
+          example: '+14155551234'
+        phoneNumberId:
+          type: string
+          description: ID of a Zavu phone number to pre-assign for WhatsApp registration. If provided, the client will use this number instead of their own.
+          example: pn_abc123
+        expiresInDays:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 7
+          description: Number of days until the invitation expires.
+        allowedPhoneCountries:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: ISO country codes for allowed phone numbers.
+          example:
+          - US
+          - MX
+        connectionType:
+          type: string
+          enum:
+          - whatsapp_waba
+          - whatsapp_alt
+          default: whatsapp_waba
+          description: How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
     Invitation:
       type: object
       required:
@@ -261,81 +336,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    InvitationResponse:
-      type: object
-      required:
-      - invitation
-      properties:
-        invitation:
-          $ref: '#/components/schemas/Invitation'
-    InvitationCreateRequest:
-      type: object
-      properties:
-        clientName:
-          type: string
-          maxLength: 100
-          description: Name of the client being invited.
-          example: Acme Corp
-        clientEmail:
-          type: string
-          format: email
-          description: Email of the client being invited.
-          example: contact@acme.com
-        clientPhone:
-          type: string
-          description: Phone number of the client in E.164 format.
-          example: '+14155551234'
-        phoneNumberId:
-          type: string
-          description: ID of a Zavu phone number to pre-assign for WhatsApp registration. If provided, the client will use this number instead of their own.
-          example: pn_abc123
-        expiresInDays:
-          type: integer
-          minimum: 1
-          maximum: 30
-          default: 7
-          description: Number of days until the invitation expires.
-        allowedPhoneCountries:
-          type: array
-          items:
-            type: string
-            minLength: 2
-            maxLength: 2
-          description: ISO country codes for allowed phone numbers.
-          example:
-          - US
-          - MX
-        connectionType:
-          type: string
-          enum:
-          - whatsapp_waba
-          - whatsapp_alt
-          default: whatsapp_waba
-          description: How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
-    InvitationStatus:
-      type: string
-      description: Current status of the partner invitation.
-      enum:
-      - pending
-      - in_progress
-      - completed
-      - expired
-      - cancelled
   parameters:
     InvitationIdParam:
       name: invitationId

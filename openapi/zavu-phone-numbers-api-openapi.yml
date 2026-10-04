@@ -346,65 +346,21 @@ paths:
       - Phone Numbers
 components:
   schemas:
-    PhoneNumberUpdateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          description: Custom name for the phone number. Set to null to clear.
-        senderId:
-          type:
-          - string
-          - 'null'
-          description: Sender ID to assign the phone number to. Set to null to unassign.
-    RequirementAcceptanceCriteria:
-      type: object
-      description: Acceptance criteria for a requirement.
-      properties:
-        minLength:
-          type:
-          - integer
-          - 'null'
-        maxLength:
-          type:
-          - integer
-          - 'null'
-        allowedValues:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        regexPattern:
-          type:
-          - string
-          - 'null'
-    AvailablePhoneNumber:
+    Error:
       type: object
       required:
-      - phoneNumber
-      - capabilities
-      - pricing
+      - code
+      - message
       properties:
-        phoneNumber:
+        code:
           type: string
-          example: '+15551234567'
-        friendlyName:
+          example: invalid_request
+        message:
           type: string
-          example: (555) 123-4567
-        locality:
-          type: string
-          example: San Francisco
-        region:
-          type: string
-          example: CA
-        capabilities:
-          $ref: '#/components/schemas/PhoneNumberCapabilities'
-        pricing:
-          $ref: '#/components/schemas/PhoneNumberPricing'
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     RequirementType:
       type: object
       description: A specific requirement type within a requirement group.
@@ -443,6 +399,21 @@ components:
         isFreeNumber:
           type: boolean
           description: Whether this is a free number.
+    PhoneNumberType:
+      type: string
+      enum:
+      - local
+      - national
+      - tollFree
+    PhoneNumberCapabilities:
+      type: object
+      properties:
+        sms:
+          type: boolean
+        voice:
+          type: boolean
+        mms:
+          type: boolean
     Requirement:
       type: object
       description: A group of requirements for a specific country/phone type combination.
@@ -468,76 +439,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequirementType'
-    PhoneNumberType:
+    PhoneNumberStatus:
       type: string
       enum:
-      - local
-      - national
-      - tollFree
-    PhoneNumberPurchaseRequest:
+      - active
+      - suspended
+      - pending
+    RequirementAcceptanceCriteria:
       type: object
-      required:
-      - phoneNumber
+      description: Acceptance criteria for a requirement.
       properties:
-        phoneNumber:
-          type: string
-          description: Phone number in E.164 format.
-          example: '+15551234567'
-        name:
-          type: string
-          maxLength: 100
-          description: Optional custom name for the phone number.
-    PhoneNumberCapabilities:
-      type: object
-      properties:
-        sms:
-          type: boolean
-        voice:
-          type: boolean
-        mms:
-          type: boolean
-    PhoneNumberResponse:
-      type: object
-      required:
-      - phoneNumber
-      properties:
-        phoneNumber:
-          $ref: '#/components/schemas/OwnedPhoneNumber'
-    PhoneNumberPricing:
-      type: object
-      properties:
-        monthlyPrice:
-          type: number
-          description: Monthly price in USD.
-        upfrontPrice:
-          type: number
-          description: One-time purchase price in USD.
-        isFreeEligible:
-          type: boolean
-          description: Whether this number qualifies for the free first US number offer.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    RequirementFieldType:
-      type: string
-      description: Type of requirement field.
-      enum:
-      - textual
-      - address
-      - document
-      - action
+        minLength:
+          type:
+          - integer
+          - 'null'
+        maxLength:
+          type:
+          - integer
+          - 'null'
+        allowedValues:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        regexPattern:
+          type:
+          - string
+          - 'null'
     OwnedPhoneNumber:
       type: object
       required:
@@ -579,12 +508,83 @@ components:
         updatedAt:
           type: string
           format: date-time
-    PhoneNumberStatus:
+    PhoneNumberResponse:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/OwnedPhoneNumber'
+    PhoneNumberPurchaseRequest:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format.
+          example: '+15551234567'
+        name:
+          type: string
+          maxLength: 100
+          description: Optional custom name for the phone number.
+    RequirementFieldType:
       type: string
+      description: Type of requirement field.
       enum:
-      - active
-      - suspended
-      - pending
+      - textual
+      - address
+      - document
+      - action
+    PhoneNumberPricing:
+      type: object
+      properties:
+        monthlyPrice:
+          type: number
+          description: Monthly price in USD.
+        upfrontPrice:
+          type: number
+          description: One-time purchase price in USD.
+        isFreeEligible:
+          type: boolean
+          description: Whether this number qualifies for the free first US number offer.
+    AvailablePhoneNumber:
+      type: object
+      required:
+      - phoneNumber
+      - capabilities
+      - pricing
+      properties:
+        phoneNumber:
+          type: string
+          example: '+15551234567'
+        friendlyName:
+          type: string
+          example: (555) 123-4567
+        locality:
+          type: string
+          example: San Francisco
+        region:
+          type: string
+          example: CA
+        capabilities:
+          $ref: '#/components/schemas/PhoneNumberCapabilities'
+        pricing:
+          $ref: '#/components/schemas/PhoneNumberPricing'
+    PhoneNumberUpdateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Custom name for the phone number. Set to null to clear.
+        senderId:
+          type:
+          - string
+          - 'null'
+          description: Sender ID to assign the phone number to. Set to null to unassign.
   parameters:
     PhoneNumberIdParam:
       name: phoneNumberId

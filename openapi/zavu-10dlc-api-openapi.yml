@@ -684,67 +684,7 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    TenDlcAssignmentIdParam:
-      name: assignmentId
-      in: path
-      required: true
-      description: Phone number assignment ID.
-      schema:
-        type: string
-    TenDlcBrandIdParam:
-      name: brandId
-      in: path
-      required: true
-      description: 10DLC brand ID.
-      schema:
-        type: string
-    TenDlcCampaignIdParam:
-      name: campaignId
-      in: path
-      required: true
-      description: 10DLC campaign ID.
-      schema:
-        type: string
   schemas:
-    TenDlcPhoneNumberAssignRequest:
-      type: object
-      required:
-      - phoneNumberId
-      properties:
-        phoneNumberId:
-          type: string
-          description: ID of the phone number to assign.
-    TenDlcCampaignStatus:
-      type: string
-      description: Status of a 10DLC campaign registration.
-      enum:
-      - draft
-      - pending
-      - approved
-      - rejected
-    TenDlcCampaignResponse:
-      type: object
-      required:
-      - campaign
-      properties:
-        campaign:
-          $ref: '#/components/schemas/TenDlcCampaign'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     TenDlcAssignmentResponse:
       type: object
       required:
@@ -752,21 +692,13 @@ components:
       properties:
         assignment:
           $ref: '#/components/schemas/TenDlcPhoneNumberAssignment'
-    TenDlcBrandStatus:
-      type: string
-      description: Status of a 10DLC brand registration.
-      enum:
-      - draft
-      - pending
-      - verified
-      - rejected
-    TenDlcBrandResponse:
+    TenDlcCampaignResponse:
       type: object
       required:
-      - brand
+      - campaign
       properties:
-        brand:
-          $ref: '#/components/schemas/TenDlcBrand'
+        campaign:
+          $ref: '#/components/schemas/TenDlcCampaign'
     TenDlcPhoneNumberAssignment:
       type: object
       required:
@@ -805,6 +737,203 @@ components:
         updatedAt:
           type: string
           format: date-time
+    TenDlcCampaignCreateRequest:
+      type: object
+      required:
+      - brandId
+      - name
+      - useCase
+      - description
+      - sampleMessages
+      - subscriberOptIn
+      - subscriberOptOut
+      - subscriberHelp
+      - numberPooling
+      - directLending
+      - embeddedLink
+      - embeddedPhone
+      - affiliateMarketing
+      - ageGated
+      properties:
+        brandId:
+          type: string
+          description: ID of the brand to create this campaign under.
+        name:
+          type: string
+          maxLength: 100
+        useCase:
+          type: string
+          maxLength: 50
+          description: Campaign use case (e.g., ACCOUNT_NOTIFICATION, MARKETING, 2FA).
+        subUseCases:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+          maxLength: 4096
+        sampleMessages:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          minItems: 1
+          maxItems: 5
+        subscriberOptIn:
+          type: boolean
+        subscriberOptOut:
+          type: boolean
+        subscriberHelp:
+          type: boolean
+        numberPooling:
+          type: boolean
+        directLending:
+          type: boolean
+        embeddedLink:
+          type: boolean
+        embeddedPhone:
+          type: boolean
+        affiliateMarketing:
+          type: boolean
+        ageGated:
+          type: boolean
+        messageFlow:
+          type: string
+          maxLength: 2048
+        helpMessage:
+          type: string
+          maxLength: 500
+        optInKeywords:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+        optOutKeywords:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    TenDlcBrandCreateRequest:
+      type: object
+      required:
+      - entityType
+      - displayName
+      - email
+      - phone
+      - street
+      - city
+      - state
+      - postalCode
+      - country
+      - vertical
+      properties:
+        entityType:
+          $ref: '#/components/schemas/TenDlcEntityType'
+        displayName:
+          type: string
+          maxLength: 100
+          description: Display name of the brand.
+          example: Acme Corp
+        companyName:
+          type: string
+          maxLength: 200
+          description: Legal company name.
+        ein:
+          type: string
+          description: 'Employer Identification Number (format: XX-XXXXXXX).'
+          example: 12-3456789
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          description: Contact phone in E.164 format.
+          example: '+14155551234'
+        street:
+          type: string
+          maxLength: 200
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 50
+        postalCode:
+          type: string
+          maxLength: 20
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: Two-letter ISO country code.
+          example: US
+        website:
+          type: string
+          format: uri
+        vertical:
+          type: string
+          maxLength: 50
+          description: Industry vertical.
+          example: Technology
+        stockSymbol:
+          type: string
+          maxLength: 10
+        stockExchange:
+          type: string
+          maxLength: 50
+    TenDlcPhoneNumberAssignRequest:
+      type: object
+      required:
+      - phoneNumberId
+      properties:
+        phoneNumberId:
+          type: string
+          description: ID of the phone number to assign.
+    TenDlcBrandResponse:
+      type: object
+      required:
+      - brand
+      properties:
+        brand:
+          $ref: '#/components/schemas/TenDlcBrand'
+    TenDlcEntityType:
+      type: string
+      description: Business entity type for 10DLC brand registration.
+      enum:
+      - PRIVATE_PROFIT
+      - PUBLIC_PROFIT
+      - NON_PROFIT
+      - GOVERNMENT
+      - SOLE_PROPRIETOR
+    TenDlcBrandStatus:
+      type: string
+      description: Status of a 10DLC brand registration.
+      enum:
+      - draft
+      - pending
+      - verified
+      - rejected
     TenDlcCampaignUpdateRequest:
       type: object
       properties:
@@ -837,67 +966,14 @@ components:
           items:
             type: string
             maxLength: 50
-    TenDlcBrandUpdateRequest:
-      type: object
-      properties:
-        entityType:
-          $ref: '#/components/schemas/TenDlcEntityType'
-        displayName:
-          type: string
-          maxLength: 100
-        companyName:
-          type: string
-          maxLength: 200
-        ein:
-          type: string
-        firstName:
-          type: string
-          maxLength: 50
-        lastName:
-          type: string
-          maxLength: 50
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-        street:
-          type: string
-          maxLength: 200
-        city:
-          type: string
-          maxLength: 100
-        state:
-          type: string
-          maxLength: 50
-        postalCode:
-          type: string
-          maxLength: 20
-        country:
-          type: string
-          minLength: 2
-          maxLength: 2
-        website:
-          type: string
-          format: uri
-        vertical:
-          type: string
-          maxLength: 50
-        stockSymbol:
-          type: string
-          maxLength: 10
-        stockExchange:
-          type: string
-          maxLength: 50
-    TenDlcEntityType:
+    TenDlcCampaignStatus:
       type: string
-      description: Business entity type for 10DLC brand registration.
+      description: Status of a 10DLC campaign registration.
       enum:
-      - PRIVATE_PROFIT
-      - PUBLIC_PROFIT
-      - NON_PROFIT
-      - GOVERNMENT
-      - SOLE_PROPRIETOR
+      - draft
+      - pending
+      - approved
+      - rejected
     TenDlcCampaign:
       type: object
       required:
@@ -1021,6 +1097,58 @@ components:
         updatedAt:
           type: string
           format: date-time
+    TenDlcBrandUpdateRequest:
+      type: object
+      properties:
+        entityType:
+          $ref: '#/components/schemas/TenDlcEntityType'
+        displayName:
+          type: string
+          maxLength: 100
+        companyName:
+          type: string
+          maxLength: 200
+        ein:
+          type: string
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        street:
+          type: string
+          maxLength: 200
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 50
+        postalCode:
+          type: string
+          maxLength: 20
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+        website:
+          type: string
+          format: uri
+        vertical:
+          type: string
+          maxLength: 50
+        stockSymbol:
+          type: string
+          maxLength: 10
+        stockExchange:
+          type: string
+          maxLength: 50
     TenDlcBrand:
       type: object
       required:
@@ -1134,156 +1262,28 @@ components:
         updatedAt:
           type: string
           format: date-time
-    TenDlcBrandCreateRequest:
-      type: object
-      required:
-      - entityType
-      - displayName
-      - email
-      - phone
-      - street
-      - city
-      - state
-      - postalCode
-      - country
-      - vertical
-      properties:
-        entityType:
-          $ref: '#/components/schemas/TenDlcEntityType'
-        displayName:
-          type: string
-          maxLength: 100
-          description: Display name of the brand.
-          example: Acme Corp
-        companyName:
-          type: string
-          maxLength: 200
-          description: Legal company name.
-        ein:
-          type: string
-          description: 'Employer Identification Number (format: XX-XXXXXXX).'
-          example: 12-3456789
-        firstName:
-          type: string
-          maxLength: 50
-        lastName:
-          type: string
-          maxLength: 50
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-          description: Contact phone in E.164 format.
-          example: '+14155551234'
-        street:
-          type: string
-          maxLength: 200
-        city:
-          type: string
-          maxLength: 100
-        state:
-          type: string
-          maxLength: 50
-        postalCode:
-          type: string
-          maxLength: 20
-        country:
-          type: string
-          minLength: 2
-          maxLength: 2
-          description: Two-letter ISO country code.
-          example: US
-        website:
-          type: string
-          format: uri
-        vertical:
-          type: string
-          maxLength: 50
-          description: Industry vertical.
-          example: Technology
-        stockSymbol:
-          type: string
-          maxLength: 10
-        stockExchange:
-          type: string
-          maxLength: 50
-    TenDlcCampaignCreateRequest:
-      type: object
-      required:
-      - brandId
-      - name
-      - useCase
-      - description
-      - sampleMessages
-      - subscriberOptIn
-      - subscriberOptOut
-      - subscriberHelp
-      - numberPooling
-      - directLending
-      - embeddedLink
-      - embeddedPhone
-      - affiliateMarketing
-      - ageGated
-      properties:
-        brandId:
-          type: string
-          description: ID of the brand to create this campaign under.
-        name:
-          type: string
-          maxLength: 100
-        useCase:
-          type: string
-          maxLength: 50
-          description: Campaign use case (e.g., ACCOUNT_NOTIFICATION, MARKETING, 2FA).
-        subUseCases:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-          maxLength: 4096
-        sampleMessages:
-          type: array
-          items:
-            type: string
-            maxLength: 1024
-          minItems: 1
-          maxItems: 5
-        subscriberOptIn:
-          type: boolean
-        subscriberOptOut:
-          type: boolean
-        subscriberHelp:
-          type: boolean
-        numberPooling:
-          type: boolean
-        directLending:
-          type: boolean
-        embeddedLink:
-          type: boolean
-        embeddedPhone:
-          type: boolean
-        affiliateMarketing:
-          type: boolean
-        ageGated:
-          type: boolean
-        messageFlow:
-          type: string
-          maxLength: 2048
-        helpMessage:
-          type: string
-          maxLength: 500
-        optInKeywords:
-          type: array
-          items:
-            type: string
-            maxLength: 50
-        optOutKeywords:
-          type: array
-          items:
-            type: string
-            maxLength: 50
+  parameters:
+    TenDlcCampaignIdParam:
+      name: campaignId
+      in: path
+      required: true
+      description: 10DLC campaign ID.
+      schema:
+        type: string
+    TenDlcBrandIdParam:
+      name: brandId
+      in: path
+      required: true
+      description: 10DLC brand ID.
+      schema:
+        type: string
+    TenDlcAssignmentIdParam:
+      name: assignmentId
+      in: path
+      required: true
+      description: Phone number assignment ID.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -279,13 +279,6 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
     Agent:
       type: object
@@ -371,15 +364,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    AgentProvider:
-      type: string
-      description: LLM provider for the AI agent.
-      enum:
-      - openai
-      - anthropic
-      - google
-      - mistral
-      - zavu
     Error:
       type: object
       required:
@@ -395,93 +379,15 @@ components:
         details:
           type: object
           additionalProperties: true
-    AgentUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        enabled:
-          type: boolean
-        provider:
-          $ref: '#/components/schemas/AgentProvider'
-        model:
-          type: string
-        systemPrompt:
-          type: string
-          maxLength: 10000
-        apiKey:
-          type: string
-        contextWindowMessages:
-          type: integer
-          minimum: 1
-          maximum: 50
-        includeContactMetadata:
-          type: boolean
-        maxTokens:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-          maximum: 4096
-        temperature:
-          type:
-          - number
-          - 'null'
-          minimum: 0
-          maximum: 2
-        triggerOnChannels:
-          type: array
-          items:
-            type: string
-        triggerOnMessageTypes:
-          type: array
-          items:
-            type: string
-    AgentExecution:
-      type: object
-      required:
-      - id
-      - agentId
-      - status
-      - inputTokens
-      - outputTokens
-      - latencyMs
-      - cost
-      - createdAt
-      properties:
-        id:
-          type: string
-        agentId:
-          type: string
-        inboundMessageId:
-          type: string
-        responseMessageId:
-          type:
-          - string
-          - 'null'
-        responseText:
-          type:
-          - string
-          - 'null'
-        status:
-          $ref: '#/components/schemas/AgentExecutionStatus'
-        errorMessage:
-          type:
-          - string
-          - 'null'
-        inputTokens:
-          type: integer
-        outputTokens:
-          type: integer
-        latencyMs:
-          type: integer
-        cost:
-          type: number
-          description: Cost in USD.
-        createdAt:
-          type: string
-          format: date-time
+    AgentProvider:
+      type: string
+      description: LLM provider for the AI agent.
+      enum:
+      - openai
+      - anthropic
+      - google
+      - mistral
+      - zavu
     AgentCreateRequest:
       type: object
       required:
@@ -531,6 +437,15 @@ components:
             type: string
           default:
           - text
+    AgentExecutionStatus:
+      type: string
+      description: Status of an agent execution.
+      enum:
+      - success
+      - error
+      - filtered
+      - rate_limited
+      - balance_insufficient
     AgentResponse:
       type: object
       required:
@@ -538,6 +453,49 @@ components:
       properties:
         agent:
           $ref: '#/components/schemas/Agent'
+    AgentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        enabled:
+          type: boolean
+        provider:
+          $ref: '#/components/schemas/AgentProvider'
+        model:
+          type: string
+        systemPrompt:
+          type: string
+          maxLength: 10000
+        apiKey:
+          type: string
+        contextWindowMessages:
+          type: integer
+          minimum: 1
+          maximum: 50
+        includeContactMetadata:
+          type: boolean
+        maxTokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          maximum: 4096
+        temperature:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 2
+        triggerOnChannels:
+          type: array
+          items:
+            type: string
+        triggerOnMessageTypes:
+          type: array
+          items:
+            type: string
     AgentStats:
       type: object
       required:
@@ -562,15 +520,57 @@ components:
           type:
           - number
           - 'null'
-    AgentExecutionStatus:
-      type: string
-      description: Status of an agent execution.
-      enum:
-      - success
-      - error
-      - filtered
-      - rate_limited
-      - balance_insufficient
+    AgentExecution:
+      type: object
+      required:
+      - id
+      - agentId
+      - status
+      - inputTokens
+      - outputTokens
+      - latencyMs
+      - cost
+      - createdAt
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        inboundMessageId:
+          type: string
+        responseMessageId:
+          type:
+          - string
+          - 'null'
+        responseText:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/AgentExecutionStatus'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        inputTokens:
+          type: integer
+        outputTokens:
+          type: integer
+        latencyMs:
+          type: integer
+        cost:
+          type: number
+          description: Cost in USD.
+        createdAt:
+          type: string
+          format: date-time
+  parameters:
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

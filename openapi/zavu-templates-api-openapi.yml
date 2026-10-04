@@ -215,123 +215,6 @@ paths:
       - Templates
 components:
   schemas:
-    TemplateCreateRequest:
-      type: object
-      required:
-      - name
-      - language
-      - body
-      properties:
-        name:
-          type: string
-        language:
-          type: string
-          default: en
-        body:
-          type: string
-          description: Default template body. Used when no channel-specific body is set.
-        smsBody:
-          type: string
-          description: Channel-specific body for SMS. Falls back to `body` if not set.
-        telegramBody:
-          type: string
-          description: Channel-specific body for Telegram. Falls back to `body` if not set.
-        instagramBody:
-          type: string
-          description: Channel-specific body for Instagram. Falls back to `body` if not set.
-        whatsappCategory:
-          $ref: '#/components/schemas/WhatsAppCategory'
-        headerType:
-          type: string
-          description: Type of header for the template.
-          enum:
-          - text
-          - image
-          - video
-          - document
-        headerContent:
-          type: string
-          description: Header content (text string or media URL).
-        footer:
-          type: string
-          description: Footer text for the template.
-          maxLength: 60
-        variables:
-          type: array
-          items:
-            type: string
-        buttons:
-          type: array
-          description: Template buttons (max 3).
-          maxItems: 3
-          items:
-            type: object
-            required:
-            - type
-            - text
-            properties:
-              type:
-                type: string
-                enum:
-                - quick_reply
-                - url
-                - phone
-                - otp
-              text:
-                type: string
-                maxLength: 25
-              url:
-                type: string
-                format: uri
-                description: Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
-              example:
-                type: string
-                description: Sample value Meta uses to review templates with a dynamic URL button. Substituted into `{{1}}` of the URL when the template is submitted to Meta. Only meaningful when `url` contains `{{1}}`; ignored for static URLs.
-                example: ORD-12345
-              phoneNumber:
-                type: string
-              otpType:
-                type: string
-                enum:
-                - COPY_CODE
-                - ONE_TAP
-                description: Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
-              packageName:
-                type: string
-                description: Android package name. Required for ONE_TAP buttons.
-              signatureHash:
-                type: string
-                description: Android app signature hash. Required for ONE_TAP buttons.
-        addSecurityRecommendation:
-          type: boolean
-          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
-        codeExpirationMinutes:
-          type: integer
-          minimum: 1
-          maximum: 90
-          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    WhatsAppCategory:
-      type: string
-      description: WhatsApp template category.
-      enum:
-      - UTILITY
-      - MARKETING
-      - AUTHENTICATION
     Template:
       type: object
       required:
@@ -449,6 +332,123 @@ components:
         updatedAt:
           type: string
           format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    TemplateCreateRequest:
+      type: object
+      required:
+      - name
+      - language
+      - body
+      properties:
+        name:
+          type: string
+        language:
+          type: string
+          default: en
+        body:
+          type: string
+          description: Default template body. Used when no channel-specific body is set.
+        smsBody:
+          type: string
+          description: Channel-specific body for SMS. Falls back to `body` if not set.
+        telegramBody:
+          type: string
+          description: Channel-specific body for Telegram. Falls back to `body` if not set.
+        instagramBody:
+          type: string
+          description: Channel-specific body for Instagram. Falls back to `body` if not set.
+        whatsappCategory:
+          $ref: '#/components/schemas/WhatsAppCategory'
+        headerType:
+          type: string
+          description: Type of header for the template.
+          enum:
+          - text
+          - image
+          - video
+          - document
+        headerContent:
+          type: string
+          description: Header content (text string or media URL).
+        footer:
+          type: string
+          description: Footer text for the template.
+          maxLength: 60
+        variables:
+          type: array
+          items:
+            type: string
+        buttons:
+          type: array
+          description: Template buttons (max 3).
+          maxItems: 3
+          items:
+            type: object
+            required:
+            - type
+            - text
+            properties:
+              type:
+                type: string
+                enum:
+                - quick_reply
+                - url
+                - phone
+                - otp
+              text:
+                type: string
+                maxLength: 25
+              url:
+                type: string
+                format: uri
+                description: Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
+              example:
+                type: string
+                description: Sample value Meta uses to review templates with a dynamic URL button. Substituted into `{{1}}` of the URL when the template is submitted to Meta. Only meaningful when `url` contains `{{1}}`; ignored for static URLs.
+                example: ORD-12345
+              phoneNumber:
+                type: string
+              otpType:
+                type: string
+                enum:
+                - COPY_CODE
+                - ONE_TAP
+                description: Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
+              packageName:
+                type: string
+                description: Android package name. Required for ONE_TAP buttons.
+              signatureHash:
+                type: string
+                description: Android app signature hash. Required for ONE_TAP buttons.
+        addSecurityRecommendation:
+          type: boolean
+          description: Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+        codeExpirationMinutes:
+          type: integer
+          minimum: 1
+          maximum: 90
+          description: Code expiration time in minutes. Only for AUTHENTICATION templates.
+    WhatsAppCategory:
+      type: string
+      description: WhatsApp template category.
+      enum:
+      - UTILITY
+      - MARKETING
+      - AUTHENTICATION
   parameters:
     TemplateIdParam:
       name: templateId

@@ -584,15 +584,13 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    WhatsAppAltSessionCreateRequest:
+    WhatsAppAltEgressNodeResponse:
       type: object
+      required:
+      - node
       properties:
-        displayName:
-          type: string
-          maxLength: 200
-          description: Optional label for the session.
-        egress:
-          $ref: '#/components/schemas/WhatsAppAltEgressInput'
+        node:
+          $ref: '#/components/schemas/WhatsAppAltEgressNode'
     WhatsAppAltEgressNode:
       type: object
       required:
@@ -636,42 +634,6 @@ components:
         label:
           type: string
           maxLength: 100
-    WhatsAppAltSessionResponse:
-      type: object
-      required:
-      - session
-      properties:
-        session:
-          $ref: '#/components/schemas/WhatsAppAltSession'
-    WhatsAppAltEgressNodeStatus:
-      type: string
-      description: pending = paired but never connected; online = tunnel is live; offline = the last tunnel dropped.
-      enum:
-      - pending
-      - online
-      - offline
-    WhatsAppAltEgressKind:
-      type: string
-      description: 'How a WhatsApp Alternative session reaches WhatsApp.
-
-        - `external`: managed Zavu proxy (an in-country mobile/residential IP). Default.
-
-        - `android`: a customer-owned Android egress device that lends its IP (requires `nodeId`).
-
-
-        `direct` (Zavu server IP) is a guaranteed ban and cannot be set through the API; it may only appear on legacy sessions.'
-      enum:
-      - external
-      - android
-      - direct
-    WhatsAppAltProxyStatusResponse:
-      type: object
-      required:
-      - zavuProxyAvailable
-      properties:
-        zavuProxyAvailable:
-          type: boolean
-          description: Whether the managed Zavu proxy egress (`egress.kind = external`) is currently offered. When false, pair an Android egress node instead.
     Error:
       type: object
       required:
@@ -687,16 +649,13 @@ components:
         details:
           type: object
           additionalProperties: true
-    WhatsAppAltEgressNodePairingResponse:
-      type: object
-      required:
-      - node
-      - pairing
-      properties:
-        node:
-          $ref: '#/components/schemas/WhatsAppAltEgressNode'
-        pairing:
-          $ref: '#/components/schemas/WhatsAppAltPairing'
+    WhatsAppAltEgressNodeStatus:
+      type: string
+      description: pending = paired but never connected; online = tunnel is live; offline = the last tunnel dropped.
+      enum:
+      - pending
+      - online
+      - offline
     WhatsAppAltPairing:
       type: object
       required:
@@ -717,77 +676,6 @@ components:
           type: string
           format: date-time
           description: When the pairing token expires.
-    WhatsAppAltEgressInput:
-      type: object
-      description: Egress to set on a session. Only `external` (managed Zavu proxy) and `android` (a customer device) are accepted — `direct` is a guaranteed ban and is rejected.
-      required:
-      - kind
-      properties:
-        kind:
-          type: string
-          enum:
-          - external
-          - android
-        nodeId:
-          type: string
-          description: Egress node ID. Required when `kind` is `android`.
-        country:
-          type: string
-          minLength: 2
-          maxLength: 2
-          description: ISO 3166-1 alpha-2 country code to geo-match the proxy exit. Optional; auto-derived from the number when omitted.
-          example: cl
-    WhatsAppAltSession:
-      type: object
-      required:
-      - id
-      - status
-      - egress
-      - createdAt
-      properties:
-        id:
-          type: string
-          example: jd7x2k3m4n5p6q7r8s9t0
-        displayName:
-          type: string
-        status:
-          $ref: '#/components/schemas/WhatsAppAltSessionStatus'
-        qrCode:
-          type: string
-          description: QR payload to render as a QR code and scan from the phone's WhatsApp (Linked devices → Link a device). Present only while `status` is `qr_ready`. Poll `GET /v1/whatsapp-alt/sessions/{sessionId}` until it appears; it rotates until scanned.
-        phoneNumber:
-          type: string
-          description: Linked WhatsApp number in E.164 format, once the session is ready.
-          example: '+56912345678'
-        pushName:
-          type: string
-          description: WhatsApp profile name of the linked account.
-        egress:
-          $ref: '#/components/schemas/WhatsAppAltEgressSpec'
-        senderId:
-          type: string
-          description: ID of the sender this session is linked to, if any.
-        lastError:
-          type:
-          - string
-          - 'null'
-        lastConnectedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    WhatsAppAltLinkSenderRequest:
-      type: object
-      required:
-      - senderId
-      properties:
-        senderId:
-          type: string
-          description: Sender to attach this session to. The sender's outbound WhatsApp traffic then routes through this session, and inbound messages are attributed to it.
     WhatsAppAltEgressSpec:
       type: object
       description: Egress routing for a WhatsApp Alternative session.
@@ -834,13 +722,125 @@ components:
       - authenticating
       - ready
       - failed
-    WhatsAppAltEgressNodeResponse:
+    WhatsAppAltSessionCreateRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          maxLength: 200
+          description: Optional label for the session.
+        egress:
+          $ref: '#/components/schemas/WhatsAppAltEgressInput'
+    WhatsAppAltSession:
+      type: object
+      required:
+      - id
+      - status
+      - egress
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: jd7x2k3m4n5p6q7r8s9t0
+        displayName:
+          type: string
+        status:
+          $ref: '#/components/schemas/WhatsAppAltSessionStatus'
+        qrCode:
+          type: string
+          description: QR payload to render as a QR code and scan from the phone's WhatsApp (Linked devices → Link a device). Present only while `status` is `qr_ready`. Poll `GET /v1/whatsapp-alt/sessions/{sessionId}` until it appears; it rotates until scanned.
+        phoneNumber:
+          type: string
+          description: Linked WhatsApp number in E.164 format, once the session is ready.
+          example: '+56912345678'
+        pushName:
+          type: string
+          description: WhatsApp profile name of the linked account.
+        egress:
+          $ref: '#/components/schemas/WhatsAppAltEgressSpec'
+        senderId:
+          type: string
+          description: ID of the sender this session is linked to, if any.
+        lastError:
+          type:
+          - string
+          - 'null'
+        lastConnectedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WhatsAppAltEgressNodePairingResponse:
       type: object
       required:
       - node
+      - pairing
       properties:
         node:
           $ref: '#/components/schemas/WhatsAppAltEgressNode'
+        pairing:
+          $ref: '#/components/schemas/WhatsAppAltPairing'
+    WhatsAppAltProxyStatusResponse:
+      type: object
+      required:
+      - zavuProxyAvailable
+      properties:
+        zavuProxyAvailable:
+          type: boolean
+          description: Whether the managed Zavu proxy egress (`egress.kind = external`) is currently offered. When false, pair an Android egress node instead.
+    WhatsAppAltSessionResponse:
+      type: object
+      required:
+      - session
+      properties:
+        session:
+          $ref: '#/components/schemas/WhatsAppAltSession'
+    WhatsAppAltEgressInput:
+      type: object
+      description: Egress to set on a session. Only `external` (managed Zavu proxy) and `android` (a customer device) are accepted — `direct` is a guaranteed ban and is rejected.
+      required:
+      - kind
+      properties:
+        kind:
+          type: string
+          enum:
+          - external
+          - android
+        nodeId:
+          type: string
+          description: Egress node ID. Required when `kind` is `android`.
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: ISO 3166-1 alpha-2 country code to geo-match the proxy exit. Optional; auto-derived from the number when omitted.
+          example: cl
+    WhatsAppAltLinkSenderRequest:
+      type: object
+      required:
+      - senderId
+      properties:
+        senderId:
+          type: string
+          description: Sender to attach this session to. The sender's outbound WhatsApp traffic then routes through this session, and inbound messages are attributed to it.
+    WhatsAppAltEgressKind:
+      type: string
+      description: 'How a WhatsApp Alternative session reaches WhatsApp.
+
+        - `external`: managed Zavu proxy (an in-country mobile/residential IP). Default.
+
+        - `android`: a customer-owned Android egress device that lends its IP (requires `nodeId`).
+
+
+        `direct` (Zavu server IP) is a guaranteed ban and cannot be set through the API; it may only appear on legacy sessions.'
+      enum:
+      - external
+      - android
+      - direct
   securitySchemes:
     bearerAuth:
       type: http

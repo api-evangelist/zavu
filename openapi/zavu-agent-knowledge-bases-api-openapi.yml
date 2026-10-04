@@ -404,52 +404,7 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    DocumentIdParam:
-      name: docId
-      in: path
-      required: true
-      schema:
-        type: string
-    KnowledgeBaseIdParam:
-      name: kbId
-      in: path
-      required: true
-      schema:
-        type: string
-    SenderIdParam:
-      name: senderId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
-    DocumentCreateRequest:
-      type: object
-      required:
-      - title
-      - content
-      properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 100000
-    DocumentResponse:
-      type: object
-      required:
-      - document
-      properties:
-        document:
-          $ref: '#/components/schemas/AgentDocument'
-    KnowledgeBaseResponse:
-      type: object
-      required:
-      - knowledgeBase
-      properties:
-        knowledgeBase:
-          $ref: '#/components/schemas/AgentKnowledgeBase'
     KnowledgeBaseCreateRequest:
       type: object
       required:
@@ -460,31 +415,13 @@ components:
           maxLength: 100
         description:
           type: string
-    Error:
+    DocumentResponse:
       type: object
       required:
-      - code
-      - message
+      - document
       properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    DocumentUpdateRequest:
-      type: object
-      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
-      properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 500000
+        document:
+          $ref: '#/components/schemas/AgentDocument'
     AgentKnowledgeBase:
       type: object
       required:
@@ -516,6 +453,40 @@ components:
         updatedAt:
           type: string
           format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    DocumentCreateRequest:
+      type: object
+      required:
+      - title
+      - content
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 100000
+    KnowledgeBaseResponse:
+      type: object
+      required:
+      - knowledgeBase
+      properties:
+        knowledgeBase:
+          $ref: '#/components/schemas/AgentKnowledgeBase'
     AgentDocument:
       type: object
       required:
@@ -559,6 +530,35 @@ components:
           type:
           - string
           - 'null'
+    DocumentUpdateRequest:
+      type: object
+      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 500000
+  parameters:
+    KnowledgeBaseIdParam:
+      name: kbId
+      in: path
+      required: true
+      schema:
+        type: string
+    DocumentIdParam:
+      name: docId
+      in: path
+      required: true
+      schema:
+        type: string
+    SenderIdParam:
+      name: senderId
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

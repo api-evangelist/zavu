@@ -424,11 +424,13 @@ paths:
       description: Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
 components:
   schemas:
-    SubAccountStatus:
-      type: string
-      enum:
-      - active
-      - inactive
+    SubAccountResponse:
+      type: object
+      required:
+      - subAccount
+      properties:
+        subAccount:
+          $ref: '#/components/schemas/SubAccount'
     SubAccountApiKey:
       type: object
       required:
@@ -467,43 +469,6 @@ components:
           - 'null'
         createdAt:
           type: number
-    SubAccountApiKeyCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        environment:
-          type: string
-          enum:
-          - live
-          - test
-          default: live
-        permissions:
-          type: array
-          items:
-            type: string
-    SubAccountCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          maxLength: 200
-          description: Name of the sub-account.
-          example: Client ABC
-        externalId:
-          type: string
-          description: External reference ID for your own tracking.
-        creditLimit:
-          type: integer
-          minimum: 0
-          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
-        metadata:
-          type: object
-          additionalProperties: true
     Error:
       type: object
       required:
@@ -519,13 +484,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    SubAccountResponse:
-      type: object
-      required:
-      - subAccount
-      properties:
-        subAccount:
-          $ref: '#/components/schemas/SubAccount'
     SubAccount:
       type: object
       required:
@@ -608,6 +566,48 @@ components:
           additionalProperties: true
         status:
           $ref: '#/components/schemas/SubAccountStatus'
+    SubAccountApiKeyCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+          default: live
+        permissions:
+          type: array
+          items:
+            type: string
+    SubAccountStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+    SubAccountCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          description: Name of the sub-account.
+          example: Client ABC
+        externalId:
+          type: string
+          description: External reference ID for your own tracking.
+        creditLimit:
+          type: integer
+          minimum: 0
+          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
+        metadata:
+          type: object
+          additionalProperties: true
   parameters:
     SubAccountIdParam:
       name: id

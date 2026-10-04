@@ -241,12 +241,6 @@ components:
           type: string
           description: The URL to submit for verification.
           example: https://example.com/page
-    VerifiedUrlApprovalType:
-      type: string
-      description: How the URL was approved or rejected.
-      enum:
-      - manual
-      - auto_web_risk
     Error:
       type: object
       required:
@@ -269,6 +263,12 @@ components:
       properties:
         url:
           $ref: '#/components/schemas/VerifiedUrl'
+    VerifiedUrlApprovalType:
+      type: string
+      description: How the URL was approved or rejected.
+      enum:
+      - manual
+      - auto_web_risk
     VerifiedUrl:
       type: object
       required:

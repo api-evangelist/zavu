@@ -46,15 +46,21 @@ paths:
       - Introspect
 components:
   schemas:
-    LineType:
-      type: string
-      description: Type of phone line.
-      enum:
-      - mobile
-      - landline
-      - voip
-      - toll_free
-      - unknown
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     Carrier:
       type: object
       description: Carrier information for the phone number.
@@ -67,6 +73,23 @@ components:
           example: Verizon Wireless
         type:
           $ref: '#/components/schemas/LineType'
+    PhoneIntrospectionRequest:
+      type: object
+      required:
+      - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          example: '+56912345678'
+    LineType:
+      type: string
+      description: Type of phone line.
+      enum:
+      - mobile
+      - landline
+      - voip
+      - toll_free
+      - unknown
     PhoneIntrospectionResponse:
       type: object
       required:
@@ -94,29 +117,6 @@ components:
           items:
             type: string
           description: List of available messaging channels for this phone number.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    PhoneIntrospectionRequest:
-      type: object
-      required:
-      - phoneNumber
-      properties:
-        phoneNumber:
-          type: string
-          example: '+56912345678'
   securitySchemes:
     bearerAuth:
       type: http

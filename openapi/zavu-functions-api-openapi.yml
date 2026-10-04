@@ -789,19 +789,184 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    FunctionDeployRequest:
+    FunctionLogsResponse:
       type: object
-      description: Optional source/dependencies update applied before deploying. Omit both fields to redeploy the current draft as-is.
+      required:
+      - events
       properties:
-        sourceCode:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/FunctionLogEvent'
+        nextToken:
+          type:
+          - string
+          - 'null'
+          description: Pass to the next request to fetch the following page of logs.
+    ZavuFunctionRuntime:
+      type: string
+      description: Runtime the function is deployed on.
+      enum:
+      - nodejs24
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
           type: string
-          description: New source code to publish (replaces the draft).
-          maxLength: 900000
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    FunctionDeploymentResponse:
+      type: object
+      required:
+      - deployment
+      properties:
+        deployment:
+          $ref: '#/components/schemas/FunctionDeployment'
+    ZavuFunctionResponse:
+      type: object
+      required:
+      - function
+      properties:
+        function:
+          $ref: '#/components/schemas/ZavuFunction'
+    ZavuFunction:
+      type: object
+      description: A Zavu Function — user-supplied TypeScript that runs in Zavu Cloud and reacts to messaging events or HTTP requests.
+      required:
+      - id
+      - slug
+      - name
+      - runtime
+      - status
+      - timeoutSec
+      - memoryMb
+      - httpEnabled
+      - dependencies
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          example: fn_abc123
+        slug:
+          type: string
+          description: URL-safe identifier, unique per project.
+          example: order-bot
+        name:
+          type: string
+          example: Order Bot
+        description:
+          type:
+          - string
+          - 'null'
+        runtime:
+          $ref: '#/components/schemas/ZavuFunctionRuntime'
+        status:
+          $ref: '#/components/schemas/ZavuFunctionStatus'
+        timeoutSec:
+          type: integer
+          description: Per-invocation timeout in seconds.
+          example: 10
+        memoryMb:
+          type: integer
+          description: Memory allocation in MB.
+          example: 256
+        httpEnabled:
+          type: boolean
+          description: Whether the function can be invoked over HTTPS via its public URL.
+        publicUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: HTTPS endpoint when httpEnabled is true.
         dependencies:
           type: object
           additionalProperties:
             type: string
-          description: New dependency map (replaces existing dependencies).
+          description: npm dependencies installed in the function bundle. Keys are package names, values are semver ranges.
+          example:
+            openai: ^4.20.0
+        activeDeploymentId:
+          type:
+          - string
+          - 'null'
+          description: ID of the deployment currently serving traffic.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ZavuFunctionStatus:
+      type: string
+      description: Lifecycle status of a Zavu Function.
+      enum:
+      - draft
+      - bundling
+      - deploying
+      - active
+      - failed
+      - disabled
+    FunctionLogEvent:
+      type: object
+      required:
+      - timestamp
+      - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+    FunctionDeployment:
+      type: object
+      required:
+      - id
+      - functionId
+      - version
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: fnd_abc123
+        functionId:
+          type: string
+        version:
+          type: integer
+          description: Monotonically increasing deployment version, starting at 1.
+        status:
+          $ref: '#/components/schemas/FunctionDeploymentStatus'
+        sourceCodeBytes:
+          type:
+          - integer
+          - 'null'
+        bundleBytes:
+          type:
+          - integer
+          - 'null'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+          description: Failure reason when status is 'failed'.
+        deployedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
     FunctionTrigger:
       type: object
       description: A subscription that runs a Zavu Function when a messaging event fires.
@@ -882,6 +1047,19 @@ components:
           description: npm dependencies. Keys are package names, values are semver ranges.
           example:
             openai: ^4.20.0
+    FunctionDeployRequest:
+      type: object
+      description: Optional source/dependencies update applied before deploying. Omit both fields to redeploy the current draft as-is.
+      properties:
+        sourceCode:
+          type: string
+          description: New source code to publish (replaces the draft).
+          maxLength: 900000
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+          description: New dependency map (replaces existing dependencies).
     FunctionDeploymentStatus:
       type: string
       description: Stage of a function deployment.
@@ -893,197 +1071,19 @@ components:
       - active
       - failed
       - superseded
-    ZavuFunction:
-      type: object
-      description: A Zavu Function — user-supplied TypeScript that runs in Zavu Cloud and reacts to messaging events or HTTP requests.
-      required:
-      - id
-      - slug
-      - name
-      - runtime
-      - status
-      - timeoutSec
-      - memoryMb
-      - httpEnabled
-      - dependencies
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-          example: fn_abc123
-        slug:
-          type: string
-          description: URL-safe identifier, unique per project.
-          example: order-bot
-        name:
-          type: string
-          example: Order Bot
-        description:
-          type:
-          - string
-          - 'null'
-        runtime:
-          $ref: '#/components/schemas/ZavuFunctionRuntime'
-        status:
-          $ref: '#/components/schemas/ZavuFunctionStatus'
-        timeoutSec:
-          type: integer
-          description: Per-invocation timeout in seconds.
-          example: 10
-        memoryMb:
-          type: integer
-          description: Memory allocation in MB.
-          example: 256
-        httpEnabled:
-          type: boolean
-          description: Whether the function can be invoked over HTTPS via its public URL.
-        publicUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: HTTPS endpoint when httpEnabled is true.
-        dependencies:
-          type: object
-          additionalProperties:
-            type: string
-          description: npm dependencies installed in the function bundle. Keys are package names, values are semver ranges.
-          example:
-            openai: ^4.20.0
-        activeDeploymentId:
-          type:
-          - string
-          - 'null'
-          description: ID of the deployment currently serving traffic.
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    ZavuFunctionResponse:
-      type: object
-      required:
-      - function
-      properties:
-        function:
-          $ref: '#/components/schemas/ZavuFunction'
-    FunctionLogsResponse:
-      type: object
-      required:
-      - events
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/FunctionLogEvent'
-        nextToken:
-          type:
-          - string
-          - 'null'
-          description: Pass to the next request to fetch the following page of logs.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    FunctionDeployment:
-      type: object
-      required:
-      - id
-      - functionId
-      - version
-      - status
-      - createdAt
-      properties:
-        id:
-          type: string
-          example: fnd_abc123
-        functionId:
-          type: string
-        version:
-          type: integer
-          description: Monotonically increasing deployment version, starting at 1.
-        status:
-          $ref: '#/components/schemas/FunctionDeploymentStatus'
-        sourceCodeBytes:
-          type:
-          - integer
-          - 'null'
-        bundleBytes:
-          type:
-          - integer
-          - 'null'
-        errorMessage:
-          type:
-          - string
-          - 'null'
-          description: Failure reason when status is 'failed'.
-        deployedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-    FunctionLogEvent:
-      type: object
-      required:
-      - timestamp
-      - message
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-        message:
-          type: string
-    FunctionDeploymentResponse:
-      type: object
-      required:
-      - deployment
-      properties:
-        deployment:
-          $ref: '#/components/schemas/FunctionDeployment'
-    ZavuFunctionStatus:
-      type: string
-      description: Lifecycle status of a Zavu Function.
-      enum:
-      - draft
-      - bundling
-      - deploying
-      - active
-      - failed
-      - disabled
-    ZavuFunctionRuntime:
-      type: string
-      description: Runtime the function is deployed on.
-      enum:
-      - nodejs24
   parameters:
-    FunctionDeploymentIdParam:
-      name: deploymentId
-      in: path
-      required: true
-      description: Function deployment ID.
-      schema:
-        type: string
     FunctionIdParam:
       name: functionId
       in: path
       required: true
       description: Zavu Function ID.
+      schema:
+        type: string
+    FunctionDeploymentIdParam:
+      name: deploymentId
+      in: path
+      required: true
+      description: Function deployment ID.
       schema:
         type: string
   securitySchemes:

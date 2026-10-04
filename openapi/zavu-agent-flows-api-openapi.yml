@@ -294,6 +294,118 @@ components:
       - intent
       - always
       - manual
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
+    FlowStepType:
+      type: string
+      description: Type of flow step.
+      enum:
+      - message
+      - collect
+      - condition
+      - tool
+      - llm
+      - transfer
+    FlowUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+        priority:
+          type: integer
+    FlowTrigger:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/FlowTriggerType'
+        keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords that trigger the flow (for keyword type).
+        intent:
+          type: string
+          description: Intent that triggers the flow (for intent type).
+    FlowCreateRequest:
+      type: object
+      required:
+      - name
+      - trigger
+      - steps
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        trigger:
+          $ref: '#/components/schemas/FlowTrigger'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowStep'
+          minItems: 1
+        enabled:
+          type: boolean
+          default: false
+        priority:
+          type: integer
+          default: 0
+    FlowResponse:
+      type: object
+      required:
+      - flow
+      properties:
+        flow:
+          $ref: '#/components/schemas/AgentFlow'
+    FlowStep:
+      type: object
+      required:
+      - id
+      - type
+      - config
+      properties:
+        id:
+          type: string
+          description: Unique step identifier.
+        type:
+          $ref: '#/components/schemas/FlowStepType'
+        config:
+          type: object
+          description: Step configuration (varies by type).
+          additionalProperties: true
+        nextStepId:
+          type:
+          - string
+          - 'null'
+          description: ID of the next step to execute.
     AgentFlow:
       type: object
       required:
@@ -334,118 +446,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    FlowUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-        trigger:
-          $ref: '#/components/schemas/FlowTrigger'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlowStep'
-          minItems: 1
-        enabled:
-          type: boolean
-        priority:
-          type: integer
-    FlowStep:
-      type: object
-      required:
-      - id
-      - type
-      - config
-      properties:
-        id:
-          type: string
-          description: Unique step identifier.
-        type:
-          $ref: '#/components/schemas/FlowStepType'
-        config:
-          type: object
-          description: Step configuration (varies by type).
-          additionalProperties: true
-        nextStepId:
-          type:
-          - string
-          - 'null'
-          description: ID of the next step to execute.
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    FlowStepType:
-      type: string
-      description: Type of flow step.
-      enum:
-      - message
-      - collect
-      - condition
-      - tool
-      - llm
-      - transfer
-    FlowTrigger:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          $ref: '#/components/schemas/FlowTriggerType'
-        keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords that trigger the flow (for keyword type).
-        intent:
-          type: string
-          description: Intent that triggers the flow (for intent type).
-    FlowResponse:
-      type: object
-      required:
-      - flow
-      properties:
-        flow:
-          $ref: '#/components/schemas/AgentFlow'
-    FlowCreateRequest:
-      type: object
-      required:
-      - name
-      - trigger
-      - steps
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-        trigger:
-          $ref: '#/components/schemas/FlowTrigger'
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlowStep'
-          minItems: 1
-        enabled:
-          type: boolean
-          default: false
-        priority:
-          type: integer
-          default: 0
   parameters:
     FlowIdParam:
       name: flowId
