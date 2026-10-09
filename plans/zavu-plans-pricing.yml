@@ -139,3 +139,150 @@ rate_limit_statements:
 - Memories stored per project 5k
 - Memories stored per project 50k
 - At zero, sends are rejected The API returns 402 with code insufficient_balance
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  - seat
+  - subscription
+  units:
+  - compute
+  - data
+  - message
+  - object
+  - seat
+  plans:
+  - name: Free Plan
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Pro
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Channel connections
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - object
+    periods:
+    - month
+  - name: WhatsApp account
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - object
+    periods:
+    - month
+  - name: Phone number
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Transactional email
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - message
+    periods:
+    - other
+  - name: Marketing email
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - message
+    periods:
+    - other
+  - name: SMS
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - message
+    periods:
+    - other
+  - name: Voice Agents
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - other
+  - name: Telephony
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - other
+  - name: Function calls
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Agent memory
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Media storage
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: 10DLC registration (US)
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Dedicated email IP
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Team members
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
