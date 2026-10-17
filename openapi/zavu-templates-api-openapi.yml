@@ -332,21 +332,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     TemplateCreateRequest:
       type: object
       required:
@@ -449,6 +434,21 @@ components:
       - UTILITY
       - MARKETING
       - AUTHENTICATION
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
   parameters:
     TemplateIdParam:
       name: templateId

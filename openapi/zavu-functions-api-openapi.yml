@@ -789,6 +789,17 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    FunctionDeploymentStatus:
+      type: string
+      description: Stage of a function deployment.
+      enum:
+      - pending
+      - bundling
+      - uploading
+      - publishing
+      - active
+      - failed
+      - superseded
     FunctionLogsResponse:
       type: object
       required:
@@ -803,40 +814,65 @@ components:
           - string
           - 'null'
           description: Pass to the next request to fetch the following page of logs.
-    ZavuFunctionRuntime:
-      type: string
-      description: Runtime the function is deployed on.
-      enum:
-      - nodejs24
-    Error:
+    FunctionCreateRequest:
       type: object
       required:
-      - code
-      - message
+      - slug
+      - name
       properties:
-        code:
+        slug:
           type: string
-          example: invalid_request
-        message:
+          description: URL-safe identifier (lowercase, digits, hyphens). Must be unique per project.
+          minLength: 1
+          maxLength: 50
+          example: order-bot
+        name:
           type: string
-          example: Phone number is invalid
-        details:
+          maxLength: 80
+          example: Order Bot
+        description:
+          type: string
+          maxLength: 280
+        runtime:
+          $ref: '#/components/schemas/ZavuFunctionRuntime'
+        timeoutSec:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 10
+        memoryMb:
+          type: integer
+          enum:
+          - 128
+          - 256
+          - 512
+          - 1024
+          default: 256
+        httpEnabled:
+          type: boolean
+          default: false
+          description: Whether to expose a public HTTPS URL for this function.
+        sourceCode:
+          type: string
+          description: TypeScript source code for the function entry point (max ~900KB).
+          maxLength: 900000
+        dependencies:
           type: object
-          additionalProperties: true
-    FunctionDeploymentResponse:
-      type: object
-      required:
-      - deployment
-      properties:
-        deployment:
-          $ref: '#/components/schemas/FunctionDeployment'
-    ZavuFunctionResponse:
-      type: object
-      required:
-      - function
-      properties:
-        function:
-          $ref: '#/components/schemas/ZavuFunction'
+          additionalProperties:
+            type: string
+          description: npm dependencies. Keys are package names, values are semver ranges.
+          example:
+            openai: ^4.20.0
+    ZavuFunctionStatus:
+      type: string
+      description: Lifecycle status of a Zavu Function.
+      enum:
+      - draft
+      - bundling
+      - deploying
+      - active
+      - failed
+      - disabled
     ZavuFunction:
       type: object
       description: A Zavu Function — user-supplied TypeScript that runs in Zavu Cloud and reacts to messaging events or HTTP requests.
@@ -906,16 +942,69 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ZavuFunctionStatus:
+    ZavuFunctionRuntime:
       type: string
-      description: Lifecycle status of a Zavu Function.
+      description: Runtime the function is deployed on.
       enum:
-      - draft
-      - bundling
-      - deploying
+      - nodejs24
+    FunctionTrigger:
+      type: object
+      description: A subscription that runs a Zavu Function when a messaging event fires.
+      required:
+      - id
+      - functionId
+      - eventType
       - active
-      - failed
-      - disabled
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        functionId:
+          type: string
+        eventType:
+          type: string
+          description: Event type that fires the function. See GET /v1/functions/event-types for the supported list.
+        senderId:
+          type:
+          - string
+          - 'null'
+          description: Restrict the trigger to a single sender. Null means all senders in the project.
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FunctionDeployRequest:
+      type: object
+      description: Optional source/dependencies update applied before deploying. Omit both fields to redeploy the current draft as-is.
+      properties:
+        sourceCode:
+          type: string
+          description: New source code to publish (replaces the draft).
+          maxLength: 900000
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+          description: New dependency map (replaces existing dependencies).
+    ZavuFunctionResponse:
+      type: object
+      required:
+      - function
+      properties:
+        function:
+          $ref: '#/components/schemas/ZavuFunction'
+    FunctionDeploymentResponse:
+      type: object
+      required:
+      - deployment
+      properties:
+        deployment:
+          $ref: '#/components/schemas/FunctionDeployment'
     FunctionLogEvent:
       type: object
       required:
@@ -967,123 +1056,34 @@ components:
         createdAt:
           type: string
           format: date-time
-    FunctionTrigger:
-      type: object
-      description: A subscription that runs a Zavu Function when a messaging event fires.
-      required:
-      - id
-      - functionId
-      - eventType
-      - active
-      - createdAt
-      - updatedAt
-      properties:
-        id:
-          type: string
-        functionId:
-          type: string
-        eventType:
-          type: string
-          description: Event type that fires the function. See GET /v1/functions/event-types for the supported list.
-        senderId:
-          type:
-          - string
-          - 'null'
-          description: Restrict the trigger to a single sender. Null means all senders in the project.
-        active:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    FunctionCreateRequest:
+    Error:
       type: object
       required:
-      - slug
-      - name
+      - code
+      - message
       properties:
-        slug:
+        code:
           type: string
-          description: URL-safe identifier (lowercase, digits, hyphens). Must be unique per project.
-          minLength: 1
-          maxLength: 50
-          example: order-bot
-        name:
+          example: invalid_request
+        message:
           type: string
-          maxLength: 80
-          example: Order Bot
-        description:
-          type: string
-          maxLength: 280
-        runtime:
-          $ref: '#/components/schemas/ZavuFunctionRuntime'
-        timeoutSec:
-          type: integer
-          minimum: 1
-          maximum: 30
-          default: 10
-        memoryMb:
-          type: integer
-          enum:
-          - 128
-          - 256
-          - 512
-          - 1024
-          default: 256
-        httpEnabled:
-          type: boolean
-          default: false
-          description: Whether to expose a public HTTPS URL for this function.
-        sourceCode:
-          type: string
-          description: TypeScript source code for the function entry point (max ~900KB).
-          maxLength: 900000
-        dependencies:
+          example: Phone number is invalid
+        details:
           type: object
-          additionalProperties:
-            type: string
-          description: npm dependencies. Keys are package names, values are semver ranges.
-          example:
-            openai: ^4.20.0
-    FunctionDeployRequest:
-      type: object
-      description: Optional source/dependencies update applied before deploying. Omit both fields to redeploy the current draft as-is.
-      properties:
-        sourceCode:
-          type: string
-          description: New source code to publish (replaces the draft).
-          maxLength: 900000
-        dependencies:
-          type: object
-          additionalProperties:
-            type: string
-          description: New dependency map (replaces existing dependencies).
-    FunctionDeploymentStatus:
-      type: string
-      description: Stage of a function deployment.
-      enum:
-      - pending
-      - bundling
-      - uploading
-      - publishing
-      - active
-      - failed
-      - superseded
+          additionalProperties: true
   parameters:
-    FunctionIdParam:
-      name: functionId
-      in: path
-      required: true
-      description: Zavu Function ID.
-      schema:
-        type: string
     FunctionDeploymentIdParam:
       name: deploymentId
       in: path
       required: true
       description: Function deployment ID.
+      schema:
+        type: string
+    FunctionIdParam:
+      name: functionId
+      in: path
+      required: true
+      description: Zavu Function ID.
       schema:
         type: string
   securitySchemes:

@@ -424,6 +424,48 @@ paths:
       description: Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
 components:
   schemas:
+    SubAccountCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          description: Name of the sub-account.
+          example: Client ABC
+        externalId:
+          type: string
+          description: External reference ID for your own tracking.
+        creditLimit:
+          type: integer
+          minimum: 0
+          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
+        metadata:
+          type: object
+          additionalProperties: true
+    SubAccountUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        externalId:
+          type: string
+        creditLimit:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties: true
+        status:
+          $ref: '#/components/schemas/SubAccountStatus'
+    SubAccountStatus:
+      type: string
+      enum:
+      - active
+      - inactive
     SubAccountResponse:
       type: object
       required:
@@ -469,21 +511,6 @@ components:
           - 'null'
         createdAt:
           type: number
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     SubAccount:
       type: object
       required:
@@ -524,6 +551,23 @@ components:
         createdAt:
           type: string
           format: date-time
+    SubAccountApiKeyCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        environment:
+          type: string
+          enum:
+          - live
+          - test
+          default: live
+        permissions:
+          type: array
+          items:
+            type: string
     BalanceResponse:
       type: object
       required:
@@ -549,78 +593,34 @@ components:
         isSubAccount:
           type: boolean
           description: Whether this API key belongs to a sub-account.
-    SubAccountUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        externalId:
-          type: string
-        creditLimit:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties: true
-        status:
-          $ref: '#/components/schemas/SubAccountStatus'
-    SubAccountApiKeyCreateRequest:
+    Error:
       type: object
       required:
-      - name
+      - code
+      - message
       properties:
-        name:
+        code:
           type: string
-        environment:
+          example: invalid_request
+        message:
           type: string
-          enum:
-          - live
-          - test
-          default: live
-        permissions:
-          type: array
-          items:
-            type: string
-    SubAccountStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-    SubAccountCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          maxLength: 200
-          description: Name of the sub-account.
-          example: Client ABC
-        externalId:
-          type: string
-          description: External reference ID for your own tracking.
-        creditLimit:
-          type: integer
-          minimum: 0
-          description: Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
-        metadata:
+          example: Phone number is invalid
+        details:
           type: object
           additionalProperties: true
   parameters:
-    SubAccountIdParam:
-      name: id
-      in: path
-      required: true
-      description: Sub-account ID.
-      schema:
-        type: string
     SubAccountApiKeyIdParam:
       name: keyId
       in: path
       required: true
       description: API key ID.
+      schema:
+        type: string
+    SubAccountIdParam:
+      name: id
+      in: path
+      required: true
+      description: Sub-account ID.
       schema:
         type: string
   securitySchemes:

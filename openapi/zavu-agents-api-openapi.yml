@@ -379,15 +379,6 @@ components:
         details:
           type: object
           additionalProperties: true
-    AgentProvider:
-      type: string
-      description: LLM provider for the AI agent.
-      enum:
-      - openai
-      - anthropic
-      - google
-      - mistral
-      - zavu
     AgentCreateRequest:
       type: object
       required:
@@ -437,22 +428,6 @@ components:
             type: string
           default:
           - text
-    AgentExecutionStatus:
-      type: string
-      description: Status of an agent execution.
-      enum:
-      - success
-      - error
-      - filtered
-      - rate_limited
-      - balance_insufficient
-    AgentResponse:
-      type: object
-      required:
-      - agent
-      properties:
-        agent:
-          $ref: '#/components/schemas/Agent'
     AgentUpdateRequest:
       type: object
       properties:
@@ -496,30 +471,6 @@ components:
           type: array
           items:
             type: string
-    AgentStats:
-      type: object
-      required:
-      - totalInvocations
-      - totalTokensUsed
-      - totalCost
-      - successCount
-      - errorCount
-      properties:
-        totalInvocations:
-          type: integer
-        totalTokensUsed:
-          type: integer
-        totalCost:
-          type: number
-          description: Total cost in USD.
-        successCount:
-          type: integer
-        errorCount:
-          type: integer
-        avgLatencyMs:
-          type:
-          - number
-          - 'null'
     AgentExecution:
       type: object
       required:
@@ -564,6 +515,55 @@ components:
         createdAt:
           type: string
           format: date-time
+    AgentResponse:
+      type: object
+      required:
+      - agent
+      properties:
+        agent:
+          $ref: '#/components/schemas/Agent'
+    AgentStats:
+      type: object
+      required:
+      - totalInvocations
+      - totalTokensUsed
+      - totalCost
+      - successCount
+      - errorCount
+      properties:
+        totalInvocations:
+          type: integer
+        totalTokensUsed:
+          type: integer
+        totalCost:
+          type: number
+          description: Total cost in USD.
+        successCount:
+          type: integer
+        errorCount:
+          type: integer
+        avgLatencyMs:
+          type:
+          - number
+          - 'null'
+    AgentProvider:
+      type: string
+      description: LLM provider for the AI agent.
+      enum:
+      - openai
+      - anthropic
+      - google
+      - mistral
+      - zavu
+    AgentExecutionStatus:
+      type: string
+      description: Status of an agent execution.
+      enum:
+      - success
+      - error
+      - filtered
+      - rate_limited
+      - balance_insufficient
   parameters:
     SenderIdParam:
       name: senderId

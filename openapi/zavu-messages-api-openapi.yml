@@ -499,115 +499,6 @@ paths:
       - Messages
 components:
   schemas:
-    MessageStatus:
-      type: string
-      enum:
-      - queued
-      - sending
-      - sent
-      - delivered
-      - read
-      - failed
-      - received
-      - pending_url_verification
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    Message:
-      type: object
-      required:
-      - id
-      - to
-      - status
-      - channel
-      - messageType
-      - createdAt
-      properties:
-        id:
-          type: string
-          example: jd7x2k3m4n5p6q7r8s9t0
-        to:
-          type: string
-          example: '+56912345678'
-        from:
-          type: string
-          example: '+13125551212'
-        senderId:
-          type: string
-          example: sender_12345
-        channel:
-          $ref: '#/components/schemas/Channel'
-        messageType:
-          $ref: '#/components/schemas/MessageType'
-        status:
-          $ref: '#/components/schemas/MessageStatus'
-        text:
-          type: string
-          description: Text content or caption.
-        content:
-          $ref: '#/components/schemas/MessageContent'
-        providerMessageId:
-          type: string
-          description: Message ID from the delivery provider.
-        errorCode:
-          type:
-          - string
-          - 'null'
-        errorMessage:
-          type:
-          - string
-          - 'null'
-        cost:
-          type:
-          - number
-          - 'null'
-          description: Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
-        costProvider:
-          type:
-          - number
-          - 'null'
-          description: Carrier and delivery cost in USD.
-        costTotal:
-          type:
-          - number
-          - 'null'
-          description: Total cost in USD (platform charge + delivery cost).
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    Channel:
-      type: string
-      description: Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
-      enum:
-      - auto
-      - sms
-      - sms_oneway
-      - whatsapp
-      - whatsapp_alt
-      - telegram
-      - email
-      - instagram
-      - messenger
-      - voice
     EmailAttachmentInput:
       type: object
       description: Email attachment. Provide either `content` (base64) or `path` (URL), not both.
@@ -696,6 +587,119 @@ components:
           maxItems: 50
           items:
             $ref: '#/components/schemas/EmailAttachmentInput'
+    ReactionRequest:
+      type: object
+      required:
+      - emoji
+      properties:
+        emoji:
+          type: string
+          description: Single emoji character to react with.
+          example: 👍
+    MessageResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          $ref: '#/components/schemas/Message'
+    Message:
+      type: object
+      required:
+      - id
+      - to
+      - status
+      - channel
+      - messageType
+      - createdAt
+      properties:
+        id:
+          type: string
+          example: jd7x2k3m4n5p6q7r8s9t0
+        to:
+          type: string
+          example: '+56912345678'
+        from:
+          type: string
+          example: '+13125551212'
+        senderId:
+          type: string
+          example: sender_12345
+        channel:
+          $ref: '#/components/schemas/Channel'
+        messageType:
+          $ref: '#/components/schemas/MessageType'
+        status:
+          $ref: '#/components/schemas/MessageStatus'
+        text:
+          type: string
+          description: Text content or caption.
+        content:
+          $ref: '#/components/schemas/MessageContent'
+        providerMessageId:
+          type: string
+          description: Message ID from the delivery provider.
+        errorCode:
+          type:
+          - string
+          - 'null'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        cost:
+          type:
+          - number
+          - 'null'
+          description: Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
+        costProvider:
+          type:
+          - number
+          - 'null'
+          description: Carrier and delivery cost in USD.
+        costTotal:
+          type:
+          - number
+          - 'null'
+          description: Total cost in USD (platform charge + delivery cost).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    MessageStatus:
+      type: string
+      enum:
+      - queued
+      - sending
+      - sent
+      - delivered
+      - read
+      - failed
+      - received
+      - pending_url_verification
+    MessageType:
+      type: string
+      description: Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
+      enum:
+      - text
+      - image
+      - video
+      - audio
+      - document
+      - sticker
+      - location
+      - contact
+      - buttons
+      - list
+      - cta_url
+      - reaction
+      - template
     MessageContent:
       type: object
       description: Content for non-text message types (WhatsApp and Telegram).
@@ -875,39 +879,35 @@ components:
             type: string
           example:
             '1': Jorge y Laura
-    MessageResponse:
+    Channel:
+      type: string
+      description: Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+      enum:
+      - auto
+      - sms
+      - sms_oneway
+      - whatsapp
+      - whatsapp_alt
+      - telegram
+      - email
+      - instagram
+      - messenger
+      - voice
+    Error:
       type: object
       required:
+      - code
       - message
       properties:
-        message:
-          $ref: '#/components/schemas/Message'
-    MessageType:
-      type: string
-      description: Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
-      enum:
-      - text
-      - image
-      - video
-      - audio
-      - document
-      - sticker
-      - location
-      - contact
-      - buttons
-      - list
-      - cta_url
-      - reaction
-      - template
-    ReactionRequest:
-      type: object
-      required:
-      - emoji
-      properties:
-        emoji:
+        code:
           type: string
-          description: Single emoji character to react with.
-          example: 👍
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
   parameters:
     SenderHeader:
       name: Zavu-Sender

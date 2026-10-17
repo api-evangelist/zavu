@@ -323,6 +323,134 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    RegulatoryDocumentStatus:
+      type: string
+      enum:
+      - pending
+      - uploaded
+      - verified
+      - rejected
+    RegulatoryDocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/RegulatoryDocument'
+    RegulatoryDocumentCreateRequest:
+      type: object
+      required:
+      - name
+      - documentType
+      - storageId
+      - mimeType
+      - fileSize
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        storageId:
+          type: string
+          description: Storage ID from the upload-url endpoint.
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+    AddressResponse:
+      type: object
+      required:
+      - address
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+    AddressCreateRequest:
+      type: object
+      required:
+      - streetAddress
+      - locality
+      - postalCode
+      - countryCode
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        businessName:
+          type: string
+          maxLength: 200
+        streetAddress:
+          type: string
+          maxLength: 200
+        extendedAddress:
+          type: string
+          maxLength: 100
+        locality:
+          type: string
+          maxLength: 100
+        administrativeArea:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 20
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: DE
+    RegulatoryDocument:
+      type: object
+      description: A regulatory document for phone number requirements.
+      required:
+      - id
+      - name
+      - documentType
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        documentType:
+          $ref: '#/components/schemas/RegulatoryDocumentType'
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+        status:
+          $ref: '#/components/schemas/RegulatoryDocumentStatus'
+        rejectionReason:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegulatoryDocumentType:
+      type: string
+      enum:
+      - passport
+      - national_id
+      - drivers_license
+      - utility_bill
+      - tax_id
+      - business_registration
+      - proof_of_address
+      - other
+    AddressStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+      - rejected
     UploadUrlResponse:
       type: object
       required:
@@ -332,34 +460,6 @@ components:
           type: string
           format: uri
           description: Pre-signed URL for uploading the file.
-    RegulatoryDocumentStatus:
-      type: string
-      enum:
-      - pending
-      - uploaded
-      - verified
-      - rejected
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    AddressStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-      - rejected
     Address:
       type: object
       description: A regulatory address for phone number requirements.
@@ -411,130 +511,30 @@ components:
         updatedAt:
           type: string
           format: date-time
-    RegulatoryDocumentCreateRequest:
+    Error:
       type: object
       required:
-      - name
-      - documentType
-      - storageId
-      - mimeType
-      - fileSize
+      - code
+      - message
       properties:
-        name:
+        code:
           type: string
-          maxLength: 200
-        documentType:
-          $ref: '#/components/schemas/RegulatoryDocumentType'
-        storageId:
+          example: invalid_request
+        message:
           type: string
-          description: Storage ID from the upload-url endpoint.
-        mimeType:
-          type: string
-        fileSize:
-          type: integer
-    RegulatoryDocument:
-      type: object
-      description: A regulatory document for phone number requirements.
-      required:
-      - id
-      - name
-      - documentType
-      - status
-      - createdAt
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        documentType:
-          $ref: '#/components/schemas/RegulatoryDocumentType'
-        mimeType:
-          type: string
-        fileSize:
-          type: integer
-        status:
-          $ref: '#/components/schemas/RegulatoryDocumentStatus'
-        rejectionReason:
-          type:
-          - string
-          - 'null'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    RegulatoryDocumentResponse:
-      type: object
-      required:
-      - document
-      properties:
-        document:
-          $ref: '#/components/schemas/RegulatoryDocument'
-    RegulatoryDocumentType:
-      type: string
-      enum:
-      - passport
-      - national_id
-      - drivers_license
-      - utility_bill
-      - tax_id
-      - business_registration
-      - proof_of_address
-      - other
-    AddressCreateRequest:
-      type: object
-      required:
-      - streetAddress
-      - locality
-      - postalCode
-      - countryCode
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-        lastName:
-          type: string
-          maxLength: 100
-        businessName:
-          type: string
-          maxLength: 200
-        streetAddress:
-          type: string
-          maxLength: 200
-        extendedAddress:
-          type: string
-          maxLength: 100
-        locality:
-          type: string
-          maxLength: 100
-        administrativeArea:
-          type: string
-          maxLength: 100
-        postalCode:
-          type: string
-          maxLength: 20
-        countryCode:
-          type: string
-          minLength: 2
-          maxLength: 2
-          example: DE
-    AddressResponse:
-      type: object
-      required:
-      - address
-      properties:
-        address:
-          $ref: '#/components/schemas/Address'
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
   parameters:
-    AddressIdParam:
-      name: addressId
+    RegulatoryDocumentIdParam:
+      name: documentId
       in: path
       required: true
       schema:
         type: string
-    RegulatoryDocumentIdParam:
-      name: documentId
+    AddressIdParam:
+      name: addressId
       in: path
       required: true
       schema:

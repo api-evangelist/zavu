@@ -186,37 +186,6 @@ paths:
       - Invitations
 components:
   schemas:
-    InvitationResponse:
-      type: object
-      required:
-      - invitation
-      properties:
-        invitation:
-          $ref: '#/components/schemas/Invitation'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
-    InvitationStatus:
-      type: string
-      description: Current status of the partner invitation.
-      enum:
-      - pending
-      - in_progress
-      - completed
-      - expired
-      - cancelled
     InvitationCreateRequest:
       type: object
       properties:
@@ -261,6 +230,13 @@ components:
           - whatsapp_alt
           default: whatsapp_waba
           description: How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
+    InvitationResponse:
+      type: object
+      required:
+      - invitation
+      properties:
+        invitation:
+          $ref: '#/components/schemas/Invitation'
     Invitation:
       type: object
       required:
@@ -336,6 +312,30 @@ components:
         updatedAt:
           type: string
           format: date-time
+    InvitationStatus:
+      type: string
+      description: Current status of the partner invitation.
+      enum:
+      - pending
+      - in_progress
+      - completed
+      - expired
+      - cancelled
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
   parameters:
     InvitationIdParam:
       name: invitationId

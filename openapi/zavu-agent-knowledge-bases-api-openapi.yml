@@ -405,6 +405,28 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    DocumentResponse:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          $ref: '#/components/schemas/AgentDocument'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: invalid_request
+        message:
+          type: string
+          example: Phone number is invalid
+        details:
+          type: object
+          additionalProperties: true
     KnowledgeBaseCreateRequest:
       type: object
       required:
@@ -415,13 +437,16 @@ components:
           maxLength: 100
         description:
           type: string
-    DocumentResponse:
+    DocumentUpdateRequest:
       type: object
-      required:
-      - document
+      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
       properties:
-        document:
-          $ref: '#/components/schemas/AgentDocument'
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+          maxLength: 500000
     AgentKnowledgeBase:
       type: object
       required:
@@ -453,21 +478,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          example: invalid_request
-        message:
-          type: string
-          example: Phone number is invalid
-        details:
-          type: object
-          additionalProperties: true
     DocumentCreateRequest:
       type: object
       required:
@@ -480,13 +490,6 @@ components:
         content:
           type: string
           maxLength: 100000
-    KnowledgeBaseResponse:
-      type: object
-      required:
-      - knowledgeBase
-      properties:
-        knowledgeBase:
-          $ref: '#/components/schemas/AgentKnowledgeBase'
     AgentDocument:
       type: object
       required:
@@ -530,16 +533,13 @@ components:
           type:
           - string
           - 'null'
-    DocumentUpdateRequest:
+    KnowledgeBaseResponse:
       type: object
-      description: Fields to update on a knowledge base document. Updating content reprocesses the document for RAG.
+      required:
+      - knowledgeBase
       properties:
-        title:
-          type: string
-          maxLength: 200
-        content:
-          type: string
-          maxLength: 500000
+        knowledgeBase:
+          $ref: '#/components/schemas/AgentKnowledgeBase'
   parameters:
     KnowledgeBaseIdParam:
       name: kbId

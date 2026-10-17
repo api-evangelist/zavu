@@ -260,52 +260,15 @@ paths:
       - bearerAuth: []
 components:
   schemas:
-    ToolCreateRequest:
+    ToolTestRequest:
       type: object
       required:
-      - name
-      - description
-      - parameters
-      - webhookUrl
+      - testParams
       properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-          maxLength: 500
-        parameters:
-          $ref: '#/components/schemas/ToolParameters'
-        webhookUrl:
-          type: string
-          format: uri
-          description: Must be HTTPS.
-        webhookSecret:
-          type: string
-          description: Optional secret for webhook signature verification.
-        enabled:
-          type: boolean
-          default: true
-    ToolUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-          maxLength: 500
-        parameters:
-          $ref: '#/components/schemas/ToolParameters'
-        webhookUrl:
-          type: string
-          format: uri
-        webhookSecret:
-          type:
-          - string
-          - 'null'
-        enabled:
-          type: boolean
+        testParams:
+          type: object
+          description: Parameters to pass to the tool for testing.
+          additionalProperties: true
     AgentTool:
       type: object
       required:
@@ -365,6 +328,59 @@ components:
       properties:
         tool:
           $ref: '#/components/schemas/AgentTool'
+    ToolTestResponse:
+      type: object
+      required:
+      - scheduled
+      properties:
+        scheduled:
+          type: boolean
+    ToolCreateRequest:
+      type: object
+      required:
+      - name
+      - description
+      - parameters
+      - webhookUrl
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+          description: Must be HTTPS.
+        webhookSecret:
+          type: string
+          description: Optional secret for webhook signature verification.
+        enabled:
+          type: boolean
+          default: true
+    ToolUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        parameters:
+          $ref: '#/components/schemas/ToolParameters'
+        webhookUrl:
+          type: string
+          format: uri
+        webhookSecret:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
     ToolParameters:
       type: object
       required:
@@ -389,22 +405,6 @@ components:
           type: array
           items:
             type: string
-    ToolTestResponse:
-      type: object
-      required:
-      - scheduled
-      properties:
-        scheduled:
-          type: boolean
-    ToolTestRequest:
-      type: object
-      required:
-      - testParams
-      properties:
-        testParams:
-          type: object
-          description: Parameters to pass to the tool for testing.
-          additionalProperties: true
   parameters:
     ToolIdParam:
       name: toolId
